@@ -8,9 +8,28 @@ window._ = _;
  */
 
 import axios from 'axios';
-window.axios = axios;
+import {mainStore} from './store/index'
+import router from "./routes/index";
+  window.axios = axios;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common = {
+    'X-Requested-With': 'XMLHttpRequest',
+    'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+};
+window.axios.interceptors.request.use(function (config) {
+    const main  = mainStore();
+    let token = main.token;
+    if (token) {
+     config.headers.Authorization = `Bearer ${token}`;
+    } 
+    return config;
+  }, e=>Promise.reject(e));
+
+ window.axios.interceptors.response.use(response=>response,error=> {
+    if (error.response.status == 401) {router.push({ name: "login" });}
+    return Promise.reject(error);
+  })
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

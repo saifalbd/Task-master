@@ -1,0 +1,118 @@
+:root {
+    --va-input-min-height:40px 
+        
+
+}
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+@import './variables';
+@import './utility.scss';
+@import './loginPage.scss';
+
+
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+}
+
+.main-layout{
+    display: grid;
+    grid-template-columns: 250px auto;
+    .asside{
+        min-height: 100vh;
+     
+    }
+    .info-bar{
+        position: fixed;
+        top: 0;
+        left:0;
+        bottom:0;
+        right: 0;
+        z-index: 10000;
+        background-color: #0000004f;
+        display: none;
+        justify-content: flex-start;
+        &.show{
+            display: flex;  
+        }
+
+        .info-bar-body{
+            min-width: 300px;
+            width: auto;
+            height: 100%;
+            background-color: white;
+        }
+    }
+    .main-content{
+    
+    
+        min-height: 100vh;
+        background-color: var(--va-background);
+       
+        padding-left: $mainBorderSize;
+        padding-right: $mainBorderSize;
+        >.inner{
+            min-height: 100%;
+           // border-top: 3px solid var(--va-focus);
+            border-left: 3px solid #34495e;
+            border-right: 3px solid #34495e;
+            border-top-left-radius: $topNavHeight;
+            border-top-right-radius: $topNavHeight;
+            .top-nav{
+                height: $topNavHeight;
+
+                
+                border-bottom: $mainBorderSize solid #34495e;
+                border-bottom-left-radius: $topNavHeight;
+                border-bottom-right-radius: $topNavHeight;
+                background-color: #f5f9fb;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-left: 15px;
+                padding-right: 15px;
+                .page-title{
+                   height: calc(#{$topNavHeight} - #{$mainBorderSize});
+                    font-weight: 300;
+                    font-size: 1.5rem;
+                    vertical-align:middle;
+                    text-align: left;
+                   
+                    display: flex;
+                    justify-content:flex-start;
+                    align-items: center;
+                    font-style: italic;
+                  
+                }
+                .right-side{
+                    >button{margin-left: 5px;}
+                }
+            }
+
+            .page-content{
+                padding: 5px;
+                table{
+                    .left{text-align: left;}
+                    .right{text-align: right;}
+                    .center{text-align: center;}
+                }
+                .va-table-responsive{
+                    >table{
+                        min-width: 100%;
+                    }
+                }
+                
+            }
+           
+        }
+    }
+}
+
+.flex {
+    .item{
+        width: 100%;
+    }
+}

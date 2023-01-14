@@ -1,0 +1,12 @@
+.va-input-wrapper,.va-select{
+width: 100%;
+}
+
+table {
+    .right{
+        >*{
+            float: right;
+        }
+        text-align: right !important;
+    }
+}

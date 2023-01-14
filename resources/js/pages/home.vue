@@ -1,19 +1,23 @@
 <template>
-    <div>
-Home PAge
-    </div>
+    <app-layout>
+        <div>
+            <page-title-box></page-title-box>
+        </div>
+    </app-layout>
 </template>
 
 <script>
+import AppLayout from "../Layouts/app-layout.vue";
+import PageTitleBox from "../Components/PageTitleBox.vue";
 export default {
-    setup () {
-        
-
-        return {}
-    }
-}
+    components: {
+        AppLayout,
+        PageTitleBox,
+    },
+    setup() {
+        return {};
+    },
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
