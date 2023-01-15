@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -37,5 +39,22 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+      /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $user_id = 1;
+            $employee_id = $user->id;
+            $position_id = 1;
+            DB::table('user-employee')->insert(compact('user_id','employee_id'));
+            DB::table('user_employee_positions')->insert(compact('user_id','employee_id','position_id'));
+
+        });
     }
 }

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Rules\ExistBy;
+use App\Rules\UniqueBy;
+use App\Rules\UniqueSkipBy;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -37,6 +41,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate(['title'=>['required',new UniqueBy('categories',$request->user_id)]]);
+    
       $category =  $request->user()->categories()->create($request->toArray());
       return response()->json($category);
     }
@@ -70,9 +76,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $request->validate(['title'=>['required',new UniqueSkipBy('categories',$request->user_id,$category->id)]]);
+        $category->update($request->toArray());
+        return response()->json($category);
+        
     }
 
     /**

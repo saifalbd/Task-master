@@ -36,7 +36,6 @@
                         />
                     </div>
                     <div class="flex xs12 mt-2">
-                        
                         <va-radio
                             v-for="(option, index) in props.positions"
                             :key="index"
@@ -52,7 +51,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref,watch } from "vue";
 import FormDialog from "../../Components/FormDialog.vue";
 import { rs } from "../../Plugins/Rule";
 import { values } from "lodash";
@@ -69,37 +68,45 @@ export default {
             type: Boolean,
             default: false,
         },
+        item: {
+            type: Object,
+            required: true,
+        },
     },
 
     setup(props, { emit }) {
         let busy = ref(false);
         const canUser = ref(null);
         const form = ref(null);
-        let name = ref("");
-        let email = ref("");
+        let name = ref(props.item.name);
+        let email = ref(props.item.email);
         let phone = ref("");
 
-        let position = ref(null);
+        let item = ref(props.item)
+
+    watch(props.item,(o) => {
+      item.value = o;
+    });
+
+
+        let position = ref(props.item.position?.id);
 
         let rules = {
             title: [(v) => !!v || "title are requies"],
         };
 
         const save = async () => {
-            let url = route("employee.store");
+            let url = route("employee.update",{employee:item.value.id});
             let valid = await form.value.validate();
             if (!valid) return null;
             try {
-                const { data } = await axios.post(url, {
+                const { data } = await axios.put(url, {
                     name: name.value,
                     email: email.value,
                     phone: phone.value,
-                    position:position.value
+                    position: position.value,
                 });
-                emit("push", addProtos(data,{
-        action: true,
-        showEdit: false,
-      }));
+               emit("replace",addProtos(data,{action: true,showEdit: false}));
             } catch (error) {
                 console.error(error);
 

@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+use App\Models\Position;
 use App\Models\User;
+use App\Models\UserEmployeePosition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -13,10 +18,10 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  
+
     public function index(Request $request)
     {
-        $items = $request->user()->employees()->paginate($request->perPage);
+        $items = Employee::query()->with(['position'])->paginate($request->perPage);
         return response()->json($items);
     }
 
@@ -39,20 +44,37 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email'=>['required','email'],
-            'name'=>['required','string']
+            'email' => ['required', 'email'],
+            'name' => ['required', 'string'],
+            'position' => ['required', 'numeric']
         ]);
 
         $email = $request->email;
         $name = $request->name;
         $password = Hash::make(12345);
 
-        $user = User::query()->whereEmail($email)->first();
-        if(!$user){
-            $user = User::create(compact('email','name','password'));
+        $employee = User::query()->whereEmail($email)->first();
+        if (!$employee) {
+            $employee = User::create(compact('email', 'name', 'password'));
         }
-        $request->user()->employees()->syncWithoutDetaching([$user->id],false);
-        return response()->json($user);
+        $request->user()->employees()->syncWithoutDetaching([$employee->id], false);
+
+        $position_id = $request->position;
+        $user_id = $request->user_id;
+        $employee_id = $employee->id;
+   
+            UserEmployeePosition::create(compact('position_id', 'user_id', 'employee_id'));
+        
+
+            $employee->load('position');
+        return response()->json($employee);
+    }
+
+
+    public function positions()
+    {
+        $items = Position::query()->get();
+        return response()->json($items);
     }
 
     /**
@@ -61,20 +83,10 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Employee $employee)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $employee->load('position');
+        return response()->json($employee);
     }
 
     /**
@@ -84,9 +96,17 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Employee $employee)
     {
-        //
+        $request->validate(['position' => ['required', 'numeric']]);
+     
+
+        $position_id = $request->position;
+        $employee->position->update(compact('position_id'));
+        $employee->load('position');
+        return response()->json($employee);
+    
+
     }
 
     /**
@@ -95,8 +115,14 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Employee $employee)
     {
-        //
+
+        $employee_id = $employee->id;
+        if($employee_id){
+            $request->user()->employees()->detach($employee_id);
+            UserEmployeePosition::query()->where('user_id',$request->user_id)->where('employee_id',$employee_id)->delete();
+        }
+      
     }
 }

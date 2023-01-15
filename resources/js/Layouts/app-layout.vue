@@ -1,3 +1,13 @@
+
+
+<script setup>
+import AsideBar from "./aside-bar.vue";
+import { defineProps } from "vue";
+const props = defineProps({
+    title: { type: String, default: "title" },
+    showInfoBar: { type: Boolean, default: false },
+});
+</script>
 <template>
     <div class="main-layout">
         <div class="info-bar" :class="{ show: showInfoBar }">
@@ -12,11 +22,11 @@
             <div class="inner">
                 <div class="top-nav">
                     <div class="page-title">
-                        {{ props.title }}
+                        Task Master
                     </div>
                     <div class="right-side">
                         <slot name="custom"></slot>
-                        <va-button size="small">Logout</va-button>
+                        <va-button size="small" preset="primary" round><va-icon size="small" name="lock"></va-icon><span class="mx-2">Logout</span></va-button>
                     </div>
                 </div>
                 <div class="page-content">
@@ -24,18 +34,5 @@
                 </div>
             </div>
         </div>
-        <!-- <form-dialog title="Create Category"></form-dialog> -->
     </div>
 </template>
-
-<script setup>
-import AsideBar from "./aside-bar.vue";
-// import FormDialog from "../Components/FormDialog.vue";
-import { defineProps, ref } from "vue";
-const props = defineProps({
-    title: { type: String, default: "title" },
-    showInfoBar: { type: Boolean, default: false },
-});
-</script>
-
-<style scoped></style>

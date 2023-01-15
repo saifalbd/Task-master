@@ -4,21 +4,24 @@
             <va-button
                 @click="go(com.first.page)"
                 :disabled="!com.first.page"
+                :preset="com.first.active ?'':'secondary'"
                 :color="com.first.active ? 'warning' : 'primary'"
                 ><va-icon class="material-icons"
                     >chevron_left</va-icon
                 ></va-button
             >
-            <va-button
+            <va-button 
                 v-for="(link, index) in com.middles"
                 :key="index"
                 :disabled="!link.page"
                 @click="go(link.page)"
+                :preset="link.active ?'':'secondary'"
                 :color="link.active ? 'warning' : 'primary'"
                 >{{ link.label }}</va-button
             >
             <va-button
                 :disabled="!com.last.page"
+                   :preset="com.last.active ?'':'secondary'"
                 :color="com.last.active ? 'warning' : 'primary'"
                 @click="go(com.last.page)"
                 ><va-icon class="material-icons"

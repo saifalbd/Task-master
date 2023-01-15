@@ -48,6 +48,8 @@ class User extends Authenticatable
     }
 
     public function employees(){
-        return $this->belongsToMany(static::class,'user-employee','user_id','employee_id');
+        return $this->belongsToMany(Employee::class,'user-employee','user_id','employee_id');
     }
+
+    
 }

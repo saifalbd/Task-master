@@ -2,9 +2,7 @@
     <app-layout>
         <div>
             <page-title-box title="Categories">
-                <va-button round @click="showCreate = true"
-                    >Add Category</va-button
-                >
+                <create-button title="Add Category" @click="showCreate = true"></create-button>
             </page-title-box>
         </div>
 
@@ -37,7 +35,33 @@
             :hoverable="true"
             v-model:sort-by="sortBy"
             v-model:sorting-order="sortingOrder"
-        />
+        >
+            <template #cell(action)="{ rowData, rowIndex }">
+                <div class="flex-right">
+                    <va-button-group size="small" outline>
+                        <va-button
+                            preset="primary"
+                            size="small"
+                            @click="rowData.showEdit = true"
+                            ><va-icon size="small" name="edit"></va-icon
+                        ></va-button>
+                        <va-button preset="primary" size="small"
+                            ><va-icon
+                                size="small"
+                                name="delete"
+                                color="#ed6c02"
+                                @click="remove(rowData, rowIndex)"
+                            ></va-icon
+                        ></va-button>
+                    </va-button-group>
+                    <edit
+                        v-model:show="rowData.showEdit"
+                        :item="rowData"
+                        @replace="replace($event, rowIndex)"
+                    ></edit>
+                </div>
+            </template>
+        </va-data-table>
         <pagination :links="links" @page="fetchItems"></pagination>
         <create v-model:show="showCreate" @push="push"></create>
     </app-layout>
@@ -46,41 +70,92 @@
 <script>
 import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
-import Pagination from '../../Components/Pagination.vue'
+import Pagination from "../../Components/Pagination.vue";
 import Create from "./Create.vue";
-import { ref } from "@vue/reactivity";
+import Edit from "./Edit.vue";
+import { ref,onMounted} from "vue";
+import CreateButton from '../../Components/CreateButton.vue';
+import { confirm, removeSuccess } from "../../Plugins/utility";
+import { useToast } from 'vuestic-ui'
 export default {
     components: {
         AppLayout,
         PageTitleBox,
         Pagination,
         Create,
+        Edit,
+        CreateButton,
     },
     setup() {
+        // Start Propertis
+         const toast = useToast();
         const items = ref([]);
         const showCreate = ref(false);
-        const links = ref([])
-       
-        const perPage = ref(10)
-        const fetchItems = async (page) => {
-            const url = route("category.index",{perPage:perPage.value,page:page});
-            const { data } = await axios.get(url);
-            links.value = data.links
-            console.log({l:data.links})
-            items.value = data.data
-        };
-        fetchItems(1);
-        const push = (category) => {
-            showCreate.value = false;
-             items.value.push(category)
-        };
+        const links = ref([]);
+
+        const perPage = ref(10);
         const sortBy = ref("title");
         const columns = [
             { key: "id", sortable: true, sortingOptions: ["desc", "asc"] },
             { key: "title", sortable: true },
+            {
+                key: "action",
+                thAlign: "right",
+                tdAlign: "right",
+            },
         ];
         const sortingOrder = ref("asc");
-        return { showCreate,perPage, sortingOrder, items, columns, sortBy, push,fetchItems,links };
+
+        // START METHODS
+        const fetchItems = async (page) => {
+            const url = route("category.index", {
+                perPage: perPage.value,
+                page: page,
+            });
+            const { data } = await axios.get(url);
+            links.value = data.links;
+            items.value = addProtos(data.data, {
+                action: true,
+                showEdit: false,
+            });
+        };
+        fetchItems(1);
+        const push = (category) => {
+            showCreate.value = false;
+            items.value.push(category);
+        };
+        const replace = (category, index) => {
+            showCreate.value = false;
+            items.value.splice(index, 1, category);
+        };
+
+        const remove = async (item, index) => {
+            const is = await confirm(item, "Category");
+            if (!is) return null;
+            try {
+                const url = route("category.destroy", { category: item.id });
+                await axios.delete(url);
+                items.value.splice(index, 1);
+                
+                removeSuccess(toast);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        return {
+            showCreate,
+            perPage,
+            sortingOrder,
+            items,
+            columns,
+            sortBy,
+            push,
+            replace,
+            fetchItems,
+            remove,
+            links,
+        };
     },
 };
 </script>

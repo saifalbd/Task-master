@@ -3,7 +3,7 @@
         :show="props.show"
         @update:show="emit('update:show', $event)"
         :busy="busy"
-        title="Create Cetegory"
+        title="Edit Cetegory"
         @add="save"
     >
         <va-form ref="form">
@@ -24,8 +24,9 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref, watch } from "vue";
 import FormDialog from "../../Components/FormDialog.vue";
+import { validErorrs } from "../../Plugins/utility";
 
 export default {
     components: { FormDialog },
@@ -35,31 +36,40 @@ export default {
             type: Boolean,
             default: false,
         },
+        item: {
+            type: Object,
+            required: true,
+        },
     },
 
     setup(props, { emit }) {
         let busy = ref(false);
         const form = ref(null);
-        let title = ref("");
-        let url = route("category.store");
+        let item = ref(props.item);
+        let title = ref(props.item.title);
+        watch(props.item, (o) => {
+            item.value = o;
+            title.value = o.title;
+        });
+
         let rules = {
             title: [(v) => !!v || "title are requies"],
         };
 
         const save = async () => {
+            let url = route("category.update", { category: item.value.id });
             let valid = await form.value.validate();
             if (!valid) return null;
             try {
-                const { data } = await axios.post(url, { title: title.value });
+                const { data } = await axios.put(url, { title: title.value });
                 emit(
-                    "push",
+                    "replace",
                     addProtos(data, {
                         action: true,
                         showEdit: false,
                     })
                 );
             } catch (error) {
-                console.error(error);
                 validErorrs(error);
             }
         };
