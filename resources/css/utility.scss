@@ -14,3 +14,12 @@ table {
     display: flex;
     justify-content: right;
 }
+
+.va-modal.form-sceen{
+    .va-modal--fullscreen{
+        background-color: rgb(29 2 2 / 22%)!important;
+        .va-modal__inner{
+            background-color: var(--va-background-primary);
+        }
+    }
+}

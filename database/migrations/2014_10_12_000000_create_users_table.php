@@ -32,13 +32,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('captain_id')->constrained('users');
+            $table->foreignId('category_id');
+            $table->foreignId('manager_id')->constrained('users');
             $table->timestamps();
         });
 
-        Schema::create('team-employee', function (Blueprint $table) {
+        Schema::create('team-member', function (Blueprint $table) {
             $table->foreignId('team_id')->constrained('teams');
-            $table->foreignId('employee_id')->constrained('users');
+            $table->foreignId('member_id')->constrained('users');
         });
     }
 
@@ -49,7 +50,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('team-employee');
+        Schema::dropIfExists('team-member');
         Schema::dropIfExists('teams');
         Schema::dropIfExists('user-employee');
         Schema::dropIfExists('users');

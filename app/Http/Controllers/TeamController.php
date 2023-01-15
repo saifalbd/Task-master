@@ -14,7 +14,9 @@ class TeamController extends Controller
      */
     public function index(Request $request)
     {
-        $items = Team::query()->user($request->user()->id)->get();
+
+        $builder = Team::query()->user($request->user()->id)->with(['members', 'manager', 'category']);
+        $items = $request->all ? $builder->get() : $builder->paginate($request->perPage);
         return response()->json($items);
     }
 
@@ -36,7 +38,23 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string'],
+            'category_id' => ['required', 'numeric'],
+            'manager_id' => ['required', 'numeric'],
+            'members' => ['required', 'array'],
+            'members.*' => ['required', 'numeric'],
+        ]);
+
+        $title = $request->title;
+        $category_id = $request->category_id;
+        $manager_id = $request->manager_id;
+        $members = $request->members;
+        $user_id = $request->user_id;
+        $team = Team::create(compact('title', 'category_id', 'manager_id', 'user_id'));
+        $team->members()->sync($members);
+        $team->load(['members', 'manager', 'category']);
+        return response()->json($team);
     }
 
     /**
@@ -68,9 +86,25 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Team $team)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string'],
+            'category_id' => ['required', 'numeric'],
+            'manager_id' => ['required', 'numeric'],
+            'members' => ['required', 'array'],
+            'members.*' => ['required', 'numeric'],
+        ]);
+
+        $title = $request->title;
+        $category_id = $request->category_id;
+        $manager_id = $request->manager_id;
+        $members = $request->members;
+        $user_id = $request->user_id;
+        $team->update(compact('title', 'category_id', 'manager_id', 'user_id'));
+        $team->members()->sync($members);
+        $team->load(['members', 'manager', 'category']);
+        return response()->json($team);
     }
 
     /**
@@ -79,8 +113,9 @@ class TeamController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, Team $team)
     {
-        //
+        $team->members()->detach();
+        $team->delete();
     }
 }

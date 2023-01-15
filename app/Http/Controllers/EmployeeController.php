@@ -21,7 +21,8 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
-        $items = Employee::query()->with(['position'])->paginate($request->perPage);
+        $builder = Employee::query()->with(['position']);
+        $items = $request->all?$builder->get(): $builder->paginate($request->perPage);
         return response()->json($items);
     }
 

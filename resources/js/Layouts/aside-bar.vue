@@ -18,7 +18,8 @@ const value = [false, false, false];
 const collapses = [
   { title: 'Home', to: { name: 'home' } },
     { title: 'Employee', to: { name: 'employee' } },
-    { title: 'Category', to: { name: 'category' } }
+    { title: 'Category', to: { name: 'category' } },
+      { title: 'Team', to: { name: 'team' } }
   ]
 
 </script>

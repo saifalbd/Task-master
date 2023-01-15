@@ -1,35 +1,44 @@
 <template>
-    <va-modal v-model="show" hide-default-actions no-outside-dismiss>
-            <va-inner-loading :loading="props.busy">
-        <div class="layout va-gutter-1">
-            <div class="row">
-                <div class="flex xs12">
-                    <div class="item mb-4">
-                        <div class="form-title">
-                            <va-icon class="material-icons">add</va-icon>
-                            <span class="text">{{ title }}</span>
+    <va-modal
+        v-model="show"
+        :fullscreen="props.fullscreen"
+        hide-default-actions
+        no-outside-dismiss
+        class="form-sceen"
+    >
+        <va-inner-loading :loading="props.busy">
+            <div class="layout va-gutter-1">
+                <div class="row">
+                    <div class="flex xs12">
+                        <div class="item mb-4">
+                            <div class="form-title">
+                                <va-icon class="material-icons">add</va-icon>
+                                <span class="text">{{ title }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex xs12">
+                        <div class="item">
+                            <slot></slot>
+                        </div>
+                    </div>
+                    <div class="flex xs12">
+                        <div class="item actions-btns">
+                            <va-button
+                                color="danger"
+                                size="small"
+                                @click="close"
+                                ><va-icon class="material-icons">close</va-icon>
+                                Close</va-button
+                            >
+                            <va-button size="small" @click="add">
+                                <va-icon class="material-icons">add</va-icon>
+                                {{props.isEdit?'Replace':'Add'}}
+                            </va-button>
                         </div>
                     </div>
                 </div>
-                <div class="flex xs12">
-                    <div class="item">
-                        <slot></slot>
-                    </div>
-                </div>
-                <div class="flex xs12">
-                    <div class="item actions-btns">
-                        <va-button color="danger" size="small" @click="close"
-                            ><va-icon class="material-icons">close</va-icon>
-                            Close</va-button
-                        >
-                        <va-button size="small" @click="add"
-                            ><va-icon class="material-icons">add</va-icon>
-                            Add</va-button
-                        >
-                    </div>
-                </div>
             </div>
-        </div>
         </va-inner-loading>
     </va-modal>
 </template>
@@ -55,10 +64,14 @@ export default defineComponent({
             type: String,
             required: true,
         },
-        busy:{
-            type:Boolean,
-            default:false
-        }
+        busy: {
+            type: Boolean,
+            default: false,
+        },
+        fullscreen: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props, { emit }) {
         const close = () => {

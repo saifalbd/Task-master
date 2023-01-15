@@ -26,6 +26,11 @@ const routes = [
         name: "employee",
         component: () => import("../pages/Employee/index.vue"),
     },
+    {
+        path: "/teams",
+        name: "team",
+        component: () => import("../pages/Team/index.vue"),
+    },
 ];
 
 const router = createRouter({

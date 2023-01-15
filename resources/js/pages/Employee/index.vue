@@ -37,30 +37,18 @@
       v-model:sorting-order="sortingOrder"
     >
       <template #cell(action)="{ rowData, rowIndex }">
-        <div class="flex-right">
-          <va-button-group size="small" outline>
-            <va-button
-              preset="primary"
-              size="small"
-              @click="rowData.showEdit = true"
-              ><va-icon  size="small" name="edit"></va-icon
-            ></va-button>
-            <va-button preset="primary" size="small"
-              ><va-icon
-               size="small"
-                name="delete"
-                color="#ed6c02"
-                @click="remove(rowData, rowIndex)"
-              ></va-icon
-            ></va-button>
-          </va-button-group>
-          <edit
+      
+                <remove-edit-button
+                    @editClick="rowData.showEdit = true"
+                    @removeClick="remove(rowData, rowIndex)"
+                >
+                <edit
             v-model:show="rowData.showEdit"
             :positions="positions"
             :item="rowData"
             @replace="replace($event, rowIndex)"
           ></edit>
-        </div>
+                </remove-edit-button>
       </template>
     </va-data-table>
     <pagination :links="links" @page="fetchItems"></pagination>
@@ -81,6 +69,7 @@ import { ref } from "vue";
 import Edit from "./Edit.vue";
 import CreateButton from '../../Components/CreateButton.vue';
 import { confirm, removeSuccess } from "../../Plugins/utility";
+import RemoveEditButton from "../../Components/RemoveEditButton.vue";
 import { useToast } from 'vuestic-ui';
 export default {
   components: {
@@ -90,6 +79,7 @@ export default {
     Create,
     CreateButton,
     Edit,
+    RemoveEditButton
   },
   setup() {
     // Start Propertise

@@ -4,6 +4,7 @@
         @update:show="emit('update:show', $event)"
         :busy="busy"
         title="Edit Cetegory"
+           is-edit
         @add="save"
     >
         <va-form ref="form">

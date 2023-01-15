@@ -10,6 +10,15 @@ class Employee extends Model
 {
     protected $table = 'users';
    
+     /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
      /**
      * The "booted" method of the model.

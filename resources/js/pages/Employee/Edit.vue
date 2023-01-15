@@ -3,7 +3,8 @@
         :show="props.show"
         @update:show="emit('update:show', $event)"
         :busy="busy"
-        title="Create User"
+        title="Edit User"
+           is-edit
         @add="save"
     >
         <va-form ref="form">

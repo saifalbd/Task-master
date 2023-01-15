@@ -5,6 +5,7 @@
         :busy="busy"
         title="Create User"
         @add="save"
+        fullscreen
     >
         <va-form ref="form">
             <div class="layout gutter--md">
@@ -36,7 +37,6 @@
                         />
                     </div>
                     <div class="flex xs12 mt-2">
-                        
                         <va-radio
                             v-for="(option, index) in props.positions"
                             :key="index"
@@ -52,10 +52,10 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
+import { ref,watch } from "vue";
 import FormDialog from "../../Components/FormDialog.vue";
 import { rs } from "../../Plugins/Rule";
-import { values } from "lodash";
+import { head, values } from "lodash";
 import { confirm, removeSuccess, validErorrs } from "../../Plugins/utility";
 export default {
     components: { FormDialog },
@@ -79,7 +79,14 @@ export default {
         let email = ref("");
         let phone = ref("");
 
-        let position = ref(null);
+        let position = ref(head(props.positions)?.id);
+         
+        watch(props.positions,(positions)=>{
+            console.log(positions)
+            if(positions.length){
+              position.value =  head(positions)?.id
+            }
+        })
 
         let rules = {
             title: [(v) => !!v || "title are requies"],
@@ -94,12 +101,15 @@ export default {
                     name: name.value,
                     email: email.value,
                     phone: phone.value,
-                    position:position.value
+                    position: position.value,
                 });
-                emit("push", addProtos(data,{
-        action: true,
-        showEdit: false,
-      }));
+                emit(
+                    "push",
+                    addProtos(data, {
+                        action: true,
+                        showEdit: false,
+                    })
+                );
             } catch (error) {
                 console.error(error);
 

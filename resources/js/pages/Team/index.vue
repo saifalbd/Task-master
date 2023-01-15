@@ -1,8 +1,11 @@
 <template>
     <app-layout>
         <div>
-            <page-title-box title="Categories">
-                <create-button title="Add Category" @click="showCreate = true"></create-button>
+            <page-title-box title="Teams">
+                <create-button
+                    title="Add Team"
+                    @click="showCreate = true"
+                ></create-button>
             </page-title-box>
         </div>
 
@@ -36,21 +39,36 @@
             v-model:sort-by="sortBy"
             v-model:sorting-order="sortingOrder"
         >
+            <template #cell(members)="{ rowData }">
+                <va-chip
+                    size="small"
+                    v-for="member in rowData.members"
+                    :key="member.id"
+                    >{{ member.name }}</va-chip
+                >
+            </template>
             <template #cell(action)="{ rowData, rowIndex }">
                 <remove-edit-button
                     @editClick="rowData.showEdit = true"
                     @removeClick="remove(rowData, rowIndex)"
                 >
-                   <edit
+                    <edit
                         v-model:show="rowData.showEdit"
                         :item="rowData"
+                        :employees="employees"
+                        :categories="categories"
                         @replace="replace($event, rowIndex)"
                     ></edit>
                 </remove-edit-button>
             </template>
         </va-data-table>
         <pagination :links="links" @page="fetchItems"></pagination>
-        <create v-model:show="showCreate" @push="push"></create>
+        <create
+            v-model:show="showCreate"
+            :employees="employees"
+            :categories="categories"
+            @push="push"
+        ></create>
     </app-layout>
 </template>
 
@@ -58,13 +76,13 @@
 import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
 import Pagination from "../../Components/Pagination.vue";
+import RemoveEditButton from "../../Components/RemoveEditButton.vue";
 import Create from "./Create.vue";
 import Edit from "./Edit.vue";
-import { ref} from "vue";
-import CreateButton from '../../Components/CreateButton.vue';
+import { ref, onMounted } from "vue";
+import CreateButton from "../../Components/CreateButton.vue";
 import { confirm, removeSuccess } from "../../Plugins/utility";
-import RemoveEditButton from "../../Components/RemoveEditButton.vue";
-import { useToast } from 'vuestic-ui'
+import { useToast } from "vuestic-ui";
 export default {
     components: {
         AppLayout,
@@ -73,12 +91,14 @@ export default {
         Create,
         Edit,
         CreateButton,
-        RemoveEditButton
+        RemoveEditButton,
     },
     setup() {
         // Start Propertis
-         const toast = useToast();
+        const toast = useToast();
         const items = ref([]);
+        const employees = ref([]);
+        const categories = ref([]);
         const showCreate = ref(false);
         const links = ref([]);
 
@@ -87,6 +107,9 @@ export default {
         const columns = [
             { key: "id", sortable: true, sortingOptions: ["desc", "asc"] },
             { key: "title", sortable: true },
+            { key: "manager.name", label: "Manager", sortable: true },
+            { key: "category.title", label: "Category", sortable: true },
+            { key: "members", label: "Mambers", sortable: true },
             {
                 key: "action",
                 thAlign: "right",
@@ -96,8 +119,14 @@ export default {
         const sortingOrder = ref("asc");
 
         // START METHODS
+        axios
+            .get(route("employee.index", { all: true }))
+            .then(({ data }) => (employees.value = data));
+        axios
+            .get(route("category.index", { all: true }))
+            .then(({ data }) => (categories.value = data));
         const fetchItems = async (page) => {
-            const url = route("category.index", {
+            const url = route("team.index", {
                 perPage: perPage.value,
                 page: page,
             });
@@ -109,23 +138,23 @@ export default {
             });
         };
         fetchItems(1);
-        const push = (category) => {
+        const push = (team) => {
             showCreate.value = false;
-            items.value.push(category);
+            items.value.push(team);
         };
-        const replace = (category, index) => {
+        const replace = (team, index) => {
             showCreate.value = false;
-            items.value.splice(index, 1, category);
+            items.value.splice(index, 1, team);
         };
 
         const remove = async (item, index) => {
-            const is = await confirm(item, "Category");
+            const is = await confirm(item, "Team", "title");
             if (!is) return null;
             try {
-                const url = route("category.destroy", { category: item.id });
+                const url = route("team.destroy", { team: item.id });
                 await axios.delete(url);
                 items.value.splice(index, 1);
-                
+
                 removeSuccess(toast);
             } catch (error) {
                 console.log(error);
@@ -142,6 +171,8 @@ export default {
             push,
             replace,
             fetchItems,
+            employees,
+            categories,
             remove,
             links,
         };

@@ -18,7 +18,8 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $items = Category::query()->user($request->user()->id)->paginate($request->perPage);
+        $builder = Category::query()->user($request->user()->id);
+        $items = $request->all?$builder->get():$builder->paginate($request->perPage);
         return response()->json($items);
     }
 
