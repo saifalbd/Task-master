@@ -15,7 +15,7 @@
                             v-model="title"
                             label="Title"
                             placeholder="Title Here"
-                            :rules="rules.title"
+                              :rules="rs('title',true)"
                         />
                     </div>
                 </div>
@@ -28,7 +28,7 @@
 import { ref, watch } from "vue";
 import FormDialog from "../../Components/FormDialog.vue";
 import { validErorrs } from "../../Plugins/utility";
-
+import { rs } from "../../Plugins/Rule";
 export default {
     components: { FormDialog },
 
@@ -75,7 +75,7 @@ export default {
             }
         };
 
-        return { props, form, emit, save, title, busy, rules, save };
+        return { props, form, emit, save,rs, title, busy };
     },
 };
 </script>

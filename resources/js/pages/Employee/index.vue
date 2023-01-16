@@ -2,7 +2,10 @@
   <app-layout>
     <div>
       <page-title-box title="Employees">
-     <create-button title="Add Employee" @click="showCreate = true"></create-button>
+        <create-button
+          title="Add Employee"
+          @click="showCreate = true"
+        ></create-button>
       </page-title-box>
     </div>
 
@@ -37,18 +40,17 @@
       v-model:sorting-order="sortingOrder"
     >
       <template #cell(action)="{ rowData, rowIndex }">
-      
-                <remove-edit-button
-                    @editClick="rowData.showEdit = true"
-                    @removeClick="remove(rowData, rowIndex)"
-                >
-                <edit
+        <remove-edit-button
+          @editClick="rowData.showEdit = true"
+          @removeClick="remove(rowData, rowIndex)"
+        >
+          <edit
             v-model:show="rowData.showEdit"
             :positions="positions"
             :item="rowData"
             @replace="replace($event, rowIndex)"
           ></edit>
-                </remove-edit-button>
+        </remove-edit-button>
       </template>
     </va-data-table>
     <pagination :links="links" @page="fetchItems"></pagination>
@@ -67,10 +69,10 @@ import Pagination from "../../Components/Pagination.vue";
 import Create from "./Create.vue";
 import { ref } from "vue";
 import Edit from "./Edit.vue";
-import CreateButton from '../../Components/CreateButton.vue';
+import CreateButton from "../../Components/CreateButton.vue";
 import { confirm, removeSuccess } from "../../Plugins/utility";
 import RemoveEditButton from "../../Components/RemoveEditButton.vue";
-import { useToast } from 'vuestic-ui';
+import { useToast } from "vuestic-ui";
 export default {
   components: {
     AppLayout,
@@ -79,11 +81,11 @@ export default {
     Create,
     CreateButton,
     Edit,
-    RemoveEditButton
+    RemoveEditButton,
   },
   setup() {
     // Start Propertise
-     const toast = useToast();
+    const toast = useToast();
     const items = ref([]);
     const positions = ref([]);
     const showCreate = ref(false);

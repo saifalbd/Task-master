@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -25,5 +26,6 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('/users',UserController::class)->names('user');
     Route::apiResource('/employees',EmployeeController::class)->names('employee');
     Route::apiResource('/teams',TeamController::class)->names('team');
+    Route::apiResource('/projects',ProjectController::class)->names('project');
     
 });

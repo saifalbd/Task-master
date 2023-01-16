@@ -13,6 +13,7 @@ import router from "./routes/index";
 import {confirm,validErorrs} from './Plugins/utility';
 window.vConfirm = confirm;
 window.validErorrs = validErorrs;
+window.dateFormat = "YYYY-MM-DD";
   window.axios = axios;
 
 window.axios.defaults.headers.common = {
@@ -35,12 +36,16 @@ window.axios.interceptors.request.use(function (config) {
 
 
 window.addProtos =(items,protos)=>{
-  if(isPlainObject(items)){
-    return {...items,...protos};
-  }else{
-    return items.map(item=>{
-      return {...item,...protos};
-    })
+  try {
+    if(isPlainObject(items)){
+      return {...items,...protos};
+    }else{
+      return items.map(item=>{
+        return {...item,...protos};
+      })
+    }
+  } catch (error) {
+    console.error(error)
   }
   
 }

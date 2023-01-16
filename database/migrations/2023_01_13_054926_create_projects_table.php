@@ -15,23 +15,19 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('manager_id')->nullable()->constrained('users');
             $table->foreignId('category_id')->constrained('categories');
-            $table->foreignId('manager_id')->constrained('users');
+            $table->foreignId('team_id')->nullable()->constrained('teams');
+            $table->string('title');
             $table->date('start');
             $table->date('end');
             $table->tinyInteger('status')->default(0);
-            $table->foreignId('team_id')->nullable()->constrained('teams');
             $table->longText('description')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('project-worker', function (Blueprint $table) {
-            $table->foreignId('project_id')->constrained('projects');
-            $table->foreignId('worker_id')->constrained('users');
-        });
-
+        
     }
 
     /**
@@ -41,7 +37,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project-worker');
+       
         Schema::dropIfExists('projects');
     }
 };
