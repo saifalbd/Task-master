@@ -36,6 +36,7 @@ const collapses = [
     { title: "Category", to: { name: "category" } },
     { title: "Team", to: { name: "team" } },
     { title: "Project", to: { name: "project" } },
+     { title: "Task", to: { name: "task" } },
 ];
 </script>
 

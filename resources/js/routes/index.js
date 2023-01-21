@@ -36,6 +36,18 @@ const routes = [
         name: "project",
         component: () => import("../pages/Project/index.vue"),
     },
+    {
+        path: "/tasks",
+        name: "task",
+        component: () => import("../pages/Task/index.vue"),
+    },
+    {
+        path: "/tasks/:id",
+        name: "task.show",
+        component: () => import("../pages/Task/task.vue"),
+        props: route => ({ id: route.params.id })
+    },
+
 ];
 
 const router = createRouter({

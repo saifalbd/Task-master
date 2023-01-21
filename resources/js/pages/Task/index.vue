@@ -1,9 +1,9 @@
 <template>
     <app-layout>
         <div>
-            <page-title-box title="Projects">
+            <page-title-box title="Task">
                 <create-button
-                    title="Add Project"
+                    title="Add Task"
                     @click="showCreate = true"
                 ></create-button>
             </page-title-box>
@@ -52,6 +52,8 @@
             </template>
             <template #cell(action)="{ rowData, rowIndex }">
                 <remove-edit-button
+                :isView="true"
+                @viewClick="router.push({name:'task.show',params:{id:rowData.id}})"
                     @editClick="rowData.showEdit = true"
                     @removeClick="remove(rowData, rowIndex)"
                 >
@@ -60,7 +62,7 @@
                         :item="rowData"
                         :employees="employees"
                         :categories="categories"
-                        :teams="teams"
+                        
                         @replace="replace($event, rowIndex)"
                     ></edit>
                 </remove-edit-button>
@@ -71,7 +73,7 @@
             v-model:show="showCreate"
             :employees="employees"
             :categories="categories"
-            :teams="teams"
+            
             @push="push"
         ></create>
     </app-layout>
@@ -84,10 +86,11 @@ import Pagination from "../../Components/Pagination.vue";
 import RemoveEditButton from "../../Components/RemoveEditButton.vue";
 import Create from "./Create.vue";
 import Edit from "./Edit.vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import CreateButton from "../../Components/CreateButton.vue";
 import { confirm, removeSuccess } from "../../Plugins/utility";
 import { useToast } from "vuestic-ui";
+import { useRouter, useRoute } from 'vue-router'
 export default {
     components: {
         AppLayout,
@@ -101,10 +104,11 @@ export default {
     setup() {
         // Start Propertis
         const toast = useToast();
+        const router = useRouter();
+        
         const items = ref([]);
         const employees = ref([]);
         const categories = ref([]);
-        const teams = ref([]);
         const showCreate = ref(false);
         const links = ref([]);
 
@@ -113,11 +117,12 @@ export default {
         const columns = [
             { key: "id", sortable: true, sortingOptions: ["desc", "asc"] },
             { key: "title", sortable: true },
-            { key: "manager.name", label: "Manager", sortable: true },
+          
             { key: "category.title", label: "Category", sortable: true },
+              { key: "employee.name", label: "Employee", sortable: true },
             { key: "start", label: "Start", sortable: true },
             { key: "end", label: "Dead Line", sortable: true },
-            { key: "team.title", label: "Team", sortable: true },
+ 
             { key: "status", sortable: true },
             {
                 key: "action",
@@ -134,11 +139,9 @@ export default {
         axios
             .get(route("category.index", { all: true }))
             .then(({ data }) => (categories.value = data));
-        axios
-            .get(route("team.index", { all: true }))
-            .then(({ data }) => (teams.value = data));
+   
         const fetchItems = async (page) => {
-            const url = route("project.index", {
+            const url = route("task.index", {
                 perPage: perPage.value,
                 page: page,
             });
@@ -160,10 +163,10 @@ export default {
         };
 
         const remove = async (item, index) => {
-            const is = await confirm(item, "Project", "title");
+            const is = await confirm(item, "Task", "title");
             if (!is) return null;
             try {
-                const url = route("project.destroy", { project: item.id });
+                const url = route("task.destroy", { task: item.id });
                 await axios.delete(url);
                 items.value.splice(index, 1);
                 removeSuccess(toast);
@@ -184,9 +187,9 @@ export default {
             fetchItems,
             employees,
             categories,
-            teams,
             remove,
             links,
+            router
         };
     },
 };

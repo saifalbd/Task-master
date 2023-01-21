@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -27,5 +29,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('/employees',EmployeeController::class)->names('employee');
     Route::apiResource('/teams',TeamController::class)->names('team');
     Route::apiResource('/projects',ProjectController::class)->names('project');
+    Route::apiResource('/tasks',TaskController::class)->names('task');
+    Route::apiResource('/comments',CommentController::class)->names('comment');
     
 });

@@ -28,4 +28,12 @@ class Project extends Model
     public function manager(){
         return $this->belongsTo(Employee::class,'manager_id');
     }
+
+      /**
+     * Get all of the post's comments.
+     */
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
 }
