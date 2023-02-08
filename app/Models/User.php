@@ -51,5 +51,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Employee::class,'user-employee','user_id','employee_id');
     }
 
+    public function position(){
+        return $this->hasOne(UserEmployeePosition::class,'employee_id')->where('user_id',request()->user_id);
+    }
+
     
 }

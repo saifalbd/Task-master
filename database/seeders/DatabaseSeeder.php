@@ -29,6 +29,14 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10),
         ]);
 
+         User::create([
+            'name' =>'sobuj Ahmed',
+            'email' => 'sobuj@gmail.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make(12345), // password
+            'remember_token' => Str::random(10),
+        ]);
+
         $testToken = [
             'tokenable_type'=>'user',
             'tokenable_id'=>1,

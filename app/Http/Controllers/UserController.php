@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\NotificationResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,14 @@ class UserController extends Controller
     public function index()
     {
         
+    }
+
+
+    public function notifications(Request $request){
+        $user = User::find(1);
+        $notifications = $user->unreadNotifications;
+        $collection = NotificationResource::collection($notifications);
+        return response()->json($collection);
     }
 
     /**

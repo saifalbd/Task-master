@@ -31,29 +31,38 @@
                     max-width: calc(100% - 100px);
                 }
                 .action-bar{
-                    .action-list{
-                        min-width: 300px;
-                        max-width: 350px;
+                    .action-bar-inner{
                         display: flex;
-                        justify-content: space-around;
+                        justify-content: space-between;
+                        max-width: calc(100% - 130px);
                         button{
-                       
+                           
                             padding: 2px 10px;
                             overflow: hidden;
                             border-radius: 5px;
+                            font-size: .8rem;
                             cursor: pointer;
-                            border: 2px solid #d4dee7;
-                            color: #470325;
+                            border: 1px solid #d4dee7;
+                            color: #000dab;
                             display: flex;
                             align-items: center;
                 
                             &:hover{
                                 background-color: azure;
-                                border: 2px solid #0a6cce;
+                                border: 1px solid #0a6cce;
                             }
                        
                         }
+                        .action-list{
+                            min-width: 300px;
+                            max-width: 350px;
+                            display: flex;
+                            justify-content: space-around;
+                           
+                        }
+
                     }
+                   
                 }
 
                 .comment-list{

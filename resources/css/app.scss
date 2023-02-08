@@ -23,10 +23,9 @@
 
 .main-layout{
     display: grid;
-    grid-template-columns: 250px auto;
+    grid-template-columns: 200px auto;
     .asside{
         min-height: 100vh;
-     
     }
     .info-bar{
         position: fixed;
@@ -117,5 +116,29 @@
 .flex {
     .item{
         width: 100%;
+    }
+}
+.va-file-upload--dropzone{
+    &.small{
+        .va-file-upload__field{
+            padding: 10px;
+        }
+    }
+}
+
+ul.status-dropdown{
+    display: grid;
+    grid-template-columns: 1fr;
+    list-style-type: none;
+    padding: 0!important;
+    margin: 0!important;
+    li{
+        list-style-type: none;
+        cursor: pointer;
+        line-height: 30px;
+        padding: 0 10px;
+      &:hover{
+        background-color: #ffc8f2;
+      }
     }
 }

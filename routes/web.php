@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Models\Employee;
+use App\Models\Task;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,3 +24,7 @@ Route::get('/', function () {
 });
 
 
+Route::get('/test', function(Request $request){
+    $user_id = 2;
+    return Task::query()->where('employee_id',$user_id)->get();
+});

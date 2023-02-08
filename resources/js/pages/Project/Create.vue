@@ -192,7 +192,7 @@ export default {
         const save = async () => {
             let url = route("project.store");
             let valid = await form.value.validate();
-           if (!valid) return null;
+        //    if (!valid) return null;
             try {
                 const { data } = await axios.post(url, {
                     title: title.value,

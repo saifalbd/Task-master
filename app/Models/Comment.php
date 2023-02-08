@@ -33,4 +33,8 @@ class Comment extends Model
     public function replayes(){
         return $this->hasMany(static::class,'parent_id');
     }
+
+    public function attachments(){
+        return $this->morphToMany(Attachment::class, 'attachale');
+    }
 }

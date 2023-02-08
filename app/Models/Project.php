@@ -17,6 +17,10 @@ class Project extends Model
         return $builder->where("user_id", $user_id);
     }
 
+    public function assigner(){
+        return $this->belongsTo(User::class,'user_id');
+    }
+
     public function category(){
         return $this->belongsTo(Category::class);
     }

@@ -48,6 +48,25 @@ const routes = [
         props: route => ({ id: route.params.id })
     },
 
+    /**Start My Jobs */
+
+    {
+        path: "/jobs/projects",
+        name: "job.project",
+        component: () => import("../pages/MyJob/Project/index.vue"),
+    },
+    {
+        path: "/jobs/tasks",
+        name: "job.task",
+        component: () => import("../pages/MyJob/Task/index.vue"),
+    },
+    {
+        path: "/jobs/tasks/:id",
+        name: "job.task.show",
+        component: () => import("../pages/MyJob/Task/show.vue"),
+        props: route => ({ id: route.params.id })
+    },
+
 ];
 
 const router = createRouter({

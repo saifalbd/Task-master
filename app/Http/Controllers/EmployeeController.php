@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Position;
 use App\Models\User;
 use App\Models\UserEmployeePosition;
+use App\Notifications\EmployeeAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +23,7 @@ class EmployeeController extends Controller
     public function index(Request $request)
     {
         $builder = Employee::query()->with(['position']);
-        $items = $request->all?$builder->get(): $builder->paginate($request->perPage);
+        $items = $request->all ? $builder->get() : $builder->paginate($request->perPage);
         return response()->json($items);
     }
 
@@ -56,18 +57,21 @@ class EmployeeController extends Controller
 
         $employee = User::query()->whereEmail($email)->first();
         if (!$employee) {
-            $employee = User::create(compact('email', 'name', 'password'));
+            $employee = Employee::create(compact('email', 'name', 'password'));
         }
         $request->user()->employees()->syncWithoutDetaching([$employee->id], false);
 
         $position_id = $request->position;
         $user_id = $request->user_id;
         $employee_id = $employee->id;
-   
-            UserEmployeePosition::create(compact('position_id', 'user_id', 'employee_id'));
-        
 
-            $employee->load('position');
+        UserEmployeePosition::create(compact('position_id', 'user_id', 'employee_id'));
+
+
+
+        $employee->notify(new EmployeeAssigned($user_id));
+
+        $employee->load('position');
         return response()->json($employee);
     }
 
@@ -100,14 +104,12 @@ class EmployeeController extends Controller
     public function update(Request $request, Employee $employee)
     {
         $request->validate(['position' => ['required', 'numeric']]);
-     
+
 
         $position_id = $request->position;
         $employee->position->update(compact('position_id'));
         $employee->load('position');
         return response()->json($employee);
-    
-
     }
 
     /**
@@ -120,10 +122,9 @@ class EmployeeController extends Controller
     {
 
         $employee_id = $employee->id;
-        if($employee_id){
+        if ($employee_id) {
             $request->user()->employees()->detach($employee_id);
-            UserEmployeePosition::query()->where('user_id',$request->user_id)->where('employee_id',$employee_id)->delete();
+            UserEmployeePosition::query()->where('user_id', $request->user_id)->where('employee_id', $employee_id)->delete();
         }
-      
     }
 }

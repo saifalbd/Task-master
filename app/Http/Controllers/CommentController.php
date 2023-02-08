@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attachment;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +41,9 @@ class CommentController extends Controller
             'text' => ['required', 'string'],
             'parent_id'=>['nullable','numeric'],
             'model_type' => ['required', 'string'],
-            'model_id' => ['required', 'numeric']
+            'model_id' => ['required', 'numeric'],
+            'attachments'=>['nullable','array'],
+            'attachments.*'=>['required','image'],
         ]);
         $text = $request->text;
         $parent_id = $request->parent_id;
@@ -50,7 +53,16 @@ class CommentController extends Controller
        
         $comment =  Comment::create(compact('commentable_id','commentable_type','parent_id','text','user_id'));
 
-        $comment->load(['replayes','user']);
+        $attachments = $request->attachments;
+
+        if($attachments && count($attachments)){
+            $comment->attachments()->delete();
+            $list = array_map(function($file){return Attachment::add($file);},$attachments);
+            $comment->attachments()->sync(collect($list)->pluck('id')->toArray());
+        }
+
+
+        $comment->load(['replayes','user','attachments']);
         return response()->json($comment);
     }
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Attachment;
 use App\Models\Task;
+use App\Models\User;
+use App\Notifications\TaskAssigned;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -60,14 +62,15 @@ class TaskController extends Controller
 
 
         $attachments = $request->attachments;
-        $task = Task::create(compact('user_id','title','category_id','employee_id','start','end'));
+        $task = Task::create(compact('user_id','title','category_id','employee_id','start','end','description'));
         
         if($attachments && count($attachments)){
             $list = array_map(function($file){return Attachment::add($file);},$attachments);
-          
             $task->attachments()->sync(collect($list)->pluck('id')->toArray());
         }
 
+        $user = User::find($employee_id);
+        $user->notify(new TaskAssigned($task));
 
       
         $task->load(['category','employee']);
@@ -84,9 +87,12 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load(['category','employee','comments'=>fn($q)=>$q->where('parent_id',null)]);
+        $task->load(['category','employee','attachments','comments'=>fn($q)=>$q->with('attachments')->where('parent_id',null)]);
         return response()->json($task);
     }
+
+
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -94,9 +100,12 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function changeStatus(Request $request, Task $task)
     {
-        //
+        $request->validate(['status'=>['required','numeric']]);
+        $status = $request->status;
+        $task->update(compact('status'));
+        return response()->json($task);
     }
 
     /**
@@ -128,7 +137,17 @@ class TaskController extends Controller
         $end = $request->end;
         $description = $request->description;
 
-        $task->update(compact('title','category_id','employee_id','start','end'));
+        $task->update(compact('title','category_id','employee_id','start','end','description'));
+
+        $attachments = $request->attachments;
+
+        if($attachments && count($attachments)){
+            $task->attachments()->delete();
+            $list = array_map(function($file){return Attachment::add($file);},$attachments);
+            $task->attachments()->sync(collect($list)->pluck('id')->toArray());
+        }
+
+
         $task->load(['category','employee']);
 
         

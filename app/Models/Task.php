@@ -12,6 +12,9 @@ class Task extends Model
     protected $fillable = ['title','user_id','employee_id','category_id','start','end','status','team_id','description'];
  
 
+    public function assigner(){
+        return $this->belongsTo(User::class,'user_id');
+    }
 
     public function employee(){
         return $this->belongsTo(Employee::class,'employee_id');

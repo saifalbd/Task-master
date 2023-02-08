@@ -1,3 +1,5 @@
+import { sortBy } from "lodash"
+
 export const confirm = (item, model,prop='title')=>{
 
 
@@ -153,3 +155,32 @@ export const removeSuccess = function(tost){
         duration: 4000,
     });
 }
+
+
+export const statusList = sortBy([
+    {
+      title: "Pending",
+      color: "primary",
+      status:0,
+    },
+    {
+      title: "Accepted",
+       color: "primary",
+       status:1,
+    },
+    {
+      title: "Working",
+      color: "info",
+      status:2,
+    },
+    {
+      title: "Completed",
+      color: "success",
+      status:3,
+    },
+    {
+      title: "Cancel",
+      color: "danger",
+      status:4,
+    },
+  ],'status')

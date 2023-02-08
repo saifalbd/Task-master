@@ -156,16 +156,21 @@ export default {
             let url = route("task.update",{task:item.value.id});
             let valid = await form.value.validate();
            if (!valid) return null;
+
+             const formData = new FormData();
+             formData.append('_method','PUT')
+                formData.append("title", title.value);
+                formData.append("category", category.value);
+                formData.append("employee", employee.value?.id);
+                formData.append("start", start.value);
+                formData.append("end", end.value);
+                formData.append("description", description.value);
+                attachments.value.forEach((file,index)=>{
+                     formData.append(`attachments[${index}]`,file); 
+                })
+
             try {
-                const { data } = await axios.put(url, {
-                    title: title.value,
-                    category: category.value,
-                    employee: employee.value?.id,
-                    start: start.value,
-                    end: end.value,
-                    attachments: attachments.value,
-                    description: description.value,
-                });
+                const { data } = await axios.post(url, formData);
                 emit(
                     "replace",
                     addProtos(data, {

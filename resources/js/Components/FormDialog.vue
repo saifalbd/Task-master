@@ -1,6 +1,6 @@
 <template>
     <va-modal
-        v-model="show"
+        v-model="props.show"
         :fullscreen="props.fullscreen"
         hide-default-actions
         no-outside-dismiss
