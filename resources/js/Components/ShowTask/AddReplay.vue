@@ -53,7 +53,7 @@ export default {
         let busy = ref(false);
         const form = ref(null);
         let text = ref("");
-        console.log(props)
+       // console.log(props)
 
         const save = async () => {
             let url = route("task.store");
@@ -70,8 +70,8 @@ export default {
                 const { data } = await axios.post(url, formData);
                
                 text.value = '';
-                emit('push',addProtos(data,{showReplay:false}))
-
+               
+emit('update:show', false)
 
 
                 // attachments.value.forEach((file,index)=>{
@@ -79,12 +79,12 @@ export default {
                 // })
 
             
-                emit(
-                    "push",
-                    addProtos(data, {
-                        showReplay: false,
-                    })
-                );
+                // emit(
+                //     "push",
+                //     addProtos(data, {
+                //         showReplay: false,
+                //     })
+                // );
             } catch (error) {
                 console.error(error);
                 validErorrs(error);

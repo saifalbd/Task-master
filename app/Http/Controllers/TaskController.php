@@ -87,7 +87,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load(['category','employee','attachments','comments'=>fn($q)=>$q->with('attachments')->where('parent_id',null)]);
+        $task->load(['category','employee','attachments']);
         return response()->json($task);
     }
 

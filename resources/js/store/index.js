@@ -4,7 +4,8 @@ export const mainStore = defineStore("index", {
     state() {
        return {
         user: null,
-        token:"19|JTUPUmNLubbL2BqupstUdXqbnkciwuXcaemYoTSN",
+        token:"91|5BKpjz0pxfdaoc0B4Vr7wPWCMRmKYCtd5fFLPQQY",
+        //19|JTUPUmNLubbL2BqupstUdXqbnkciwuXcaemYoTSN
        }
     },
     actions: {

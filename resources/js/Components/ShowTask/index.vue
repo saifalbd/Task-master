@@ -70,9 +70,10 @@ import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
 import Comments from "./Comments.vue";
 import ShowAttachment from "./showAttachment.vue";
-import { ref, watch } from "vue";
-import {useToast} from 'vuestic-ui';
+import { ref, watch,onMounted } from "vue";
+import { useToast } from "vuestic-ui";
 import { rs } from "../../Plugins/Rule";
+import {commentNotify,replyNofity} from './modules'
 export default {
   props: {
     id: {
@@ -91,7 +92,7 @@ export default {
     ShowAttachment,
   },
   setup(props) {
-    const {init} = useToast();
+    const { init } = useToast();
     const form = ref(null);
     const task = ref(props.task);
     const comments = ref([]);
@@ -99,14 +100,31 @@ export default {
     const comment = ref("");
     const attachments = ref([]);
     const commentBusy = ref(false);
-    if (props.task) {
-      comments.value = props.task.comments;
-    }
+    
 
     watch(props.task, (o) => {
       task.value = o;
-      comments.value = o.comments;
     });
+
+   
+
+    const fetchComments = async()=>{
+      try {
+        const url = route('comment.index',{model_type:'task',model_id:props.id});
+          const {data} = await axios.get(url);
+          comments.value = data
+        commentNotify(comments,props.id);
+        data.forEach((comment)=>{
+              replyNofity(comment)
+          })
+      
+      } catch (error) {
+        console.error(error)
+      }
+    }
+  onMounted(()=>{
+      fetchComments();
+  })
 
     const addComment = async () => {
       let valid = await form.value.validate();
@@ -121,16 +139,15 @@ export default {
         attachments.value.forEach((file, index) => {
           formData.append(`attachments[${index}]`, file);
         });
-        const { data } = await axios.post(url, formData);
-        comments.value.push(addProtos(data, { showReplay: false,showAttachModal:false }));
+        await axios.post(url, formData);
         comment.value = "";
         init({
-        message: "Succsess Fully Add Comment",
-        color: "#432c50",
-        closeable: true,
-        duration: 2000,
-    })
-    form.value.reset()
+          message: "Succsess Fully Add Comment",
+          color: "#432c50",
+          closeable: true,
+          duration: 2000,
+        });
+        form.value.reset();
       } catch (error) {
         console.error(error);
       }

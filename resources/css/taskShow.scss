@@ -29,6 +29,10 @@
                     padding: 5px;
                     border-radius: 5px;
                     max-width: calc(100% - 100px);
+                    >p:first-child{
+                        display: flex;
+                        justify-content: space-between;
+                    }
                 }
                 .action-bar{
                     .action-bar-inner{

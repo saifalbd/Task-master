@@ -82,7 +82,7 @@ export default {
         let position = ref(head(props.positions)?.id);
          
         watch(props.positions,(positions)=>{
-            console.log(positions)
+            // console.log(positions)
             if(positions.length){
               position.value =  head(positions)?.id
             }

@@ -14,8 +14,11 @@
     },
     "dependencies": {
         "@vitejs/plugin-vue": "^4.0.0",
+        "laravel-echo": "^1.15.0",
         "moment": "^2.29.4",
         "pinia": "^2.0.28",
+        "pusher-js": "^8.0.1",
+        "redom": "^3.29.1",
         "sass": "^1.57.1",
         "vue": "^3.2.36",
         "vue-router": "^4.1.6",

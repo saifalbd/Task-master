@@ -64,7 +64,7 @@ export default defineComponent({
 
                 this.$router.push({ name: "home" });
 
-                console.log(data);
+                // console.log(data);
             } catch (error) {
                 console.error(error);
             }

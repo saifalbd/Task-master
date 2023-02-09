@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewComment;
+use App\Http\Resources\CommentResource;
 use App\Models\Attachment;
 use App\Models\Comment;
 use Illuminate\Http\Request;
@@ -14,9 +16,20 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $request->validate([
+            'model_type'=>['required','string'],
+            'model_id'=>['required','numeric']
+        ]);
+
+        $commentable_id = $request->model_id;
+        $commentable_type = $request->model_type;
+
+      $items=  Comment::query()->where(compact('commentable_id','commentable_type'))->with(['replayes','user','attachments'])->where('parent_id',null)->get();
+
+      $collection = CommentResource::collection($items);
+      return response()->json($collection);
     }
 
     /**
@@ -61,8 +74,18 @@ class CommentController extends Controller
             $comment->attachments()->sync(collect($list)->pluck('id')->toArray());
         }
 
-
+        if($parent_id){
+            $name = 'reply'.'.'.$parent_id;
+        }else{
+            $name = $commentable_type.'.'.$commentable_id;
+        }
+      
+       
         $comment->load(['replayes','user','attachments']);
+
+        $item = (new CommentResource($comment))->toArray($request);
+        broadcast(new NewComment($item,$name))->toOthers();
+        //->toOthers()
         return response()->json($comment);
     }
 
@@ -108,6 +131,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        $comment->attachments()->delete();
+        
         $comment->delete();
     }
 }
