@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewComment;
+use App\Events\RemoveComment;
 use App\Http\Resources\CommentResource;
 use App\Models\Attachment;
 use App\Models\Comment;
@@ -26,7 +27,7 @@ class CommentController extends Controller
         $commentable_id = $request->model_id;
         $commentable_type = $request->model_type;
 
-      $items=  Comment::query()->where(compact('commentable_id','commentable_type'))->with(['replayes','user','attachments'])->where('parent_id',null)->get();
+      $items=  Comment::query()->where(compact('commentable_id','commentable_type'))->with(['replayes','user','attachments','reacts'])->where('parent_id',null)->get();
 
       $collection = CommentResource::collection($items);
       return response()->json($collection);
@@ -89,6 +90,18 @@ class CommentController extends Controller
         return response()->json($comment);
     }
 
+
+    public function toggleLikes(Request $request,Comment $comment){
+        $user = $request->user();
+        $user_id = $user->id;
+        $request->validate([
+            'prop'=>['required','in:like,love,disLike,care,haha,wow,sad,angry']
+        ]);
+        $prop = $request->prop;
+        $comment->toggleReact($user_id,$prop);
+    
+    }
+
     /**
      * Display the specified resource.
      *
@@ -134,5 +147,6 @@ class CommentController extends Controller
         $comment->attachments()->delete();
         
         $comment->delete();
+        broadcast(new RemoveComment($comment->id))->toOthers();
     }
 }

@@ -21,10 +21,11 @@
       </slot>
     </div>
     <div class="description"><b>Description:</b> {{ task.description }}</div>
-    <div class="comment-layout">
+    <div class="comment-layout" id="commentLayout">
       <div class="row">
         <div class="flex sm12 mb-3">
-          <comments :comments="comments" :taskId="task.id"></comments>
+          <div class="comment-list" id="commentListRoot"></div>
+          <!-- <comments :comments="comments" :taskId="task.id"></comments> -->
         </div>
         <div class="flex sm12">
           <va-inner-loading :loading="commentBusy">
@@ -70,12 +71,18 @@ import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
 import Comments from "./Comments.vue";
 import ShowAttachment from "./showAttachment.vue";
-import { ref, watch,onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useToast } from "vuestic-ui";
 import { rs } from "../../Plugins/Rule";
-import {commentNotify,replyNofity} from './modules'
+import { commentNotify, replyNofity } from "./modules";
+import { mount } from "redom";
+import { CommentItem } from "../../Components/Comments/index";
 export default {
   props: {
+    auth_id: {
+      type: Number,
+      required: true,
+    },
     id: {
       type: [String, Number],
       required: true,
@@ -100,31 +107,60 @@ export default {
     const comment = ref("");
     const attachments = ref([]);
     const commentBusy = ref(false);
-    
 
     watch(props.task, (o) => {
       task.value = o;
     });
 
-   
-
-    const fetchComments = async()=>{
+    const fetchComments = async (root) => {
       try {
-        const url = route('comment.index',{model_type:'task',model_id:props.id});
-          const {data} = await axios.get(url);
-          comments.value = data
-        commentNotify(comments,props.id);
-        data.forEach((comment)=>{
-              replyNofity(comment)
-          })
-      
+        const url = route("comment.index", {
+          model_type: "task",
+          model_id: props.id,
+        });
+        const { data } = await axios.get(url);
+
+        data.forEach((comment) => {
+          let arg = {
+            comment,
+            model_type: "task",
+            model_id: props.id,
+            auth_id: props.auth_id,
+          };
+          let comDom = new CommentItem(arg);
+          mount(root, comDom);
+        });
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
-  onMounted(()=>{
-      fetchComments();
-  })
+    };
+
+    const realTimeComment = (root) => {
+      try {
+        window.Echo.join(`comment.task.${props.id}`).listen(
+          "NewComment",
+          (comment) => {
+            let arg = {
+              comment,
+              model_type: "task",
+              model_id: props.id,
+             auth_id: props.auth_id,
+            };
+
+            let comDom = new CommentItem(arg);
+            mount(root, comDom);
+            console.log("comment:" + comment.text);
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    onMounted(() => {
+      let root = document.getElementById("commentListRoot");
+      fetchComments(root);
+      realTimeComment(root);
+    });
 
     const addComment = async () => {
       let valid = await form.value.validate();

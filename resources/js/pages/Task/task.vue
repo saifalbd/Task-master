@@ -1,10 +1,10 @@
 <template>
     <app-layout>
         <div>
-            <page-title-box title="Show Task"> </page-title-box>
+            <page-title-box title="Show Task no job"> </page-title-box>
         </div>
         <div v-if="task">
-            <show-task :id="id" :task="task">
+            <show-task :auth_id="auth_id" :id="id" :task="task">
                 <div>
                     <h1>
                         Employe: <b>{{ task.employee.name }}</b>
@@ -28,7 +28,8 @@ import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
 import ShowTask from '../../Components/ShowTask/index.vue';
 import StatusBtn from '../../Components/statusBtn.vue';
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+import {mainStore} from '../../store/index'
 export default {
     props: {
         id: {
@@ -43,6 +44,8 @@ export default {
         StatusBtn
     },
     setup(props) {
+        const main = mainStore();
+        const auth_id =main.auth_id;
         const task = ref(null);
         const busy = ref(true);
 
@@ -62,6 +65,7 @@ export default {
         show();
        
         return {
+            auth_id,
           id:props.id,
             task,
             

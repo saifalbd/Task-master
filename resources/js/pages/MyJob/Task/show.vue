@@ -4,7 +4,7 @@
       <page-title-box title="Show Task"> </page-title-box>
     </div>
     <div v-if="task">
-      <show-task :id="id" :task="task">
+      <show-task :auth_id="auth_id" :id="id" :task="task">
         <div>
           <h1>
             Employe: <b>{{ task.assigner.name }}</b>
@@ -44,7 +44,8 @@ import PageTitleBox from "../../../Components/PageTitleBox.vue";
 import ShowTask from "../../../Components/ShowTask/index.vue";
 import StatusBtn from "../../../Components/statusBtn.vue";
 import { statusList } from "../../../Plugins/utility";
-import { ref } from "vue";
+import {mainStore} from '../../../store/index'
+import { ref,reactive } from "vue";
 import { useToast } from "vuestic-ui";
 export default {
   props: {
@@ -62,6 +63,9 @@ export default {
   setup(props) {
     const task = ref(null);
     const busy = ref(true);
+       const main = mainStore();
+   const auth_id =main.auth_id;
+
     const { init } = useToast();
 
     const show = async () => {
@@ -92,6 +96,7 @@ export default {
     };
 
     return {
+      auth_id,
       id: props.id,
       task,
       changeStatus,

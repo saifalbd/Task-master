@@ -33,9 +33,12 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('/projects',ProjectController::class)->names('project');
     Route::apiResource('/tasks',TaskController::class)->names('task');
     Route::post('/tasks/{task}/change-status',[TaskController::class,'changeStatus'])->name('task.changeStatus');
+    Route::post('/comments/{comment}/toggle-likes',[CommentController::class,'toggleLikes'])->name('comment.toggleLike');
     Route::apiResource('/comments',CommentController::class)->names('comment');
 
 
+
+    
 
     Route::prefix('/my')->name('my.')->group(function(){
         Route::apiResource('/task',MyTaskController::class)->only(['index','show','update'])->names('task');

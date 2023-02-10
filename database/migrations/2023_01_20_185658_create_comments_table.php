@@ -18,9 +18,17 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->text('text');
             $table->foreignId('parent_id')->nullable();
+            $table->integer('react_count')->default(0);
             $table->bigInteger('commentable_id');
             $table->string('commentable_type');
             $table->timestamps();
+        });
+
+        Schema::create('comment_reacts', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('user_id')->constrained('users');
+            $table->foreignId('comment_id')->constrained('comments')->cascadeOnDelete();
+            $table->string('prop',50);
         });
     }
 

@@ -14,10 +14,19 @@ class CommentResource extends JsonResource
      */
     public function toArray($request)
     {
+        
         return [
             'id'=>$this->id,
             'text'=>$this->text,
-            'likeCount'=>5,
+            'parent_id'=>$this->parent_id,
+            'reactCount'=>$this->react_count,
+            'reacts'=>$this->reacts->map(function($react){
+                return [
+                    'prop'=>$react->prop,
+                    'id'=>$react->user->id,
+                    'name'=>$react->user->name,
+                ];
+            }),
             'atNow'=>$this->created_at->diffForHumans(),
             'user'=>[
                 'id'=>$this->user->id,

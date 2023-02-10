@@ -28,3 +28,6 @@ Broadcast::channel('comment.{type}.{id}', function ($user,$type,$id) {
         'name' => $user->name,
     ];
 });
+Broadcast::channel('commentRemove.{id}', function ($user,$type,$id) {
+    return true;
+});

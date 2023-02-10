@@ -31,22 +31,10 @@ class NewComment implements ShouldBroadcast
         return new PresenceChannel('comment.'.$this->name);
     }
 
-    // public function broadcastAs()
-    // {
-    //     return 'new-comment';
-    // }
-
     public function broadcastWith()
     {
 
         return $this->comment;
-        // return [
-        //     'id' => $this->comment->id,
-        //     'body' => $this->comment->text,
-        //     'user' => [
-        //         'name' => $this->comment->user->name,
-        //         'id' => $this->comment->user->id,
-        //     ],
-        // ];
+        
     }
 }
