@@ -63,13 +63,13 @@ export default {
       default: "",
     },
     status: {
-      type: Number,
+      type: [Number,String],
       required: true,
     },
   },
   setup(props) {
     let status = computed(()=>{
-      return statusList[props.status];
+      return statusList[parseInt(props.status)];
     })
 
   

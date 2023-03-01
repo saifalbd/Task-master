@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout :busy="busy">
     <div>
       <page-title-box title="Employees">
         <create-button
@@ -85,6 +85,7 @@ export default {
   },
   setup() {
     // Start Propertise
+    const busy = ref(true)
     const toast = useToast();
     const items = ref([]);
     const positions = ref([]);
@@ -114,6 +115,7 @@ export default {
         action: true,
         showEdit: false,
       });
+      busy.value = false;
     };
     fetchItems(1);
 
@@ -143,6 +145,7 @@ export default {
     };
 
     return {
+      busy,
       showCreate,
       perPage,
       sortingOrder,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attachment;
 use App\Models\Project;
 use App\Models\Team;
 use Illuminate\Http\Request;
@@ -17,8 +18,16 @@ class ProjectController extends Controller
     {
       
       $builder = Project::query()->user($request->user()->id)->with(['category','team.members','manager']);
-        $items = $request->all?$builder->get(): $builder->paginate($request->perPage);
+        $items =  $builder->paginate($request->perPage);
         return response()->json($items);
+    }
+
+
+    public function members(Project $project){
+        $items =  $project->team->members()->get();
+        $manager = $project->manager;
+
+        return array_merge($items->toArray(),[$manager]);
     }
 
 
@@ -40,7 +49,9 @@ class ProjectController extends Controller
             'manager' => ['required', 'numeric'],
             'start' => ['required', 'date'],
             'end' => ['required', 'date'],
-            'description' => ['nullable', 'string']
+            'description' => ['nullable', 'string'],
+            'attachments'=>['nullable','array'],
+            'attachments.*'=>['required','image'],
         ]);
 
         $user_id = $request->user_id;
@@ -70,8 +81,16 @@ class ProjectController extends Controller
             }
             $team_id = $team->id;
         }
+        $attachments = $request->attachments;
+      
 
         $project =  Project::create(compact('title', 'user_id', 'category_id', 'manager_id', 'start', 'end', 'team_id', 'description'));
+        if($attachments && count($attachments)){
+            $list = array_map(function($file){return Attachment::add($file,Task::class);},$attachments);
+            $project->attachments()->sync(collect($list)->pluck('id')->toArray());
+        }
+
+
       
         $project->load(['category','team','manager']);
         return response()->json($project);
@@ -84,9 +103,10 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        $project->load(['category','team','manager','assigner','attachments']);
+        return response()->json($project);
     }
 
     /**
@@ -98,6 +118,13 @@ class ProjectController extends Controller
     public function edit($id)
     {
         //
+    }
+
+    public function changeStatus(Request $request,Project $project){
+        $request->validate(['status'=>['required','numeric']]);
+        $status = $request->status;
+        $project->update(compact('status'));
+        return response()->json($project);
     }
 
     /**
@@ -163,8 +190,9 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        $project->tasks()->delete();
+        $project->delete();
     }
 }

@@ -25,6 +25,28 @@ return new class extends Migration
             $table->tinyInteger('status')->default(0);
             $table->longText('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('project_tasks', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('project_id')->constrained('projects');
+            $table->foreignId('category_id')->constrained('categories');
+            $table->string('title');
+            $table->date('start');
+            $table->date('end');
+            $table->tinyInteger('status')->default(0);
+            $table->longText('description')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('project_tasks_employee', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('task_id')->constrained('project_tasks');
+            $table->foreignId('employee_id')->constrained('users');
+           
         });
 
         
@@ -38,6 +60,8 @@ return new class extends Migration
     public function down()
     {
        
+        Schema::dropIfExists('project_tasks_employee');
+        Schema::dropIfExists('project_tasks');
         Schema::dropIfExists('projects');
     }
 };

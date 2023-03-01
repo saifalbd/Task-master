@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -10,7 +9,7 @@ use Illuminate\Support\Str;
 
 class Attachment extends Model
 {
-    protected $fillable = ['type','disk','path'];
+    protected $fillable = ['type','disk','path','model'];
 
     protected $appends = ['url','isImg'];
 
@@ -33,14 +32,15 @@ class Attachment extends Model
     {
         return Str::startsWith($this->type,'image');
     }
-    public static function add(UploadedFile $file):Attachment{
+    public static function add(UploadedFile $file,string $model):Attachment{
+        $model = class_basename($model);
        $type = $file->getClientMimeType();
        $disk = 's3';
        $path = 'task-master';
        $name = uniqid().'.'.$file->getClientOriginalExtension();
        $path = Storage::disk($disk)->putFileAs($path,$file,$name);
        
-      return static::create(compact('type','disk','path'));
+      return static::create(compact('type','disk','path','model'));
        
     }
 }

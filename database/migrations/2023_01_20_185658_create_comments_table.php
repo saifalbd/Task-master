@@ -26,8 +26,10 @@ return new class extends Migration
 
         Schema::create('comment_reacts', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->constrained('users');
-            $table->foreignId('comment_id')->constrained('comments')->cascadeOnDelete();
+            $table->bigInteger('user_id');
+            //->constrained('users');
+            $table->foreignId('comment_id');
+            //->constrained('comments')->cascadeOnDelete();
             $table->string('prop',50);
         });
     }
@@ -39,6 +41,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('comment_reacts');
         Schema::dropIfExists('comments');
     }
 };

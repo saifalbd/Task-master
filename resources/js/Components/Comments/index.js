@@ -1,5 +1,5 @@
 import { el, svg, mount, unmount } from "redom";
-import { icon } from "./icon";
+import { icon } from "../../Plugins/icon";
 import { LikeButton } from "./LikeButton";
 import { ReplayModal } from "./replay";
 export class CommentItem {
@@ -102,7 +102,7 @@ export class CommentItem {
 
     innerBox(comment) {
         return el(".inner", {}, [
-            el("div", {}, [this.avaterBox()]),
+            el("div", {}, [this.avaterBox(comment)]),
             el(".text-box", {}, [
                 el("p", {}, [
                   el('span',{
@@ -174,7 +174,7 @@ export class CommentItem {
     attachBtn(comment) {
         if (comment.attachments?.length) {
             return el("div", {}, [
-                h(
+                el(
                     "button",
                     {
                         class: "show-attach-btn",
@@ -187,8 +187,10 @@ export class CommentItem {
         }
     }
 
-    avaterBox() {
-        return el(
+    avaterBox(comment) {
+        let avatar = comment.user.avatar;
+
+        return avatar?el(
             ".va-avatar",
             {
                 "aria-hidden": false,
@@ -202,10 +204,10 @@ export class CommentItem {
             },
             [
                 el("img", {
-                    src: "https://randomuser.me/api/portraits/women/5.jpg",
+                    src: avatar.url,
                 }),
             ]
-        );
+        ):el('div');
     }
 
     //functions

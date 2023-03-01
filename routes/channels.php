@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,36 @@ Broadcast::channel('comment.{type}.{id}', function ($user,$type,$id) {
         'name' => $user->name,
     ];
 });
-Broadcast::channel('commentRemove.{id}', function ($user,$type,$id) {
+Broadcast::channel('commentRemove.{id}', function ($user,$id) {
     return true;
 });
+
+Broadcast::channel('chat', function ($user) {
+    
+    return $user;
+});
+
+Broadcast::channel('chatread.{id}', function ($user,$id) {
+    
+  
+  
+    $user_id = $user->id;
+    $chat = DB::table('chats')->select(['id','sender_id'])->where('id',$id)->first();
+   
+    $sender_id = $chat->sender_id;
+
+
+    if($user_id == $sender_id){
+        return true;
+      return  [
+            'id' => $user->id,
+            'name' => $user->name,
+        ];
+    }else{
+        return false;
+    }
+});
+
+
+
+

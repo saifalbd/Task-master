@@ -1,5 +1,5 @@
 import { el, svg, mount, unmount } from "redom";
-import { icon } from "./icon";
+import { icon } from "../../Plugins/icon";
 export class LikeButton {
     constructor(comment, auth_id) {
       

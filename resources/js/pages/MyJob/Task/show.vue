@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <app-layout :busy="busy">
     <div>
       <page-title-box title="Show Task"> </page-title-box>
     </div>
@@ -76,6 +76,7 @@ export default {
       } catch (error) {
         console.error(error);
       }
+      busy.value = false;
     };
     show();
 
@@ -96,6 +97,7 @@ export default {
     };
 
     return {
+      busy,
       auth_id,
       id: props.id,
       task,

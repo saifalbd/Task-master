@@ -8,12 +8,13 @@
             ><va-icon size="small" name="visibility"></va-icon
         ></va-button>  
         <va-button
+        v-if="isEdit"
             preset="primary"
             size="small"
             @click="emit('editClick',true)"
             ><va-icon size="small" name="edit"></va-icon
         ></va-button>
-        <va-button preset="primary" size="small"
+        <va-button v-if="isDelete" preset="primary" size="small"
             ><va-icon
                 size="small"
                 name="delete"
@@ -32,6 +33,14 @@ export default {
         isView:{
             type:Boolean,
             default:false
+        },
+           isEdit:{
+            type:Boolean,
+            default:true
+        },
+        isDelete:{
+              type:Boolean,
+            default:true 
         }
     },
     setup(props,{emit}) {

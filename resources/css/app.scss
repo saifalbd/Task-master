@@ -13,6 +13,7 @@
 @import './taskShow.scss';
 @import './notification.scss';
 @import './comment.scss';
+@import './chatLayout.scss';
 
 
 .flex-center{
@@ -91,6 +92,13 @@
                   
                 }
                 .right-side{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .va-badge{
+                        margin-left: 5px;
+                        cursor: pointer;
+                    }
                     >button{margin-left: 5px;}
                 }
             }
@@ -143,3 +151,18 @@ ul.status-dropdown{
       }
     }
 }
+
+
+.profile-badge-box{
+    min-width: 150px;
+
+   display: inline-flex;
+    border:1px solid #158de3;
+    margin-left: 15px;
+    border-radius: 22px;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+

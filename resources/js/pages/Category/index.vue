@@ -1,5 +1,5 @@
 <template>
-    <app-layout>
+    <app-layout :busy="busy">
         <div>
             <page-title-box title="Categories">
                 <create-button title="Add Category" @click="showCreate = true"></create-button>
@@ -77,6 +77,7 @@ export default {
     },
     setup() {
         // Start Propertis
+        const busy = ref(false)
          const toast = useToast();
         const items = ref([]);
         const showCreate = ref(false);
@@ -97,6 +98,7 @@ export default {
 
         // START METHODS
         const fetchItems = async (page) => {
+            busy.value = true;
             const url = route("category.index", {
                 perPage: perPage.value,
                 page: page,
@@ -107,6 +109,7 @@ export default {
                 action: true,
                 showEdit: false,
             });
+               busy.value = false;
         };
         fetchItems(1);
         const push = (category) => {
@@ -144,6 +147,7 @@ export default {
             fetchItems,
             remove,
             links,
+            busy,
         };
     },
 };

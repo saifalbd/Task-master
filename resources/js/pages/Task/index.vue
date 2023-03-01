@@ -1,5 +1,5 @@
 <template>
-    <app-layout>
+    <app-layout :busy="busy">
         <div>
             <page-title-box title="Task">
                 <create-button
@@ -48,7 +48,8 @@
                 >
             </template>
             <template #cell(status)="{value}">
-                <va-button preset="plain" :color="['plain','success'].at(value)" split>{{['pending','success'].at(value)}}</va-button>
+                <status-btn :status="value" size="small"></status-btn>
+               
             </template>
             <template #cell(action)="{ rowData, rowIndex }">
                 <remove-edit-button
@@ -91,6 +92,7 @@ import CreateButton from "../../Components/CreateButton.vue";
 import { confirm, removeSuccess } from "../../Plugins/utility";
 import { useToast } from "vuestic-ui";
 import { useRouter, useRoute } from 'vue-router'
+import StatusBtn from '../../Components/statusBtn.vue';
 export default {
     components: {
         AppLayout,
@@ -100,9 +102,11 @@ export default {
         Edit,
         CreateButton,
         RemoveEditButton,
+        StatusBtn
     },
     setup() {
         // Start Propertis
+        const busy = ref(true)
         const toast = useToast();
         const router = useRouter();
         
@@ -141,7 +145,8 @@ export default {
             .then(({ data }) => (categories.value = data));
    
         const fetchItems = async (page) => {
-            const url = route("task.index", {
+            try {
+                const url = route("task.index", {
                 perPage: perPage.value,
                 page: page,
             });
@@ -151,6 +156,11 @@ export default {
                 action: true,
                 showEdit: false,
             });
+                
+            } catch (error) {
+                console.error(error)
+            }
+            busy.value = false;
         };
         fetchItems(1);
         const push = (projrct) => {
@@ -176,6 +186,7 @@ export default {
         };
 
         return {
+            busy,
             showCreate,
             perPage,
             sortingOrder,

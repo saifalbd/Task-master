@@ -1,0 +1,230 @@
+<template>
+  <app-layout :busy="busy">
+    <div>
+      <page-title-box title="Chats"></page-title-box>
+    </div>
+    <div class="chat-layout">
+      <div class="chat-side-bar">
+        <va-list>
+          <va-list-label class="mb-3"> Contacts </va-list-label>
+
+          <va-list-item
+            :class="{
+              list__item: true,
+              active: user.active,
+            }"
+            v-for="(user, index) in users"
+            :key="index"
+            :disabled="false"
+            @click="chatHistory(user)"
+          >
+            <va-list-item-section avatar>
+              <va-badge dot :color="user.isOnline ? 'success' : 'secondary'">
+                <va-avatar size="small">
+                  <!-- <img :src="contact.img"> -->
+                </va-avatar>
+              </va-badge>
+            </va-list-item-section>
+
+            <va-list-item-section>
+              <va-list-item-label>
+                <b> {{ user.name }}</b>
+              </va-list-item-label>
+
+              <va-list-item-label>
+                <small>{{ user.position }}</small>
+              </va-list-item-label>
+              <va-list-item-label caption>
+                {{ user.lastMessage }}
+              </va-list-item-label>
+            </va-list-item-section>
+            <va-list-item-section icon>
+              <va-icon name="remove_red_eye" color="background-tertiary" />
+            </va-list-item-section>
+          </va-list-item>
+        </va-list>
+      </div>
+      <div class="chat-main-bar" id="chatMainBar">
+        <div class="current-info" v-if="currentUser">
+          <div class="left">
+            <div class="name">{{ currentUser.name }}</div>
+            <div class="position">
+              {{ currentUser.position }}
+            </div>
+          </div>
+        </div>
+        <div class="input-box">
+          <div class="attach-box" id="attachBox">
+            <button>
+              <va-icon name="attach_file"></va-icon>
+            </button>
+          </div>
+          <input
+            class="text-input"
+            type="text"
+            v-model="text"
+            @keyup.enter="send"
+          />
+          <button @click="send">Send</button>
+        </div>
+      </div>
+    </div>
+  </app-layout>
+</template>
+
+<script>
+import { computed, onMounted, ref } from "vue";
+import AppLayout from "../../Layouts/app-layout.vue";
+import PageTitleBox from "../../Components/PageTitleBox.vue";
+import { head, trim } from "lodash";
+import { mainStore } from "../../store/index";
+import { ChatContent } from "./ChatItem";
+import { chatStore } from "../../store/chat.js";
+import { mount } from "redom";
+import { attachBox } from "./AttachModel";
+export default {
+  components: {
+    AppLayout,
+    PageTitleBox,
+  },
+  setup() {
+    const chatSt = chatStore();
+    const users = computed(() => chatSt.users);
+    const main = mainStore();
+    const channel = Echo.join("chat")
+      .joining((user) => {
+        axios.put(route("online", { user: user.id }));
+      })
+      .leaving((user) => {
+        axios.put(route("offline", { user: user.id }), {});
+      });
+    const listen = () => {
+      try {
+        channel
+          .listen("UserOnline", (user) => {
+            statusUpdate(user.id, 1);
+          })
+          .listen("UserOffline", (user) => {
+            statusUpdate(user.id, 0);
+          })
+          .listen("ChatEvent", (message) => {
+            if (message.sender_id != auth_id) {
+              let m = messageMixer(message);
+              ul.push(m);
+            }
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    listen();
+
+    const auth_id = main.auth_id;
+    const busy = ref(false);
+    const currentUser = ref(null);
+    const text = ref("");
+
+    const ul = new ChatContent();
+
+    const messageMixer = (message) => {
+      const { sender_id, receiver_id } = message;
+      if (auth_id == sender_id) {
+        message.isSend = true;
+        // message.avatar = authAvatar;
+      } else {
+        message.isSend = false;
+        // message.avatar = currentUser.value.avatar;
+      }
+      return message;
+    };
+
+    const send = async () => {
+      let message = trim(text.value);
+
+      try {
+        if (!message) throw "message are Empty";
+        if (!currentUser) throw "current user not found";
+        const url = route("chat.store");
+        const { data } = await axios.post(url, {
+          receiver_id: currentUser.value.id,
+          message,
+        });
+
+        ul.push(messageMixer(data));
+        ul.scrollToBottom();
+        text.value = "";
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const chatHistory = async (user) => {
+      let cUser = currentUser.value;
+
+      if (cUser) {
+        if (cUser.id == user.id) {
+          return null;
+        }
+      }
+      ul.removeCollection();
+      currentUser.value = user;
+      users.value.forEach((item) => (item.active = false));
+      user.active = true;
+
+      try {
+        const url = route("chat.index", { receiver_id: user.id });
+        const { data } = await axios.get(url);
+        let items = data.map((item) => messageMixer(item));
+        mount(document.getElementById("chatMainBar"), ul);
+        ul.pushCollection(items);
+        ul.scrollToBottom();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const statusUpdate = (user_id, status) => {
+      const user = users.value.find((u) => u.id == user_id);
+      if (user) {
+        user.isOnline = !!status;
+      }
+    };
+
+    const attachCallBack = async (message, file) => {
+      try {
+        if (!currentUser.value) throw new Error(`CurrentUser Not Found`);
+        const url = route("chat.store");
+        const formData = new FormData();
+        formData.append("message", message);
+        formData.append("receiver_id", currentUser.value.id);
+        formData.append("file", file);
+      const {data} = await  axios.post(url, formData);
+          ul.push(messageMixer(data));
+        ul.scrollToBottom();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    onMounted(() => {
+      chatSt.fetchChatUsers((users) => {
+        let firstUser = head(users);
+        if (firstUser) {
+          chatHistory(firstUser);
+        }
+      });
+
+      mount(
+        document.getElementById("attachBox"),
+        attachBox(attachCallBack)
+      );
+    });
+
+    return { busy, users, currentUser, chatHistory, text, send };
+  },
+};
+</script>
+
+<style lang="scss">
+</style>

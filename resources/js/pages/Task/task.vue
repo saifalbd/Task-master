@@ -1,5 +1,5 @@
 <template>
-    <app-layout>
+    <app-layout :busy="busy">
         <div>
             <page-title-box title="Show Task no job"> </page-title-box>
         </div>
@@ -53,6 +53,7 @@ export default {
        
 
         const show = async () => {
+            busy.value = true;
             try {
                 const url = route("task.show", { task: props.id });
                 const { data } = await axios.get(url);
@@ -61,10 +62,12 @@ export default {
             } catch (error) {
                 console.error(error);
             }
+              busy.value = false;
         };
         show();
        
         return {
+            busy,
             auth_id,
           id:props.id,
             task,

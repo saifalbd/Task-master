@@ -1,5 +1,5 @@
 <template>
-    <app-layout>
+    <app-layout :busy="busy">
         <div>
             <page-title-box title="Teams">
                 <create-button
@@ -95,6 +95,7 @@ export default {
     },
     setup() {
         // Start Propertis
+        const busy = ref(false)
         const toast = useToast();
         const items = ref([]);
         const employees = ref([]);
@@ -136,6 +137,7 @@ export default {
                 action: true,
                 showEdit: false,
             });
+            busy.value = false;
         };
         fetchItems(1);
         const push = (team) => {
@@ -162,6 +164,7 @@ export default {
         };
 
         return {
+            busy,
             showCreate,
             perPage,
             sortingOrder,

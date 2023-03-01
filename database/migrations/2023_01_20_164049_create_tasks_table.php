@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('end');
             $table->tinyInteger('status')->default(0);
             $table->longText('description')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -83,14 +83,8 @@
                     <div class="flex xs12 in-box">
                         <va-file-upload v-model="attachments" dropzone />
                     </div>
-                    <div class="flex xs12 in-box">
-                        <va-input
-                            v-model="description"
-                            type="textarea"
-                            label="Description"
-                            placeholder="Description Here"
-                            :rules="rs('description', false)"
-                        />
+                    <div class="flex xs12" style="min-height:150px; margin-bottom:50px">
+                           <QuillEditor theme="snow" toolbar="minimal" contentType="html" v-model:content="description" placeholder="Description Html Contant"/>
                     </div>
                 </div>
             </div>

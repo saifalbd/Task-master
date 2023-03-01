@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="container" style="background-color: #f1f1f1">
-                <a class="" href="/#/register"
+                <a class="" href="/register"
                     >Are You Not Registard?Register Here</a
                 >
                 <span class="psw">Forgot <a href="#">password?</a></span>

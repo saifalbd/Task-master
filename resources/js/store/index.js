@@ -4,19 +4,34 @@ export const mainStore = defineStore("index", {
     state() {
        return {
         user: null,
+        avatar:null,
         auth_id:1,
-        token:"91|5BKpjz0pxfdaoc0B4Vr7wPWCMRmKYCtd5fFLPQQY",
-        //19|JTUPUmNLubbL2BqupstUdXqbnkciwuXcaemYoTSN
+        token:"147|ojTNqClvxokKw9JUWKIyVTbjONxIc2cd95boF6uO",
+        showProfileModal:false
        }
     },
     actions: {
         addUser(user) {
-            this.auth_id = user.id;
+            const {id,avatar} = user;
+            this.auth_id = id;
+            if(avatar){
+                this.avatar = avatar;
+            }else{
+                this.showProfileModal = true;
+            }
+          
             this.user = user;
         },
         addToken(token) {
             this.token = token;
         },
+        updateAvatar(avatar){
+            this.avatar = avatar;
+        },
+        hideProfileModal(){
+            this.showProfileModal = false;
+        }
     },
+  
 
 });

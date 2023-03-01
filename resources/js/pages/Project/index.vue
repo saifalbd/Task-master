@@ -1,5 +1,5 @@
 <template>
-    <app-layout>
+    <app-layout :busy="busy">
         <div>
             <page-title-box title="Projects">
                 <create-button
@@ -48,10 +48,12 @@
                 >
             </template>
             <template #cell(status)="{value}">
-                <va-button preset="plain" :color="['plain','success'].at(value)" split>{{['pending','success'].at(value)}}</va-button>
+              <status-btn :status="value"></status-btn>
             </template>
             <template #cell(action)="{ rowData, rowIndex }">
                 <remove-edit-button
+                      :isView="true"
+                      @viewClick="router.push({name:'project.show',params:{id:rowData.id}})"
                     @editClick="rowData.showEdit = true"
                     @removeClick="remove(rowData, rowIndex)"
                 >
@@ -86,7 +88,9 @@ import Create from "./Create.vue";
 import Edit from "./Edit.vue";
 import { ref, onMounted } from "vue";
 import CreateButton from "../../Components/CreateButton.vue";
+import StatusBtn from "../../Components/statusBtn.vue";
 import { confirm, removeSuccess } from "../../Plugins/utility";
+import { useRouter, useRoute } from 'vue-router'
 import { useToast } from "vuestic-ui";
 export default {
     components: {
@@ -97,10 +101,13 @@ export default {
         Edit,
         CreateButton,
         RemoveEditButton,
+        StatusBtn
     },
     setup() {
         // Start Propertis
+        const busy = ref(true)
         const toast = useToast();
+        const router = useRouter();
         const items = ref([]);
         const employees = ref([]);
         const categories = ref([]);
@@ -138,7 +145,8 @@ export default {
             .get(route("team.index", { all: true }))
             .then(({ data }) => (teams.value = data));
         const fetchItems = async (page) => {
-            const url = route("project.index", {
+          try {
+              const url = route("project.index", {
                 perPage: perPage.value,
                 page: page,
             });
@@ -148,6 +156,10 @@ export default {
                 action: true,
                 showEdit: false,
             });
+          } catch (error) {
+            console.error(error)
+          }
+            busy.value = false;
         };
         fetchItems(1);
         const push = (projrct) => {
@@ -173,6 +185,7 @@ export default {
         };
 
         return {
+            router,
             showCreate,
             perPage,
             sortingOrder,
@@ -187,6 +200,7 @@ export default {
             teams,
             remove,
             links,
+            busy
         };
     },
 };

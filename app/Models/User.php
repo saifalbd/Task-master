@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar_id',
+        'status'
     ];
 
     /**
@@ -53,6 +55,10 @@ class User extends Authenticatable
 
     public function position(){
         return $this->hasOne(UserEmployeePosition::class,'employee_id')->where('user_id',request()->user_id);
+    }
+
+    public function avatar(){
+        return $this->belongsTo(Attachment::class,'avatar_id');
     }
 
     

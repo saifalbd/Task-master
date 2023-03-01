@@ -3,7 +3,7 @@
         <div>
             <page-title-box></page-title-box>
         </div>
-        <test></test>
+        <!-- <test></test> -->
     </app-layout>
 </template>
 

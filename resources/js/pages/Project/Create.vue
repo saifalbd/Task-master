@@ -56,11 +56,12 @@
                     </div>
 
                     <div class="flex xs12 in-box" v-if="byTeam">
+                        <!--    :rules="rs('team', byTeam)" -->
                         <va-select
                             v-model="team"
                             label="Project Team*"
                             placeholder="Project Team Here"
-                            :rules="rs('team', byTeam)"
+                         
                             text-by="title"
                             value-by="id"
                             :options="props.teams"
@@ -125,14 +126,8 @@
                     <div class="flex xs12 in-box">
                         <va-file-upload v-model="attachments" dropzone />
                     </div>
-                    <div class="flex xs12 in-box">
-                        <va-input
-                            v-model="description"
-                            type="textarea"
-                            label="Description"
-                            placeholder="Description Here"
-                            :rules="rs('description', false)"
-                        />
+                    <div class="flex xs12" style="min-height:150px; margin-bottom:50px">
+                           <QuillEditor theme="snow" toolbar="minimal" contentType="html" v-model:content="description" placeholder="Description Html Contant"/>
                     </div>
                 </div>
             </div>
@@ -189,12 +184,21 @@ export default {
             }
         });
 
+
+
+
         const save = async () => {
+
             let url = route("project.store");
             let valid = await form.value.validate();
-        //    if (!valid) return null;
-            try {
-                const { data } = await axios.post(url, {
+            // let errors = await form.value.errors();
+            // console.log(errors)
+           if (!valid){
+            console.error('validation errors')
+            return null
+           };
+        busy.value = true;
+        const p = {
                     title: title.value,
                     manager: manager.value,
                     category: category.value,
@@ -206,7 +210,28 @@ export default {
                     end: end.value,
                     attachments: attachments.value,
                     description: description.value,
-                });
+                }
+             const formData = new FormData();
+                   formData.append("title",p.title);
+                     formData.append("manager",p.manager);
+                    formData.append("category",p.category);
+                    if(p.team){
+formData.append("team",p.team);
+                    }
+                    
+                    formData.append("team_manager",p.team_manager);
+                    formData.append("byTeam",p.byTeam);
+                    formData.append("start",p.start);
+                    formData.append("end",p.end);
+                    formData.append("description",p.description);
+                    p.members.forEach((id,i)=>{
+                    formData.append(`members[${i}]`,id);
+                    })
+                      p.attachments.forEach((file,index)=>{
+                     formData.append(`attachments[${index}]`,file); 
+                })
+            try {
+                const { data } = await axios.post(url,formData);
                 emit(
                     "push",
                     addProtos(data, {
@@ -218,6 +243,7 @@ export default {
                 console.error(error);
                 validErorrs(error);
             }
+            busy.value = false;
         };
 
         return {

@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="container" style="background-color: #f1f1f1">
-        <a class="" href="#/">Are You Registard?Login</a>
+        <a class="" href="/">Are You Registard?Login</a>
       </div>
     </form>
   </div>
@@ -76,10 +76,10 @@ export default defineComponent({
         });
         const main = mainStore();
 
-         main.addToken(data.token)
-         main.addUser(data.user);
+        //  main.addToken(data.token)
+        //  main.addUser(data.user);
 
-        this.$router.push({ name: "home" });
+        this.$router.push({ name: "login" });
 
         // console.log(data);
       } catch (error) {

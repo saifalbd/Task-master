@@ -1,4 +1,8 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {
+    createRouter,
+    createWebHashHistory,
+    createWebHistory,
+} from "vue-router";
 import { mainStore } from "../store";
 const routes = [
     {
@@ -37,6 +41,12 @@ const routes = [
         component: () => import("../pages/Project/index.vue"),
     },
     {
+        path: "/projects/:id",
+        name: "project.show",
+        component: () => import("../pages/Project/show.vue"),
+        props: (route) => ({ id: route.params.id }),
+    },
+    {
         path: "/tasks",
         name: "task",
         component: () => import("../pages/Task/index.vue"),
@@ -45,7 +55,7 @@ const routes = [
         path: "/tasks/:id",
         name: "task.show",
         component: () => import("../pages/Task/task.vue"),
-        props: route => ({ id: route.params.id })
+        props: (route) => ({ id: route.params.id }),
     },
 
     /**Start My Jobs */
@@ -56,6 +66,12 @@ const routes = [
         component: () => import("../pages/MyJob/Project/index.vue"),
     },
     {
+        path: "/jobs/projects/:id",
+        name: "job.project.show",
+        component: () => import("../pages/MyJob/Project/show.vue"),
+        props: (route) => ({ id: route.params.id }),
+    },
+    {
         path: "/jobs/tasks",
         name: "job.task",
         component: () => import("../pages/MyJob/Task/index.vue"),
@@ -64,32 +80,36 @@ const routes = [
         path: "/jobs/tasks/:id",
         name: "job.task.show",
         component: () => import("../pages/MyJob/Task/show.vue"),
-        props: route => ({ id: route.params.id })
+        props: (route) => ({ id: route.params.id }),
     },
-
+    {
+        path: "/chats",
+        name: "chat",
+        component: () => import("../pages/Chat/index.vue"),
+    },
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes,
 });
 
-// router.beforeEach((from, to) => {
-//     let main = mainStore();
-//     let token = main.token;
-//     let guestPath = ["/", "/register"];
+router.beforeEach((from, to) => {
+    let main = mainStore();
+    let token = main.token;
+    let guestPath = ["/", "/register"];
 
-//     if (!guestPath.includes(from.path) && !to.name) {
-//         return { name: "login" };
-//     } else if (guestPath.includes(to.path)) {
-//         return true;
-//     } else {
-//         if (token) {
-//             return true;
-//         } else {
-//             return { name: "login" };
-//         }
-//     }
-// });
+    if (!guestPath.includes(from.path) && !to.name) {
+        return { name: "login" };
+    } else if (guestPath.includes(to.path)) {
+        return true;
+    } else {
+        if (token) {
+            return true;
+        } else {
+            return { name: "login" };
+        }
+    }
+});
 
 export default router;

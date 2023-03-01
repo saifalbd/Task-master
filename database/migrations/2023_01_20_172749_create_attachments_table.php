@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('disk');
             $table->string('path');
+            $table->string('model')->nullable();
             $table->timestamps();
         });
 
@@ -25,6 +26,11 @@ return new class extends Migration
             $table->foreignId('attachment_id');
             $table->bigInteger('attachale_id');
             $table->string('attachale_type');
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('avatar_id')->nullable()->after('password');
+            //->constrained('attachments');
         });
 
     }
@@ -36,6 +42,7 @@ return new class extends Migration
      */
     public function down()
     {
+       // Schema::dropIfExists('users');
         Schema::dropIfExists('attachales');
         Schema::dropIfExists('attachments');
     }

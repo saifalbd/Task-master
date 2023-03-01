@@ -1,38 +1,75 @@
-<script setup>
-import AsideBar from "./aside-bar.vue";
-import { defineProps, ref } from "vue";
+<script>
+import AsideBar from "./asideBar.vue";
+import { computed, defineComponent, ref,onMounted } from "vue";
 import { notificationStore } from "../store/notification";
 import NotificationModel from "./notificationModel.vue";
+import ProfileEditModal from "./ProfileEditModal.vue";
 import { mainStore } from "../store/index";
+import {chatStore} from '../store/chat';
 import { useRouter } from "vue-router";
-const main = mainStore();
-let token = main.token;
+import ChatModal from "./ChatModal.vue";
+export default defineComponent({
+  components: {
+    AsideBar,
+    NotificationModel,
+    ProfileEditModal,
+    ChatModal,
+  },
+  props: {
+    title: { type: String, default: "title" },
+    showInfoBar: { type: Boolean, default: false },
+    busy: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props) {
+    const main = mainStore();
+    const chat = chatStore();
+    let token = main.token;
+    let user = main.user;
+    let avatar = main.avatar;
+    let showProfileModal = computed(() => main.showProfileModal);
+    let showChatModal = ref(false);
+    if (token) {
+      window.Echo.connector.options.auth.headers[
+        "Authorization"
+      ] = `Bearer ${token}`;
+    }
 
-if (token) {
-window.Echo.connector.options.auth.headers['Authorization'] = `Bearer ${token}`;
-}
+    const router = useRouter();
+    const notifyStore = notificationStore();
+    notifyStore.notificationsFetch();
 
-const props = defineProps({
-  title: { type: String, default: "title" },
-  showInfoBar: { type: Boolean, default: false },
+    const logout = () => {
+      router.push({ name: "login" });
+    };
+
+    onMounted(()=>{
+
+    })
+
+    return {
+      avatar,
+      props,
+      notifyStore,
+      user,
+      showProfileModal,
+      showChatModal,
+      logout,
+    };
+  },
 });
-const router = useRouter();
-const notifyStore = notificationStore();
-notifyStore.notificationsFetch();
-
-const logout = () => {
-  router.push({ name: "login" });
-};
 </script>
 <template>
   <div class="main-layout">
-    <div class="info-bar" :class="{ show: showInfoBar }">
+    <div class="info-bar" :class="{ show: props.showInfoBar }">
       <div class="info-bar-body">
         <slot name="info"></slot>
       </div>
     </div>
     <div class="asside">
-      <aside-bar></aside-bar>
+      <AsideBar></AsideBar>
     </div>
     <div class="main-content">
       <div class="inner">
@@ -50,6 +87,38 @@ const logout = () => {
                 <va-icon size="small" name="notifications"></va-icon>
               </va-avatar>
             </va-badge>
+            <va-dropdown>
+              <template #anchor>
+                <va-badge :text="3" overlap>
+                  <va-avatar size="small">
+                    <va-icon size="small" name="message"></va-icon>
+                  </va-avatar>
+                </va-badge>
+              </template>
+
+              <va-dropdown-content> Dropped down! </va-dropdown-content>
+            </va-dropdown>
+
+            <span class="profile-badge-box" v-if="user">
+              <va-avatar
+                size="small"
+                v-if="avatar"
+                :src="avatar.url"
+                :alt="avatar.path"
+              >
+              </va-avatar>
+              <va-avatar size="small" icon="person" v-else> </va-avatar>
+
+              <span>
+                {{ user.name }}
+              </span>
+              <span>
+                <va-icon size="small" name="expand_more"></va-icon>
+              </span>
+              <!-- <div class="">
+                dds
+              </div> -->
+            </span>
             <va-button
               class="ml-4"
               size="small"
@@ -62,7 +131,9 @@ const logout = () => {
           </div>
         </div>
         <div class="page-content">
-          <slot></slot>
+          <va-inner-loading :loading="props.busy" :size="60">
+            <slot></slot>
+          </va-inner-loading>
         </div>
       </div>
     </div>
@@ -71,5 +142,23 @@ const logout = () => {
       @update:show="notifyStore.toggleNodal($event)"
       @close="notifyStore.toggleNodal(false)"
     ></NotificationModel>
+    <ProfileEditModal :show="showProfileModal"></ProfileEditModal>
+    <!-- <ChatModal v-model:show="showChatModal"></ChatModal> -->
   </div>
 </template>
+
+<style lang="scss" scoped>
+.right-side {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  .va-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 20px;
+      aspect-ratio: 1;
+    }
+  }
+}
+</style>

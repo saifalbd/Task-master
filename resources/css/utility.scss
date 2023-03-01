@@ -1,6 +1,9 @@
 .va-input-wrapper,.va-select{
 width: 100%;
 }
+.inner-loading__overlay{
+z-index: 2!important;
+}
 
 table {
     .right{

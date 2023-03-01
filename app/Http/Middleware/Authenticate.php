@@ -24,8 +24,8 @@ class Authenticate extends Middleware
         $this->authenticate($request, $guards);
 
     
-       $req = $request->merge(['user_id'=>1]); //For Development Set First User
-      // $req = $request->merge(['user_id'=>$request->user()->id]);
+      // $req = $request->merge(['user_id'=>2]); //For Development Set First User
+       $req = $request->merge(['user_id'=>$request->user()->id]);
     
         return $next($req);
     }

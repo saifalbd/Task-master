@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = ['title','user_id','manager_id','category_id','start','end','status','team_id','description'];
 
@@ -32,6 +33,16 @@ class Project extends Model
     public function manager(){
         return $this->belongsTo(Employee::class,'manager_id');
     }
+
+    public function attachments(){
+        return $this->morphToMany(Attachment::class, 'attachale');
+    }
+
+
+    public function tasks(){
+        return $this->hasMany(ProjectTask::class,'project_id');
+    }
+
 
       /**
      * Get all of the post's comments.

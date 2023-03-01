@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Chat;
 use App\Models\Comment;
 use App\Models\Employee;
 use App\Models\Project;
+use App\Models\ProjectTask;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -48,6 +50,9 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('employee',Employee::class);
         Route::model('project',Project::class);
         Route::model('task',Task::class);
+        Route::model('project_task',ProjectTask::class);
+        
+        Route::model('chat',Chat::class);
         Route::model('comment',Comment::class);
     }
 

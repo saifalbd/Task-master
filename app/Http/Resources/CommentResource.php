@@ -31,6 +31,7 @@ class CommentResource extends JsonResource
             'user'=>[
                 'id'=>$this->user->id,
                 'name'=>$this->user->name,
+                'avatar'=>$this->user->avatar? new AttachResource($this->user->avatar):null
             ],
             'attachments'=>$this->attachments->map(function($attach){
                 return [

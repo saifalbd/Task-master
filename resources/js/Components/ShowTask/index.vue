@@ -20,7 +20,7 @@
         <h1>Right Info</h1>
       </slot>
     </div>
-    <div class="description"><b>Description:</b> {{ task.description }}</div>
+    <div class="description"><b>Description:</b> <span v-html="task.description"></span></div>
     <div class="comment-layout" id="commentLayout">
       <div class="row">
         <div class="flex sm12 mb-3">
@@ -29,7 +29,7 @@
         </div>
         <div class="flex sm12">
           <va-inner-loading :loading="commentBusy">
-            <va-form class="comment-form" ref="form">
+            <va-form class="comment-form">
               <va-input
                 v-model="comment"
                 type="textarea"
@@ -74,7 +74,6 @@ import ShowAttachment from "./showAttachment.vue";
 import { ref, watch, onMounted } from "vue";
 import { useToast } from "vuestic-ui";
 import { rs } from "../../Plugins/Rule";
-import { commentNotify, replyNofity } from "./modules";
 import { mount } from "redom";
 import { CommentItem } from "../../Components/Comments/index";
 export default {
@@ -163,7 +162,7 @@ export default {
     });
 
     const addComment = async () => {
-      let valid = await form.value.validate();
+      let valid = comment.value;
       if (!valid) return null;
       commentBusy.value = true;
       try {
@@ -191,7 +190,6 @@ export default {
     };
     return {
       rs,
-      form,
       showAttachModal,
       commentBusy,
       task,

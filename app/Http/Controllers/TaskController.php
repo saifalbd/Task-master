@@ -65,7 +65,7 @@ class TaskController extends Controller
         $task = Task::create(compact('user_id','title','category_id','employee_id','start','end','description'));
         
         if($attachments && count($attachments)){
-            $list = array_map(function($file){return Attachment::add($file);},$attachments);
+            $list = array_map(function($file){return Attachment::add($file,Task::class);},$attachments);
             $task->attachments()->sync(collect($list)->pluck('id')->toArray());
         }
 
@@ -143,7 +143,7 @@ class TaskController extends Controller
 
         if($attachments && count($attachments)){
             $task->attachments()->delete();
-            $list = array_map(function($file){return Attachment::add($file);},$attachments);
+            $list = array_map(function($file){return Attachment::add($file,Task::class);},$attachments);
             $task->attachments()->sync(collect($list)->pluck('id')->toArray());
         }
 

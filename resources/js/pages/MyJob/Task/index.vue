@@ -1,5 +1,5 @@
 <template>
-    <app-layout>
+    <app-layout :busy="busy">
         <div>
             <page-title-box title="My Task"> </page-title-box>
         </div>
@@ -90,6 +90,7 @@ export default {
         PageTitleBox,
     },
     setup() {
+        const busy = ref(true)
         const items = ref([]);
         const links = ref([]);
         const perPage = ref(10);
@@ -103,10 +104,11 @@ export default {
             } catch (error) {
                 console.error(error);
             }
+            busy.value = false;
         };
         fetchItems();
 
-        return { items, links, perPage };
+        return { items, links, perPage,busy };
     },
 };
 </script>

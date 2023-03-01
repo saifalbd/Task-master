@@ -1,6 +1,6 @@
 import { trim } from "lodash";
 import { el, svg, mount,unmount } from "redom";
-import { icon } from "./icon";
+import { icon } from "../../Plugins/icon";
 
 class ReplayCard {
     constructor(arg){
@@ -227,7 +227,7 @@ class ReplayCard {
                     },
                     [
                         el("span", { class: "va-button__content" }, [
-                           icon.create(icon.attach),
+                           icon.create(icon.attach,18),
                             el("b", "attachment"),
                         ]),
                     ]

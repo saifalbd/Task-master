@@ -71,7 +71,7 @@ class CommentController extends Controller
 
         if($attachments && count($attachments)){
             $comment->attachments()->delete();
-            $list = array_map(function($file){return Attachment::add($file);},$attachments);
+            $list = array_map(function($file){return Attachment::add($file,Comment::class);},$attachments);
             $comment->attachments()->sync(collect($list)->pluck('id')->toArray());
         }
 
