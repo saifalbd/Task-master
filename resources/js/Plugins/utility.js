@@ -1,4 +1,4 @@
-import { sortBy } from "lodash"
+import { join, sortBy } from "lodash"
 
 export const confirm = (item, model,prop='title')=>{
 
@@ -154,6 +154,18 @@ export const removeSuccess = function(tost){
         closeable: true,
         duration: 4000,
     });
+}
+
+export const browserKey = (key)=>{
+    let str = navigator.userAgent.toLocaleLowerCase().replaceAll(' ','');
+    return str+'.'+key;
+}
+export const whenLogout = () =>{
+    let keys = ['user','auth_id','avatar','token'];
+
+    keys.forEach((key)=>{
+        localStorage.removeItem(browserKey(key))
+    })
 }
 
 

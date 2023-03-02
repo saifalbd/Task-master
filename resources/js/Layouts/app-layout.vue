@@ -8,6 +8,7 @@ import { mainStore } from "../store/index";
 import {chatStore} from '../store/chat';
 import { useRouter } from "vue-router";
 import ChatModal from "./ChatModal.vue";
+import { whenLogout } from "../Plugins/utility";
 export default defineComponent({
   components: {
     AsideBar,
@@ -26,6 +27,7 @@ export default defineComponent({
   setup(props) {
     const main = mainStore();
     const chat = chatStore();
+    const chatUnreadcount = computed(()=>chat.totalUnreadCount);
     let token = main.token;
     let user = main.user;
     let avatar = main.avatar;
@@ -41,11 +43,24 @@ export default defineComponent({
     const notifyStore = notificationStore();
     notifyStore.notificationsFetch();
 
+    
+
     const logout = () => {
+      whenLogout()
       router.push({ name: "login" });
     };
 
+
+    const goChat = ()=>{
+       router.push({ name: "chat" });
+    }
+
     onMounted(()=>{
+
+      axios.get(route('chatUnreadcount')).then(({data})=>{
+        chatUnreadcount.value = data;
+        chat.increaseTotalUnread(data)
+      })
 
     })
 
@@ -56,7 +71,9 @@ export default defineComponent({
       user,
       showProfileModal,
       showChatModal,
+      chatUnreadcount,
       logout,
+      goChat
     };
   },
 });
@@ -87,17 +104,11 @@ export default defineComponent({
                 <va-icon size="small" name="notifications"></va-icon>
               </va-avatar>
             </va-badge>
-            <va-dropdown>
-              <template #anchor>
-                <va-badge :text="3" overlap>
-                  <va-avatar size="small">
+           <va-badge  :text="chatUnreadcount" overlap>
+                  <va-avatar @click="goChat" size="small">
                     <va-icon size="small" name="message"></va-icon>
                   </va-avatar>
                 </va-badge>
-              </template>
-
-              <va-dropdown-content> Dropped down! </va-dropdown-content>
-            </va-dropdown>
 
             <span class="profile-badge-box" v-if="user">
               <va-avatar

@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/comments/{comment}/toggle-likes',[CommentController::class,'toggleLikes'])->name('comment.toggleLike');
     Route::apiResource('/comments',CommentController::class)->names('comment');
     Route::get('/chat-users',[ChatController::class,'chatUsers'])->name('chatUsers');
+    Route::get('/unreadcount',[ChatController::class,'unreadcount'])->name('chatUnreadcount');
     Route::put('/chats/{chat}/read',[ChatController::class,'read'])->name('chat.read');
     Route::apiResource('/chats',ChatController::class)->only(['index','store','destroy'])->names('chat');
 

@@ -1,12 +1,31 @@
 import { defineStore } from "pinia";
+import { useLocalStorage,useStorage } from "@vueuse/core"
+import { browserKey } from "../Plugins/utility";
+
+const local = (key,val)=>{
+    // return val;
+    return useStorage(key,val);
+}
+const localObj = (key,val)=>{
+   return useStorage(
+    'key',
+    {},
+    { 
+      serializer: {
+        read: (v) => v ? JSON.parse(v) : null,
+        write: (v) => JSON.stringify(v),
+      }
+    }
+  )
+}
 
 export const mainStore = defineStore("index", {
     state() {
        return {
-        user: null,
-        avatar:null,
-        auth_id:1,
-        token:"147|ojTNqClvxokKw9JUWKIyVTbjONxIc2cd95boF6uO",
+        user: localObj(browserKey('user'),null),
+        avatar:localObj(browserKey('avatar'),null),
+        auth_id:local(browserKey('auth_id'),null),
+        token:local(browserKey('token'),null),
         showProfileModal:false
        }
     },

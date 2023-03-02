@@ -1,5 +1,5 @@
 <template>
-    <app-layout>
+    <app-layout :busy="busy">
         <div>
             <page-title-box></page-title-box>
         </div>
@@ -11,6 +11,7 @@
 import AppLayout from "../Layouts/app-layout.vue";
 import PageTitleBox from "../Components/PageTitleBox.vue";
 import Test from './test.vue';
+import {ref} from 'vue';
 export default {
     components: {
         AppLayout,
@@ -18,7 +19,8 @@ export default {
         Test
     },
     setup() {
-        return {};
+        const busy = ref(false)
+        return {busy};
     },
 };
 </script>

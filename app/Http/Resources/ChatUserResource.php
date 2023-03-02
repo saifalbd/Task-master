@@ -22,6 +22,7 @@ class ChatUserResource extends JsonResource
             'avatar'=>$this->avatar?new AttachResource($this->avatar):null,
             'atNow'=>$this->updated_at->diffForHumans(null,null,true),
             'isOnline'=>$this->status,
+            'unReadCount'=>$this->unReadCount
 
         ];
     }

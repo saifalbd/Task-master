@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\{Arr,Str};
+use Illuminate\Support\Facades\Cache;
 
 class ChatController extends Controller
 {
@@ -39,12 +40,19 @@ class ChatController extends Controller
         $receiver_id = $request->receiver_id;
         $join_id = static::joinId($sender_id,$receiver_id);
 
-       $collection = Chat::query()->where('join_id',$join_id)->get();
+        $collection = Cache::rememberForever("chat-$join_id",function()use($join_id){
+            return Chat::query()->where('join_id',$join_id)->get();
+        });
+
        $items = ChatResource::collection($collection);
        return response()->json($items);
 
     }
-
+    public function unreadcount(Request $request){
+        $user_id = $request->user_id;
+        $unReadCount = DB::table('chats')->select(['receiver_id','is_view'])->where('receiver_id',$user_id)->where('is_view',null)->orWhere('is_view',0)->count();
+        return $unReadCount;
+    }
     public function chatUsers(Request $request){
          $user_id = $request->user_id;
          $grandIdList = DB::table('user-employee')->where('employee_id',$user_id)->get()->pluck('user_id')->toArray();
@@ -53,6 +61,9 @@ class ChatController extends Controller
           $items = $grands->merge($users)->map(function($item)use($user_id){
             $join_id = static::joinId($user_id,$item->id);
             $lastMessage = DB::table('chats')->where('join_id',$join_id)->latest('created_at')->first();
+            //
+            $unReadCount = DB::table('chats')->select(['receiver_id','is_view','sender_id'])->where('sender_id',$item->id)->where('receiver_id',$user_id)->where('is_view',null)->orWhere('is_view',0)->count();
+            $item->unReadCount = $unReadCount;
             $item->lastMessage = $lastMessage?Str::limit($lastMessage->message,20):'';
             return $item;
           });
@@ -93,6 +104,8 @@ class ChatController extends Controller
         }
 
         $chat = Chat::create(compact('sender_id','receiver_id','join_id','message','file_id'));
+
+        Cache::forget("chat-$join_id");
 
         $item = (new ChatResource($chat,$user_id))->toArray($request);
 

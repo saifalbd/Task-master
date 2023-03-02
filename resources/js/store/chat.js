@@ -4,9 +4,11 @@ export const chatStore = defineStore("chat", {
     state() {
         return {
             users: [],
+            totalUnreadCount:0,
         };
     },
     actions: {
+
         async fetchChatUsers(callBack) {
             try {
                 const { data } = await axios.get(route("chatUsers"));
@@ -19,6 +21,19 @@ export const chatStore = defineStore("chat", {
             } catch (error) {
                 console.error(error);
             }
+        },
+        increaseTotalUnread(val){
+            this.totalUnreadCount =+val;
+        },
+        increaseUnread(user_id,val){
+            this.users = this.users.map(item=>{
+                if(item.id == user_id){
+                    item.unReadCount= item.unReadCount+val;
+                }
+                return item;
+            });
+
+            this.increaseTotalUnread(val)
         },
         listen(callBack) {
           Echo.join("chat")

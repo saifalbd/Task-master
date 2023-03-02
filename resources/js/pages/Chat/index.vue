@@ -39,18 +39,24 @@
               </va-list-item-label>
             </va-list-item-section>
             <va-list-item-section icon>
-              <va-icon name="remove_red_eye" color="background-tertiary" />
+             <b>{{user.unReadCount}}</b>
             </va-list-item-section>
           </va-list-item>
         </va-list>
       </div>
       <div class="chat-main-bar" id="chatMainBar">
         <div class="current-info" v-if="currentUser">
+
           <div class="left">
-            <div class="name">{{ currentUser.name }}</div>
+            <div class="avatar-box">
+              <img :src="currentUser.avatar.url" alt="" srcset="">
+            </div>
+           <div>
+             <div class="name">{{ currentUser.name }}</div>
             <div class="position">
               {{ currentUser.position }}
             </div>
+           </div>
           </div>
         </div>
         <div class="input-box">
@@ -108,9 +114,19 @@ export default {
             statusUpdate(user.id, 0);
           })
           .listen("ChatEvent", (message) => {
-            if (message.sender_id != auth_id) {
-              let m = messageMixer(message);
-              ul.push(m);
+            const sender_id = message.sender_id;
+            const current_id = currentUser.value.id;
+            console.log({sender_id,current_id,auth_id})
+            if (sender_id != auth_id) {
+              if (current_id == sender_id) {
+                
+                let m = messageMixer(message);
+                ul.push(m);
+                ul.scrollToBottom();
+           
+              }else{
+                chatSt.increaseUnread(message.sender_id,1)
+              }
             }
           });
       } catch (error) {
@@ -199,8 +215,8 @@ export default {
         formData.append("message", message);
         formData.append("receiver_id", currentUser.value.id);
         formData.append("file", file);
-      const {data} = await  axios.post(url, formData);
-          ul.push(messageMixer(data));
+        const { data } = await axios.post(url, formData);
+        ul.push(messageMixer(data));
         ul.scrollToBottom();
       } catch (error) {
         console.error(error);
@@ -215,10 +231,7 @@ export default {
         }
       });
 
-      mount(
-        document.getElementById("attachBox"),
-        attachBox(attachCallBack)
-      );
+      mount(document.getElementById("attachBox"), attachBox(attachCallBack));
     });
 
     return { busy, users, currentUser, chatHistory, text, send };

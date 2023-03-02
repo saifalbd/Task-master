@@ -28,9 +28,20 @@
             border-bottom: 1px solid grey;
             .left {
                 padding: 5px;
+               display: flex;
+                .avatar-box{
+                    margin-right: 5px;
+                    
+                    img{
+                        height: 40px;
+                        width: 40px;
+                        border-radius: 20px;
+                    }
+                }
                 .name {
                     font-weight: bold;
                     font-size: 1.1rem;
+                    text-transform: capitalize;
                 }
                 .position {
                 }

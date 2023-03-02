@@ -98,18 +98,20 @@ router.beforeEach((from, to) => {
     let main = mainStore();
     let token = main.token;
     let guestPath = ["/", "/register"];
-
-    if (!guestPath.includes(from.path) && !to.name) {
-        return { name: "login" };
-    } else if (guestPath.includes(to.path)) {
-        return true;
-    } else {
-        if (token) {
+    if(to.name){
+        if (!guestPath.includes(from.path) && !to.name) {
+            return { name: "login" };
+        } else if (guestPath.includes(to.path)) {
             return true;
         } else {
-            return { name: "login" };
+            if (token) {
+                return true;
+            } else {
+                return { name: "login" };
+            }
         }
     }
+   
 });
 
 export default router;
