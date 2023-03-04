@@ -15,20 +15,3 @@ const props = defineProps({
 })
 
 </script>
-<style lang="scss" scoped>
-.top-title-box{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    // background-color: #97bbff;
-    min-height: 50px;
-    border-bottom: 4px solid black;
-    .top-title{
-        font-weight: bold;
-        font-size: 20px;
-        padding-left: 10px;
-        color: #02000e;
-    }
-}
-
-</style>

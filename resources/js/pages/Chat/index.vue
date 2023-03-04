@@ -3,7 +3,7 @@
     <div>
       <page-title-box title="Chats"></page-title-box>
     </div>
-    <div class="chat-layout">
+    <div class="chat-layout full-screen">
       <div class="chat-side-bar">
         <va-list>
           <va-list-label class="mb-3"> Contacts </va-list-label>
@@ -39,39 +39,44 @@
               </va-list-item-label>
             </va-list-item-section>
             <va-list-item-section icon>
-             <b>{{user.unReadCount}}</b>
+              <b>{{ user.unReadCount }}</b>
             </va-list-item-section>
           </va-list-item>
         </va-list>
       </div>
       <div class="chat-main-bar" id="chatMainBar">
         <div class="current-info" v-if="currentUser">
-
           <div class="left">
-            <div class="avatar-box">
-              <img :src="currentUser.avatar.url" alt="" srcset="">
+            <div class="avatar-box" v-if="currentUser.avatar">
+              <img :src="currentUser.avatar.url" alt="" srcset="" />
             </div>
-           <div>
-             <div class="name">{{ currentUser.name }}</div>
-            <div class="position">
-              {{ currentUser.position }}
+            <div>
+              <div class="name">{{ currentUser.name }}</div>
+              <div class="position">
+                {{ currentUser.position }}
+              </div>
             </div>
-           </div>
           </div>
         </div>
-        <div class="input-box">
-          <div class="attach-box" id="attachBox">
-            <button>
-              <va-icon name="attach_file"></va-icon>
-            </button>
+        <div class="input-box-layout">
+          <small><b v-if="typing">typing...</b></small>
+          <div class="input-box" :class="{ busy: sendBusy }">
+            <div class="attach-box" id="attachBox">
+              <button>
+                <va-icon name="attach_file"></va-icon>
+              </button>
+            </div>
+            <input
+              class="text-input"
+              type="text"
+              v-model="text"
+              @focus="isTyping(true)"
+              @blur="isTyping(false)"
+              @keyup.enter="send"
+            />
+            <button @click="send">Send</button>
+            <div class="input-loader">loading ...</div>
           </div>
-          <input
-            class="text-input"
-            type="text"
-            v-model="text"
-            @keyup.enter="send"
-          />
-          <button @click="send">Send</button>
         </div>
       </div>
     </div>
@@ -79,10 +84,10 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
-import { head, trim } from "lodash";
+import { debounce, head, trim } from "lodash";
 import { mainStore } from "../../store/index";
 import { ChatContent } from "./ChatItem";
 import { chatStore } from "../../store/chat.js";
@@ -95,8 +100,10 @@ export default {
   },
   setup() {
     const chatSt = chatStore();
-    const users = computed(() => chatSt.users);
+    const users = reactive(chatSt.users)
     const main = mainStore();
+    const sendBusy = ref(false);
+    const typing = ref(false);
     const channel = Echo.join("chat")
       .joining((user) => {
         axios.put(route("online", { user: user.id }));
@@ -104,6 +111,7 @@ export default {
       .leaving((user) => {
         axios.put(route("offline", { user: user.id }), {});
       });
+
     const listen = () => {
       try {
         channel
@@ -113,19 +121,24 @@ export default {
           .listen("UserOffline", (user) => {
             statusUpdate(user.id, 0);
           })
+          .listenForWhisper("typing", (e) => {
+            let user_id = e.user;
+            const current_id = currentUser.value.id;
+            if (current_id == user_id) {
+              typing.value = e.typing;
+            }
+          })
           .listen("ChatEvent", (message) => {
             const sender_id = message.sender_id;
             const current_id = currentUser.value.id;
-            console.log({sender_id,current_id,auth_id})
+            console.log({ sender_id, current_id, auth_id });
             if (sender_id != auth_id) {
               if (current_id == sender_id) {
-                
                 let m = messageMixer(message);
                 ul.push(m);
                 ul.scrollToBottom();
-           
-              }else{
-                chatSt.increaseUnread(message.sender_id,1)
+              } else {
+                chatSt.increaseUnread(message.sender_id, 1);
               }
             }
           });
@@ -135,6 +148,14 @@ export default {
     };
 
     listen();
+
+    const isTyping = (typing) => {
+      console.log({ typing });
+      channel.whisper("typing", {
+        user: auth_id,
+        typing,
+      });
+    };
 
     const auth_id = main.auth_id;
     const busy = ref(false);
@@ -157,6 +178,7 @@ export default {
 
     const send = async () => {
       let message = trim(text.value);
+      sendBusy.value = true;
 
       try {
         if (!message) throw "message are Empty";
@@ -173,10 +195,12 @@ export default {
       } catch (error) {
         console.error(error);
       }
+      sendBusy.value = false;
     };
 
     const chatHistory = async (user) => {
       let cUser = currentUser.value;
+      typing.value = false;
 
       if (cUser) {
         if (cUser.id == user.id) {
@@ -185,7 +209,7 @@ export default {
       }
       ul.removeCollection();
       currentUser.value = user;
-      users.value.forEach((item) => (item.active = false));
+      users.forEach((item) => (item.active = false));
       user.active = true;
 
       try {
@@ -201,7 +225,7 @@ export default {
     };
 
     const statusUpdate = (user_id, status) => {
-      const user = users.value.find((u) => u.id == user_id);
+      const user = users.find((u) => u.id == user_id);
       if (user) {
         user.isOnline = !!status;
       }
@@ -224,17 +248,25 @@ export default {
     };
 
     onMounted(() => {
-      chatSt.fetchChatUsers((users) => {
-        let firstUser = head(users);
-        if (firstUser) {
-          chatHistory(firstUser);
-        }
-      });
+      let firstUser = head(users);
+      if (firstUser) {
+        chatHistory(firstUser);
+      }
 
       mount(document.getElementById("attachBox"), attachBox(attachCallBack));
     });
 
-    return { busy, users, currentUser, chatHistory, text, send };
+    return {
+      busy,
+      sendBusy,
+      users,
+      currentUser,
+      chatHistory,
+      text,
+      send,
+      typing,
+      isTyping,
+    };
   },
 };
 </script>

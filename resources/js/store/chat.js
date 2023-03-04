@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { playNotification } from "../Plugins/utility";
 
 export const chatStore = defineStore("chat", {
     state() {
@@ -24,6 +25,7 @@ export const chatStore = defineStore("chat", {
         },
         increaseTotalUnread(val){
             this.totalUnreadCount =+val;
+        
         },
         increaseUnread(user_id,val){
             this.users = this.users.map(item=>{
@@ -32,8 +34,9 @@ export const chatStore = defineStore("chat", {
                 }
                 return item;
             });
-
-            this.increaseTotalUnread(val)
+            this.totalUnreadCount =this.totalUnreadCount+val;
+            playNotification();
+          
         },
         listen(callBack) {
           Echo.join("chat")

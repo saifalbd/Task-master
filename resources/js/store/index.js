@@ -3,19 +3,20 @@ import { useLocalStorage,useStorage } from "@vueuse/core"
 import { browserKey } from "../Plugins/utility";
 
 const local = (key,val)=>{
-    // return val;
     return useStorage(key,val);
 }
 const localObj = (key,val)=>{
+    
    return useStorage(
-    'key',
+    key,
     {},
-    { 
-      serializer: {
-        read: (v) => v ? JSON.parse(v) : null,
-        write: (v) => JSON.stringify(v),
-      }
-    }
+  undefined,
+  {
+    serializer: {
+      read: (v) => v ? JSON.parse(v) : null,
+      write: (v) => JSON.stringify(v),
+    },
+  },
   )
 }
 

@@ -35,10 +35,10 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref,onMounted } from "vue";
 import { mainStore } from "../../store";
 import {useRouter} from 'vue-router';
-import { whenLogout } from "../../Plugins/utility";
+import { playNotification, whenLogout } from "../../Plugins/utility";
 
 export default defineComponent({
   setup() {
@@ -47,11 +47,12 @@ export default defineComponent({
     const userName = ref("");
     const password = ref("");
 
-    whenLogout();
+    // whenLogout();
 
   
 
     const login = async () => {
+      
       try {
         const url = "/login";
         const { data } = await axios.post(url, {
@@ -70,6 +71,7 @@ export default defineComponent({
       }
     };
 
+   
     return { userName, password, login };
   },
 });

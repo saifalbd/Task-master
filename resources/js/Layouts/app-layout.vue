@@ -1,11 +1,11 @@
 <script>
 import AsideBar from "./asideBar.vue";
-import { computed, defineComponent, ref,onMounted } from "vue";
+import { computed, defineComponent, ref, onMounted } from "vue";
 import { notificationStore } from "../store/notification";
 import NotificationModel from "./notificationModel.vue";
 import ProfileEditModal from "./ProfileEditModal.vue";
 import { mainStore } from "../store/index";
-import {chatStore} from '../store/chat';
+import { chatStore } from "../store/chat";
 import { useRouter } from "vue-router";
 import ChatModal from "./ChatModal.vue";
 import { whenLogout } from "../Plugins/utility";
@@ -27,7 +27,7 @@ export default defineComponent({
   setup(props) {
     const main = mainStore();
     const chat = chatStore();
-    const chatUnreadcount = computed(()=>chat.totalUnreadCount);
+    const chatUnreadcount = computed(() => chat.totalUnreadCount);
     let token = main.token;
     let user = main.user;
     let avatar = main.avatar;
@@ -43,26 +43,30 @@ export default defineComponent({
     const notifyStore = notificationStore();
     notifyStore.notificationsFetch();
 
-    
-
     const logout = () => {
-      whenLogout()
+      whenLogout();
       router.push({ name: "login" });
     };
 
+    const chatIconBusy = ref(false);
+    const goChat = () => {
+      if (!chat.users.length) {
+        chatIconBusy.value = true;
+        chat.fetchChatUsers(() => {
+          chatIconBusy.value = false;
+          router.push({ name: "chat" });
+        });
+      } else {
+        router.push({ name: "chat" });
+      }
+    };
 
-    const goChat = ()=>{
-       router.push({ name: "chat" });
-    }
-
-    onMounted(()=>{
-
-      axios.get(route('chatUnreadcount')).then(({data})=>{
+    onMounted(() => {
+      axios.get(route("chatUnreadcount")).then(({ data }) => {
         chatUnreadcount.value = data;
-        chat.increaseTotalUnread(data)
-      })
-
-    })
+        chat.increaseTotalUnread(data);
+      });
+    });
 
     return {
       avatar,
@@ -72,8 +76,9 @@ export default defineComponent({
       showProfileModal,
       showChatModal,
       chatUnreadcount,
+      chatIconBusy,
       logout,
-      goChat
+      goChat,
     };
   },
 });
@@ -104,11 +109,13 @@ export default defineComponent({
                 <va-icon size="small" name="notifications"></va-icon>
               </va-avatar>
             </va-badge>
-           <va-badge  :text="chatUnreadcount" overlap>
-                  <va-avatar @click="goChat" size="small">
-                    <va-icon size="small" name="message"></va-icon>
-                  </va-avatar>
-                </va-badge>
+            <va-badge :text="chatUnreadcount" overlap>
+              <va-inner-loading :loading="chatIconBusy">
+                <va-avatar @click="goChat" size="small">
+                  <va-icon size="small" name="message"></va-icon>
+                </va-avatar>
+              </va-inner-loading>
+            </va-badge>
 
             <span class="profile-badge-box" v-if="user">
               <va-avatar

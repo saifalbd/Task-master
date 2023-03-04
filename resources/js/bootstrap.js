@@ -9,7 +9,6 @@ window._ = _;
 
 import axios from 'axios';
 import {mainStore} from './store/index'
-import router from "./routes/index";
 import {confirm,validErorrs} from './Plugins/utility';
 window.vConfirm = confirm;
 window.validErorrs = validErorrs;
@@ -30,7 +29,9 @@ window.axios.interceptors.request.use(function (config) {
   }, e=>Promise.reject(e));
 
  window.axios.interceptors.response.use(response=>response,error=> {
-    if (error.response.status == 401) {router.push({ name: "login" });}
+    if (error.response.status == 401) {
+      window.location.href = '/'
+    }
     return Promise.reject(error);
   })
 

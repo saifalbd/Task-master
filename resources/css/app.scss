@@ -1,7 +1,9 @@
 :root {
     --va-input-min-height:40px 
-        
-
+    
+}
+*{
+    box-sizing: border-box;
 }
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -61,15 +63,15 @@
         >.inner{
             min-height: 100%;
            // border-top: 3px solid var(--va-focus);
-            border-left: 3px solid #34495e;
-            border-right: 3px solid #34495e;
+            border-left: 3px solid $redbookColorLight;
+            border-right: 3px solid $redbookColorLight;
             border-top-left-radius: $topNavHeight;
             border-top-right-radius: $topNavHeight;
             .top-nav{
                 height: $topNavHeight;
 
                 
-                border-bottom: $mainBorderSize solid #34495e;
+                border-bottom: $mainBorderSize solid $redbookColor;
                 border-bottom-left-radius: $topNavHeight;
                 border-bottom-right-radius: $topNavHeight;
                 background-color: #f5f9fb;
@@ -105,6 +107,20 @@
 
             .page-content{
                 padding: 5px;
+                .top-title-box{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    // background-color: #97bbff;
+                    height: $top-title-height;
+                    border-bottom: 2px solid $redbookColorLight;
+                    .top-title{
+                        font-weight: bold;
+                        font-size: 20px;
+                        padding-left: 10px;
+                        color: #02000e;
+                    }
+                }
                 table{
                     .left{text-align: left;}
                     .right{text-align: right;}

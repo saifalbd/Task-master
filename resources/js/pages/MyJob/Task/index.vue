@@ -66,13 +66,13 @@
                               </va-button>
                         </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td colspan="8">
                             <p>
                                 {{t.description}}
                             </p>
                         </td>
-                    </tr>
+                    </tr> -->
                     </template>
                 </tbody>
             </table>
