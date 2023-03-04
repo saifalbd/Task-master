@@ -22,6 +22,13 @@
           v-model="email"
           required
         />
+         <label for="uname"><b>Phone</b></label>
+        <input
+          type="text"
+          placeholder="Enter Phone"
+          v-model="phone"
+          required
+        />
         <label for="psw"><b>Password</b></label>
         <input
           type="password"
@@ -62,6 +69,7 @@ export default defineComponent({
       email: "test@gmail.com",
       password: "12345",
       retypePassword: "12345",
+      phone:''
     };
   },
   methods: {
@@ -71,6 +79,7 @@ export default defineComponent({
         const { data } = await axios.post(url, {
           name:this.name,
           email: this.email,
+          phone:this.phone,
           password: this.password,
           password_confirmation:this.retypePassword
         });

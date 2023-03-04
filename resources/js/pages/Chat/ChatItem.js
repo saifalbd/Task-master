@@ -1,6 +1,8 @@
 
+
 import { el, mount, unmount } from "redom";
 import { icon } from "../../Plugins/icon";
+import { onClickOutside } from '@vueuse/core'
 
 export class ChatItem {
     constructor(chat) {
@@ -10,12 +12,57 @@ export class ChatItem {
         let messageDom = el("span", `${this.isSend?'Send':'Recieve'}: ${chat.message}`)
         this.chatRow = el(".chat-row", {}, [
             this.fileBox(chat),
-            messageDom
+            messageDom,
+      
         ]);
-        this.el = el("li", {}, [this.chatRow]);
-        if (this.isSend) {
+        this.el = el("li", {}, [this.chatRow,      this.menuBox()]);
+        if (!this.isSend) {
             this.el.classList.add("right");
         }
+    }
+
+
+    dropdown(left,top){
+       const dom = el('ul',{
+        id:'chat-dropdown',
+            class:'chat-dropdown',
+            style:{
+                left:`${left}px`,
+                top:`${top}px`
+            }
+        },[
+            el('li','Remove'),
+            el('li','Reply'),
+        ])
+
+        onClickOutside(dom,()=>{
+            dom.remove()
+        })
+        
+        document.getElementById("chat-content").append(dom);
+    }
+
+    menuBox(){
+        let btn = el('button',{},[
+            icon.create(icon.dotsVertical)
+        ]);
+
+
+        btn.addEventListener('click',(event)=>{
+            console.log(event)
+            const { layerX,layerY
+            } = event
+            
+            const left =layerX;
+            let top = layerY;
+            console.log({left,top})
+            this.dropdown(left,top)
+        })
+
+
+        return el('div',{class:'menu-box'},[
+            btn
+        ])
     }
 
     fileBox(chat){
@@ -28,7 +75,7 @@ export class ChatItem {
             }
          
         }else{
-            return el('span')
+            return el('span','span')
         }
     }
 
@@ -91,7 +138,9 @@ export class ChatItem {
 
 export class ChatContent {
     constructor() {
-        this.el = el("ul", { class: "chat-content" });
+        this.el = el("ul", {
+            id:"chat-content",
+             class: "chat-content" });
         this.list = [];
     }
 
@@ -102,6 +151,8 @@ export class ChatContent {
             mount(this.el, Li);
         });
     }
+
+    
 
     push(chat) {
         let Li = new ChatItem(chat);

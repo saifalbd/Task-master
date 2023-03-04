@@ -81,6 +81,30 @@
                     img {
                         max-width: 300px;
                     }
+                    
+
+                   
+                }
+                .menu-box{
+                    //  background-color: pink;   
+                     display: flex;
+                     justify-content: center;
+                     align-items: center;
+                     button{
+                        background: none;
+                        border: none;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 5px;
+                        border: 1px solid transparent;
+                        cursor: pointer;
+                        &:hover{
+                            border: 1px solid salmon;
+                            border-radius: 50%;
+                           
+                        }
+                     }
                 }
 
                 &.right {
@@ -89,6 +113,28 @@
                         background-color: aliceblue;
                     }
                 }
+            }
+
+            .chat-dropdown{
+                display: block;
+                position: absolute;
+                background: #ffff;
+                border: 1px solid rgba(0, 0, 0, 0.505);
+                transform: translate(-50% , -50%);
+                border-radius: 5px;
+                padding: 3px;
+              
+                li{
+                    cursor: pointer;
+                    padding:0 10px;
+                    margin-top: 0;
+                    line-height: 30px;
+                    min-width: 100px;
+                    &:hover{
+                        background-color: silver;
+                    }
+                }
+
             }
         }
         .input-box-layout{

@@ -34,6 +34,7 @@
                             v-model="phone"
                             label="Phone"
                             placeholder="Phone Here"
+                                :rules="rs('Phone', true)"
                         />
                     </div>
                     <div class="flex xs12 mt-2">

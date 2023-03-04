@@ -2,7 +2,9 @@
 
 namespace App\Notifications;
 
+use App\Channels\SMSChannel;
 use App\Models\Task;
+use App\Service\SMS;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -33,7 +35,7 @@ class TaskAssigned extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database',SMSChannel::class];
     }
 
     /**
@@ -49,6 +51,23 @@ class TaskAssigned extends Notification
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
+
+
+
+    public function toSms($notifiable){
+        $task = $this->task;
+        $assigner = $task->assigner;
+        $employee = $task->employee;
+        $title = $task->title;
+        $assignerName = $assigner->name;
+        $message = $assignerName.' '.'আপনাকে নতুন টাস্ক দিয়েছেন বিষয় : '.$title;
+
+        return (new SMS)->number($employee->phone)->message($message);
+    }
+
+
+
+
 
     /**
      * Get the array representation of the notification.

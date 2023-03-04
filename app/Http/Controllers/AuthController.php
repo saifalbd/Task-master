@@ -8,6 +8,7 @@ use App\Http\Resources\AttachResource;
 use App\Http\Resources\AuthResource;
 use App\Models\Attachment;
 use App\Models\User;
+use App\Rules\BDPhone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -46,12 +47,14 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'name' => ['required', 'string'],
             'password' => ['required', 'string', 'confirmed'],
+            'phone'=> ['required', 'numeric',new BDPhone],
         ]);
         $password = Hash::make($request->password);
         $email = $request->email;
         $name = $request->name;
+        $phone = $request->phone;
 
-        $user =   User::create(compact('email', 'name', 'password'));
+        $user =   User::create(compact('email', 'name', 'password','phone'));
         $item = new AuthResource($user);
         return response()->json($item);
     }

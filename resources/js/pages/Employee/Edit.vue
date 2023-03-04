@@ -34,6 +34,7 @@
                             v-model="phone"
                             label="Phone"
                             placeholder="Phone Here"
+                             :rules="rs('Phone', true)"
                         />
                     </div>
                     <div class="flex xs12 mt-2">
@@ -81,7 +82,7 @@ export default {
         const form = ref(null);
         let name = ref(props.item.name);
         let email = ref(props.item.email);
-        let phone = ref("");
+        let phone = ref(props.item.phone);
 
         let item = ref(props.item)
 

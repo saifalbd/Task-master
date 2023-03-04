@@ -97,6 +97,7 @@ export default {
       { key: "id", sortable: true, sortingOptions: ["desc", "asc"] },
       { key: "name", sortable: true },
       { key: "email", sortable: true },
+          { key: "phone", sortable: true },
       { key: "position.title", label: "Position", sortable: true },
       { key: "action", thAlign: "right" },
     ];

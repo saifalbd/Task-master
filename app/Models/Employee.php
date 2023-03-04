@@ -16,6 +16,10 @@ class Employee extends Model
         'name',
         'email',
         'password',
+        'phone',
+        'avatar_id',
+        'status',
+        'phone'
     ];
 
    

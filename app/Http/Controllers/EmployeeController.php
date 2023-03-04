@@ -7,6 +7,7 @@ use App\Models\Position;
 use App\Models\User;
 use App\Models\UserEmployeePosition;
 use App\Notifications\EmployeeAssigned;
+use App\Rules\BDPhone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -48,16 +49,18 @@ class EmployeeController extends Controller
         $request->validate([
             'email' => ['required', 'email'],
             'name' => ['required', 'string'],
-            'position' => ['required', 'numeric']
+            'position' => ['required', 'numeric'],
+            'phone'=> ['required', 'numeric',new BDPhone],
         ]);
 
         $email = $request->email;
         $name = $request->name;
         $password = Hash::make(12345);
+        $phone = $request->phone;
 
         $employee = User::query()->whereEmail($email)->first();
         if (!$employee) {
-            $employee = Employee::create(compact('email', 'name', 'password'));
+            $employee = Employee::create(compact('email', 'name', 'password','phone'));
         }
         $request->user()->employees()->syncWithoutDetaching([$employee->id], false);
 
@@ -103,10 +106,14 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        $request->validate(['position' => ['required', 'numeric']]);
+        $request->validate(['position' => ['required', 'numeric'],
+        'phone'=> ['required', 'numeric',new BDPhone,Rule::unique('users')->ignore($employee->id)],
+        ]);
 
 
         $position_id = $request->position;
+        $phone = $request->phone;
+        $employee->update(compact('phone'));
         $employee->position->update(compact('position_id'));
         $employee->load('position');
         return response()->json($employee);
