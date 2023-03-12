@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attachment;
+use App\Models\Employee;
 use App\Models\Task;
 use App\Models\User;
 use App\Notifications\TaskAssigned;
@@ -17,8 +18,8 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $builder = Task::query()->user($request->user()->id)->with(['category','employee']);
-        $items = $request->all?$builder->get(): $builder->paginate($request->perPage);
+        $builder = Task::query()->user($request->user()->id)->with(['category','employee.model']);
+        $items = $builder->paginate($request->perPage);
         return response()->json($items);
     }
 
@@ -55,14 +56,17 @@ class TaskController extends Controller
         $user_id = $request->user_id;
         $title = $request->title;
         $category_id = $request->category;
-        $employee_id = $request->employee;
+        $employee = Employee::findOrFail($request->employee);
+        $employee_id = $employee->employee_id;
+        
         $start = $request->start;
         $end = $request->end;
         $description = $request->description;
 
 
         $attachments = $request->attachments;
-        $task = Task::create(compact('user_id','title','category_id','employee_id','start','end','description'));
+        $status = 0;
+        $task = Task::create(compact('user_id','title','category_id','employee_id','start','end','description','status'));
         
         if($attachments && count($attachments)){
             $list = array_map(function($file){return Attachment::add($file,Task::class);},$attachments);
@@ -73,7 +77,8 @@ class TaskController extends Controller
         $user->notify(new TaskAssigned($task));
 
       
-        $task->load(['category','employee']);
+        $task->fresh();
+        $task->load(['category','employee.model']);
         return response()->json($task);
         
 
@@ -87,7 +92,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load(['category','employee','attachments']);
+        $task->load(['category','employee.model.avatar','attachments']);
         return response()->json($task);
     }
 

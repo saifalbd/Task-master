@@ -55,9 +55,13 @@ class ChatController extends Controller
     }
     public function chatUsers(Request $request){
          $user_id = $request->user_id;
-         $grandIdList = DB::table('user-employee')->where('employee_id',$user_id)->get()->pluck('user_id')->toArray();
+         $grandIdList = Employee::where('employee_id',$user_id)->get()->pluck('user_id')->toArray();
           $grands = User::query()->whereIn('id',$grandIdList)->with('avatar')->get();
-          $users = Employee::query()->with(['position','avatar'])->latest('updated_at')->get();
+          $users = Employee::query()->where('user_id',$user_id)->with(['designation','model.avatar'])->latest('updated_at')->get()->map(function($item){
+            $model = $item->model;
+            $model->designation = $item->designation;
+            return $model;
+          });
           $items = $grands->merge($users)->map(function($item)use($user_id){
             $join_id = static::joinId($user_id,$item->id);
             $lastMessage = DB::table('chats')->where('join_id',$join_id)->latest('created_at')->first();

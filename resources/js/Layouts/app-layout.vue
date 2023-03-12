@@ -61,9 +61,12 @@ export default defineComponent({
       }
     };
 
+    const goProfile = ()=>{
+      router.push({name:'profile'})
+    }
+
     onMounted(() => {
       axios.get(route("chatUnreadcount")).then(({ data }) => {
-        chatUnreadcount.value = data;
         chat.increaseTotalUnread(data);
       });
     });
@@ -79,6 +82,7 @@ export default defineComponent({
       chatIconBusy,
       logout,
       goChat,
+      goProfile
     };
   },
 });
@@ -117,12 +121,13 @@ export default defineComponent({
               </va-inner-loading>
             </va-badge>
 
-            <span class="profile-badge-box" v-if="user">
+            <span class="profile-badge-box" v-if="user" @click="goProfile">
               <va-avatar
                 size="small"
                 v-if="avatar"
                 :src="avatar.url"
                 :alt="avatar.path"
+
               >
               </va-avatar>
               <va-avatar size="small" icon="person" v-else> </va-avatar>

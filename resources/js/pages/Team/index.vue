@@ -44,7 +44,7 @@
                     size="small"
                     v-for="member in rowData.members"
                     :key="member.id"
-                    >{{ member.name }}</va-chip
+                    >{{ member.model.name }}</va-chip
                 >
             </template>
             <template #cell(action)="{ rowData, rowIndex }">
@@ -79,9 +79,9 @@ import Pagination from "../../Components/Pagination.vue";
 import RemoveEditButton from "../../Components/RemoveEditButton.vue";
 import Create from "./Create.vue";
 import Edit from "./Edit.vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import CreateButton from "../../Components/CreateButton.vue";
-import { confirm, removeSuccess } from "../../Plugins/utility";
+import { confirm, dropdowns, removeSuccess } from "../../Plugins/utility";
 import { useToast } from "vuestic-ui";
 export default {
     components: {
@@ -120,12 +120,13 @@ export default {
         const sortingOrder = ref("asc");
 
         // START METHODS
-        axios
-            .get(route("employee.index", { all: true }))
-            .then(({ data }) => (employees.value = data));
-        axios
-            .get(route("category.index", { all: true }))
-            .then(({ data }) => (categories.value = data));
+   dropdowns("employees", (data) => {
+      employees.value = data;
+    });
+
+     dropdowns("categories", (data) => {
+      categories.value = data;
+    });
         const fetchItems = async (page) => {
             const url = route("team.index", {
                 perPage: perPage.value,

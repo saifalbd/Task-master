@@ -16,7 +16,7 @@ class TeamController extends Controller
     {
 
         $builder = Team::query()->user($request->user()->id)->with(['members', 'manager', 'category']);
-        $items = $request->all ? $builder->get() : $builder->paginate($request->perPage);
+        $items =  $builder->paginate($request->perPage);
         return response()->json($items);
     }
 

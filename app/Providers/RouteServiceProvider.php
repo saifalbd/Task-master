@@ -5,10 +5,13 @@ namespace App\Providers;
 use App\Models\Category;
 use App\Models\Chat;
 use App\Models\Comment;
+use App\Models\Department;
+use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\Project;
 use App\Models\ProjectTask;
 use App\Models\Task;
+use App\Models\Todo;
 use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -51,6 +54,10 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('project',Project::class);
         Route::model('task',Task::class);
         Route::model('project_task',ProjectTask::class);
+
+        Route::model('department',Department::class);
+        Route::model('designation',Designation::class);
+        Route::model('todo',Todo::class);
         
         Route::model('chat',Chat::class);
         Route::model('comment',Comment::class);

@@ -31,10 +31,16 @@
                                 ><va-icon class="material-icons">close</va-icon>
                                 Close</va-button
                             >
-                            <va-button size="small" @click="add">
+                              <va-button size="small" @click="next" v-if="props.isNext">
+                                <va-icon class="material-icons">keyboard_tab</va-icon>
+                              Next
+                            </va-button>
+
+                            <va-button size="small" @click="add" v-else>
                                 <va-icon class="material-icons">add</va-icon>
                                 {{props.isEdit?'Replace':'Add'}}
                             </va-button>
+                          
                         </div>
                     </div>
                 </div>
@@ -60,6 +66,10 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        isNext:{
+            type:Boolean,
+            default:false
+        },
         title: {
             type: String,
             required: true,
@@ -80,10 +90,14 @@ export default defineComponent({
         const add = () => {
             emit("add", true);
         };
+        const next = ()=>{
+            emit('next',true)
+        }
         return {
             props,
             close,
             add,
+            next,
         };
     },
 });

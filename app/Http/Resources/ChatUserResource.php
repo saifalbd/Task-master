@@ -17,7 +17,7 @@ class ChatUserResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-            'position'=>$this->position?$this->position->position->title:'boss',
+            'position'=>$this->designation?$this->designation->title:'boss',
             'lastMessage'=>$this->lastMessage,
             'avatar'=>$this->avatar?new AttachResource($this->avatar):null,
             'atNow'=>$this->updated_at->diffForHumans(null,null,true),

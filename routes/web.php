@@ -24,7 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::post('/register',[AuthController::class,'register'])->name('register');
 Route::get('/test', function(Request $request){
-    return   DB::table('chats')->select(['receiver_id','is_view','sender_id'])->where('is_view',null)->orWhere('is_view',0)->get();
+   $user = User::find(4);
+   return $user->clients;
 
    });
 

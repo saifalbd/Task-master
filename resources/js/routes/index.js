@@ -18,12 +18,22 @@ const routes = [
     {
         path: "/home",
         name: "home",
-        component: () => import("../pages/home.vue"),
+        component: () => import("../pages/Home/index.vue"),
     },
     {
         path: "/categories",
         name: "category",
         component: () => import("../pages/Category/index.vue"),
+    },
+    {
+        path: "/departments",
+        name: "department",
+        component: () => import("../pages/Department/index.vue"),
+    },
+    {
+        path: "/designations",
+        name: "designation",
+        component: () => import("../pages/Designation/index.vue"),
     },
     {
         path: "/employees",
@@ -87,6 +97,23 @@ const routes = [
         name: "chat",
         component: () => import("../pages/Chat/index.vue"),
     },
+    {
+        path:'/profile',
+        name:'profile',
+        component:()=>import('../pages/Profile/index.vue')
+    },
+    {
+        path:'/user-profile/:user',
+        name:'userProfile',
+        component:()=>import('../pages/Profile/index.vue'),
+        props: (route) => ({ user_id: route.params.user }),
+    },
+    {
+        path:'/to-do-list',
+        name:'toDoList',
+        component:()=>import('../pages/ToDoList/index.vue'),
+        
+    }
 ];
 
 const router = createRouter({

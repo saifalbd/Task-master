@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\UserTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,9 +12,9 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use  HasApiTokens, HasFactory, Notifiable;
 
-    /**
+      /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -46,6 +48,7 @@ class User extends Authenticatable
     ];
 
 
+
     public function categories(){
         return $this->hasMany(Category::class,'user_id');
     }
@@ -54,12 +57,26 @@ class User extends Authenticatable
         return $this->belongsToMany(Employee::class,'user-employee','user_id','employee_id');
     }
 
-    public function position(){
-        return $this->hasOne(UserEmployeePosition::class,'employee_id')->where('user_id',request()->user_id);
-    }
+ 
 
     public function avatar(){
         return $this->belongsTo(Attachment::class,'avatar_id');
+    }
+
+
+    public function profile(){
+        return $this->hasOne(Profile::class,'user_id');
+    }
+    public function personalInformation(){
+        return $this->hasOne(PersonalInformation::class,'user_id');
+    }
+
+    public function emergencyContacts(){
+        return $this->hasMany(EmergencyContact::class,'user_id');
+    }
+
+    public function clients(){
+        return $this->hasManyThrough(static::class,Employee::class,'employee_id','id','id','user_id');
     }
 
     

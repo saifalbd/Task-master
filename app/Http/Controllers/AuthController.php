@@ -7,10 +7,13 @@ use App\Events\UserOnline;
 use App\Http\Resources\AttachResource;
 use App\Http\Resources\AuthResource;
 use App\Models\Attachment;
+use App\Models\EmergencyContact;
 use App\Models\User;
 use App\Rules\BDPhone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -44,17 +47,17 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email',Rule::unique('users')],
             'name' => ['required', 'string'],
             'password' => ['required', 'string', 'confirmed'],
-            'phone'=> ['required', 'numeric',new BDPhone],
+            'phone' => ['required', 'numeric', new BDPhone,Rule::unique('users')],
         ]);
         $password = Hash::make($request->password);
         $email = $request->email;
         $name = $request->name;
         $phone = $request->phone;
 
-        $user =   User::create(compact('email', 'name', 'password','phone'));
+        $user =   User::create(compact('email', 'name', 'password', 'phone'));
         $item = new AuthResource($user);
         return response()->json($item);
     }
@@ -84,16 +87,73 @@ class AuthController extends Controller
     }
 
 
-    public function online(User $user){
-     
-    
-       $user->update(['status'=>true]);
-       broadcast(new UserOnline($user));
+    public function online(User $user)
+    {
+
+
+        $user->update(['status' => true]);
+        broadcast(new UserOnline($user));
     }
-    public function offline(User $user){
-     
-        $user->update(['status'=>false]);
+    public function offline(User $user)
+    {
+
+        $user->update(['status' => false]);
         broadcast(new UserOffline($user));
-     }
+    }
+
+
+    public function profile(User $user){
+        $user->load(['avatar','profile','personalInformation','emergencyContacts']);
+        return $user;
+    }
+
+    public function updateProfile(Request $request){
+        $request->validate([
+            'birth_date'=>['required','date'],
+            'address'=>['required','string'],
+            'gender'=>['required','string'],
+        ]);
+
+        $user = $request->user();
+        $profile = $user->profile;
+        $birth_date = Carbon::create($request->birth_date)->toDateString();
+        $address = $request->address;
+        $gender = $request->gender;
+        $profile->update(compact('birth_date','address','gender'));
     
+    }
+
+    public function updatePersonalInformation(Request $request){
+        $request->validate([
+            'nationality'=>['required','string'],
+            'religion'=>['required','string'],
+            'marital_status'=>['required','string'],
+        ]);
+        $user = $request->user(); 
+
+        $user->personalInformation->update($request->toArray());
+    }
+
+    public function emergencyContactUpdate(Request $request){
+        $request->validate([
+            'items'=>['required','array'],
+            'items.*'=>['required','array'],
+            'items.*.type'=>['required','string'],
+            'items.*.name'=>['required','string'],
+            'items.*.relationship'=>['required','string'],
+            'items.*.phone'=>['required','string'],
+        ]);
+        $user = $request->user(); 
+
+        $items = $request->items;
+        $user_id = $request->user_id;
+
+        foreach ($items as $item) {
+            $type = $item['type'];
+            $relationship = $item['relationship'];
+            $phone = $item['phone'];
+            $name = $item['name'];
+            EmergencyContact::updateOrCreate(compact('type','user_id'),compact('relationship','phone','name'));
+        }
+    }
 }

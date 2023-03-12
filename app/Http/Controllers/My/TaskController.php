@@ -15,8 +15,9 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $builder = Task::query()->where('employee_id',$request->user()->id)->with(['category','assigner']);
-        $items = $request->all?$builder->get(): $builder->paginate($request->perPage);
+        $user_id = $request->user_id;
+        $builder = Task::query()->where('employee_id',$user_id)->with(['category','assigner']);
+        $items = $builder->paginate($request->perPage);
         return response()->json($items);
     }
   

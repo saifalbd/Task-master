@@ -1,4 +1,14 @@
+
 import { join, sortBy } from "lodash";
+
+
+
+
+export const dropdowns =(slug,callBack)=>{
+    axios.get(route('dropdown',{slug})).then(({data})=>{
+        callBack(data)
+    })
+}
 
 export const confirm = (item, model, prop = "title") => {
     return new Promise((resolve, reject) => {

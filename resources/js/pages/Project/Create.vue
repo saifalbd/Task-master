@@ -55,7 +55,7 @@
                         />
                     </div>
 
-                    <div class="flex xs12 in-box" v-if="byTeam">
+                    <div class="flex xs12 in-box" v-show="byTeam">
                         <!--    :rules="rs('team', byTeam)" -->
                         <va-select
                             v-model="team"
@@ -65,15 +65,16 @@
                             text-by="title"
                             value-by="id"
                             :options="props.teams"
+                               :rules="rs('team',{required:byTeam})"
                         />
                     </div>
 
-                    <div class="flex xs12 in-box" v-else>
+                    <div class="flex xs12 in-box" v-show="!byTeam">
                         <va-select
                             v-model="members"
                             label="Project Employees *"
                             placeholder="Project Employee Here"
-                            :rules="rs('members',!byTeam)"
+                            :rules="rs('members',{required:!byTeam})"
                             multiple
                             searchable
                             text-by="name"
@@ -184,6 +185,14 @@ export default {
             }
         });
 
+        watch(byTeam,(bool)=>{
+           if(bool){
+            members.value = [];
+           }else{
+            team.value = null
+           }
+        })
+
 
 
 
@@ -191,8 +200,7 @@ export default {
 
             let url = route("project.store");
             let valid = await form.value.validate();
-            // let errors = await form.value.errors();
-            // console.log(errors)
+          
            if (!valid){
             console.error('validation errors')
             return null

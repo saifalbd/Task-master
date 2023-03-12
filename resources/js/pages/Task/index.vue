@@ -9,30 +9,118 @@
             </page-title-box>
         </div>
 
-        <div class="row mt-4">
-            <div class="flex md6">
+        <div class="filter-row mt-2">
+            <div class="left-side">
                 <div class="item">
-                    <va-select
-                        class="flex mb-2 md6"
-                        label="Per Page"
-                        v-model="perPage"
-                        :options="[10, 20, 30, 40, 50]"
-                    />
+                    <el-select v-model="perPage" placeholder="Per Page">
+                        <el-option
+                            v-for="item in [10, 20, 30, 40, 50]"
+                            :key="item"
+                            :label="item"
+                            :value="item"
+                        />
+                            <template #prefix>
+                            <el-icon class="el-input__icon"
+                                ><collection
+                            /></el-icon>
+                        </template>
+                    </el-select>
                 </div>
             </div>
-
-            <div class="flex lg6">
+            <div class="right-side">
+                <div class="item right mr-3">
+                    <el-button-group>
+                        <el-button
+                            :type="isCardWise ? 'info' : 'primary'"
+                            @click="isCardWise = false"
+                        >
+                            <el-icon><list /></el-icon>
+                        </el-button>
+                        <el-button
+                            :type="!isCardWise ? 'info' : 'primary'"
+                            @click="isCardWise = true"
+                        >
+                            <el-icon><box /></el-icon>
+                        </el-button>
+                    </el-button-group>
+                </div>
                 <div class="item right">
-                    <va-input class="flex mb-2 md6" label="Search">
-                        <template #prepend>
-                            <va-icon class="material-icons">search</va-icon>
+                    <el-input
+                        placeholder="Type something"
+                        :prefix-icon="Search"
+                    >
+                        <template #prefix>
+                            <el-icon class="el-input__icon"><search /></el-icon>
                         </template>
-                    </va-input>
+                    </el-input>
                 </div>
             </div>
         </div>
+            <el-divider />
+
+        <el-row class="card-list" v-if="isCardWise" :gutter="24">
+            <el-col
+                :sm="24"
+                :md="12"
+                v-for="(item, index) in items"
+                :key="index"
+            >
+                <el-card>
+                    <el-descriptions
+                        :title="item.title"
+                        direction="horizontal"
+                        :column="1"
+                        size="small"
+                        border
+                    >
+                        <el-descriptions-item label="Assgned To:">{{
+                            item.employee.model.name
+                        }}</el-descriptions-item>
+                        <el-descriptions-item label="Dead Line:">{{
+                            item.end
+                        }}</el-descriptions-item>
+                        <el-descriptions-item label="Status:">
+                            <status-btn
+                                :status="item.status"
+                                size="small"
+                            ></status-btn>
+                        </el-descriptions-item>
+
+                        <el-descriptions-item label="Delete:"
+                            ><el-button
+                                size="small"
+                                type="danger"
+                                plain
+                                @click="remove(item, index)"
+                            >
+                                <el-icon>
+                                    <delete />
+                                </el-icon> </el-button
+                        ></el-descriptions-item>
+                        <el-descriptions-item label="View:"
+                            ><el-button
+                                size="small"
+                                type="info"
+                                plain
+                                @click="
+                                    router.push({
+                                        name: 'task.show',
+                                        params: { id: item.id },
+                                    })
+                                "
+                            >
+                                <el-icon>
+                                    <more />
+                                </el-icon> </el-button
+                        ></el-descriptions-item>
+                    </el-descriptions>
+                    <div class="description" v-html="item.description"></div>
+                </el-card>
+            </el-col>
+        </el-row>
 
         <va-data-table
+            v-else
             :items="items"
             :columns="columns"
             :hoverable="true"
@@ -47,14 +135,18 @@
                     >{{ member.name }}</va-chip
                 >
             </template>
-            <template #cell(status)="{value}">
+            <template #cell(status)="{ value }">
                 <status-btn :status="value" size="small"></status-btn>
-               
             </template>
             <template #cell(action)="{ rowData, rowIndex }">
                 <remove-edit-button
-                :isView="true"
-                @viewClick="router.push({name:'task.show',params:{id:rowData.id}})"
+                    :isView="true"
+                    @viewClick="
+                        router.push({
+                            name: 'task.show',
+                            params: { id: rowData.id },
+                        })
+                    "
                     @editClick="rowData.showEdit = true"
                     @removeClick="remove(rowData, rowIndex)"
                 >
@@ -63,7 +155,6 @@
                         :item="rowData"
                         :employees="employees"
                         :categories="categories"
-                        
                         @replace="replace($event, rowIndex)"
                     ></edit>
                 </remove-edit-button>
@@ -74,7 +165,6 @@
             v-model:show="showCreate"
             :employees="employees"
             :categories="categories"
-            
             @push="push"
         ></create>
     </app-layout>
@@ -89,10 +179,11 @@ import Create from "./Create.vue";
 import Edit from "./Edit.vue";
 import { ref } from "vue";
 import CreateButton from "../../Components/CreateButton.vue";
-import { confirm, removeSuccess } from "../../Plugins/utility";
+import { confirm, removeSuccess, dropdowns } from "../../Plugins/utility";
 import { useToast } from "vuestic-ui";
-import { useRouter, useRoute } from 'vue-router'
-import StatusBtn from '../../Components/statusBtn.vue';
+import { useRouter, useRoute } from "vue-router";
+import StatusBtn from "../../Components/statusBtn.vue";
+import { Delete, More, List, Box, Search,Collection } from "@element-plus/icons-vue";
 export default {
     components: {
         AppLayout,
@@ -100,16 +191,23 @@ export default {
         Pagination,
         Create,
         Edit,
+        List,
+        Box,
         CreateButton,
         RemoveEditButton,
-        StatusBtn
+        StatusBtn,
+        Delete,
+        More,
+        Search,
+        Collection
     },
     setup() {
         // Start Propertis
-        const busy = ref(true)
+        const isCardWise = ref(true);
+        const busy = ref(true);
         const toast = useToast();
         const router = useRouter();
-        
+
         const items = ref([]);
         const employees = ref([]);
         const categories = ref([]);
@@ -121,12 +219,12 @@ export default {
         const columns = [
             { key: "id", sortable: true, sortingOptions: ["desc", "asc"] },
             { key: "title", sortable: true },
-          
+
             { key: "category.title", label: "Category", sortable: true },
-              { key: "employee.name", label: "Employee", sortable: true },
+            { key: "employee.name", label: "Employee", sortable: true },
             { key: "start", label: "Start", sortable: true },
             { key: "end", label: "Dead Line", sortable: true },
- 
+
             { key: "status", sortable: true },
             {
                 key: "action",
@@ -137,28 +235,27 @@ export default {
         const sortingOrder = ref("asc");
 
         // START METHODS
-        axios
-            .get(route("employee.index", { all: true }))
-            .then(({ data }) => (employees.value = data));
-        axios
-            .get(route("category.index", { all: true }))
-            .then(({ data }) => (categories.value = data));
-   
+        dropdowns("employees", (data) => {
+            employees.value = data;
+        });
+
+        dropdowns("categories", (data) => {
+            categories.value = data;
+        });
         const fetchItems = async (page) => {
             try {
                 const url = route("task.index", {
-                perPage: perPage.value,
-                page: page,
-            });
-            const { data } = await axios.get(url);
-            links.value = data.links;
-            items.value = addProtos(data.data, {
-                action: true,
-                showEdit: false,
-            });
-                
+                    perPage: perPage.value,
+                    page: page,
+                });
+                const { data } = await axios.get(url);
+                links.value = data.links;
+                items.value = addProtos(data.data, {
+                    action: true,
+                    showEdit: false,
+                });
             } catch (error) {
-                console.error(error)
+                console.error(error);
             }
             busy.value = false;
         };
@@ -200,7 +297,8 @@ export default {
             categories,
             remove,
             links,
-            router
+            router,
+            isCardWise,
         };
     },
 };
@@ -210,5 +308,11 @@ export default {
 .right {
     display: flex;
     justify-content: flex-end;
+}
+
+.description {
+    height: 200px;
+    overflow: auto;
+    margin-top: 5px;
 }
 </style>

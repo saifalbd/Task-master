@@ -50,14 +50,7 @@
                         <td>{{ t.start }}</td>
                         <td>{{ t.end }}</td>
                         <td>
-                            <va-button
-                                preset="plain"
-                                :color="['plain', 'success'].at(t.status)"
-                                split
-                                >{{
-                                    ["pending", "success"].at(t.status)
-                                }}</va-button
-                            >
+                           <status-btn :status="t.status" size="small"></status-btn>
                         </td>
                         <td>
                               <va-button size="small" round :to="{name:'job.task.show',params:{id:t.id}}">
@@ -84,10 +77,12 @@
 import AppLayout from "../../../Layouts/app-layout.vue";
 import PageTitleBox from "../../../Components/PageTitleBox.vue";
 import { ref } from "vue";
+import StatusBtn from "../../../Components/statusBtn.vue";
 export default {
     components: {
         AppLayout,
         PageTitleBox,
+        StatusBtn
     },
     setup() {
         const busy = ref(true)

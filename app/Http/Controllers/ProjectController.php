@@ -84,7 +84,8 @@ class ProjectController extends Controller
         $attachments = $request->attachments;
       
 
-        $project =  Project::create(compact('title', 'user_id', 'category_id', 'manager_id', 'start', 'end', 'team_id', 'description'));
+        $status = 0;
+        $project =  Project::create(compact('title', 'user_id', 'category_id', 'manager_id', 'start', 'end', 'team_id', 'description','status'));
         if($attachments && count($attachments)){
             $list = array_map(function($file){return Attachment::add($file,Task::class);},$attachments);
             $project->attachments()->sync(collect($list)->pluck('id')->toArray());
@@ -92,7 +93,7 @@ class ProjectController extends Controller
 
 
       
-        $project->load(['category','team','manager']);
+        $project->load(['category','team.members','manager']);
         return response()->json($project);
     }
 

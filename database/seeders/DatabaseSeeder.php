@@ -32,20 +32,22 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' =>'Saiful islam',
             'email' => 'test@gmail.com',
+            'phone'=>'01312288425',
             'avatar_id'=>$avarar->id,
             'email_verified_at' => now(),
             'password' => Hash::make(12345), // password
             'remember_token' => Str::random(10),
         ]);
 
-         User::create([
-            'name' =>'sobuj Ahmed',
-            'email' => 'sobuj@gmail.com',
-            'avatar_id'=>$avarar->id,
-            'email_verified_at' => now(),
-            'password' => Hash::make(12345), // password
-            'remember_token' => Str::random(10),
-        ]);
+        //  User::create([
+        //     'name' =>'sobuj Ahmed',
+        //     'email' => 'sobuj@gmail.com',
+        //     'phone'=>'01732221635',
+        //     'avatar_id'=>$avarar->id,
+        //     'email_verified_at' => now(),
+        //     'password' => Hash::make(12345), // password
+        //     'remember_token' => Str::random(10),
+        // ]);
 
         $testToken = [
             'tokenable_type'=>'user',
@@ -62,8 +64,8 @@ class DatabaseSeeder extends Seeder
             PositionSeeder::class,
         ]);
   
-        User::factory(100)->create();
-        Category::factory(100)->create();
+        // User::factory(100)->create();
+        Category::factory(20)->create();
        
     }
 }

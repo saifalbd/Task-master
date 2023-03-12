@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Position;
 use App\Models\User;
-use App\Models\UserEmployeePosition;
 use App\Notifications\EmployeeAssigned;
 use App\Rules\BDPhone;
 use Illuminate\Http\Request;
@@ -23,20 +22,24 @@ class EmployeeController extends Controller
 
     public function index(Request $request)
     {
-        $builder = Employee::query()->with(['position']);
-        $items = $request->all ? $builder->get() : $builder->paginate($request->perPage);
+        $builder = Employee::query()->with(['designation','model.avatar'])->where('user_id',$request->user_id);
+        $items = $builder->paginate($request->perPage);
         return response()->json($items);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function employeeProposal(Request $request)
     {
-        //
+    $user_id = $request->user_id;
+    return Employee::query()->where('employee_id',$user_id)->where('accepted',false)->with(['user.avatar','designation'])->get();
     }
+
+    public function acceptProposal(Employee $employee){
+       $employee->update(['accepted'=>true]);
+    }
+    public function denyProposal(Employee $employee){
+        $employee->delete();
+     }
 
     /**
      * Store a newly created resource in storage.
@@ -49,41 +52,55 @@ class EmployeeController extends Controller
         $request->validate([
             'email' => ['required', 'email'],
             'name' => ['required', 'string'],
-            'position' => ['required', 'numeric'],
-            'phone'=> ['required', 'numeric',new BDPhone],
+            'designation' => ['required', 'numeric'],
+            'phone'=> ['required', 'numeric',new BDPhone,Rule::unique('users','phone')],
+            'password'=>['required','string']
         ]);
+
+     
 
         $email = $request->email;
         $name = $request->name;
-        $password = Hash::make(12345);
+        $password = Hash::make($request->password);
         $phone = $request->phone;
-
-        $employee = User::query()->whereEmail($email)->first();
-        if (!$employee) {
-            $employee = Employee::create(compact('email', 'name', 'password','phone'));
-        }
-        $request->user()->employees()->syncWithoutDetaching([$employee->id], false);
-
-        $position_id = $request->position;
+        $avatar_id = 1;
+        $designation_id = $request->designation;
         $user_id = $request->user_id;
-        $employee_id = $employee->id;
+      
 
-        UserEmployeePosition::create(compact('position_id', 'user_id', 'employee_id'));
+        $canEmployee = Employee::query()->email($email)->first();
+        if($canEmployee){
+            return response()->json($canEmployee);
+        }
 
 
 
-        $employee->notify(new EmployeeAssigned($user_id));
+        $canUser = User::query()->whereEmail($email)->first();
+        $accepted = true;
 
-        $employee->load('position');
+        if($canUser){
+            $employee_id = $canUser->id;
+            $accepted = false;
+            $user = $canUser;
+        }else{
+            $user = User::create(compact('email', 'name', 'password','phone','avatar_id'));
+            $employee_id = $user->id;
+        }
+
+       
+        $employee = Employee::create(compact('user_id','employee_id','accepted','designation_id'));
+
+     
+        $user_id = $request->user_id;
+   
+        $user->notify(new EmployeeAssigned($user_id));
+
+        $employee->load(['designation','model.avatar']);
         return response()->json($employee);
     }
 
 
-    public function positions()
-    {
-        $items = Position::query()->get();
-        return response()->json($items);
-    }
+ 
 
     /**
      * Display the specified resource.
@@ -128,10 +145,6 @@ class EmployeeController extends Controller
     public function destroy(Request $request, Employee $employee)
     {
 
-        $employee_id = $employee->id;
-        if ($employee_id) {
-            $request->user()->employees()->detach($employee_id);
-            UserEmployeePosition::query()->where('user_id', $request->user_id)->where('employee_id', $employee_id)->delete();
-        }
+        $employee->delete();
     }
 }

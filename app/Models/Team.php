@@ -17,14 +17,14 @@ class Team extends Model
 
     public function members()
     {
-        return $this->belongsToMany(Employee::class, 'team-member','team_id','member_id');
+        return $this->belongsToMany(Employee::class, 'team-member','team_id','member_id')->with('model.avatar');
     }
 
     public function category(){
         return $this->belongsTo(Category::class);
     }
     public function manager(){
-        return $this->belongsTo(Employee::class,'manager_id');
+        return $this->belongsTo(Employee::class,'manager_id')->with('model.avatar');
     }
 
     public function scopeUser(Builder $builder, $user_id)

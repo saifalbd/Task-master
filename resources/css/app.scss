@@ -16,6 +16,7 @@
 @import './notification.scss';
 @import './comment.scss';
 @import './chatLayout.scss';
+@import './profile.scss';
 
 
 .flex-center{
@@ -67,6 +68,7 @@
             border-right: 3px solid $redbookColorLight;
             border-top-left-radius: $topNavHeight;
             border-top-right-radius: $topNavHeight;
+            padding:0 15px;
             .top-nav{
                 height: $topNavHeight;
 

@@ -39,7 +39,7 @@
                     </div>
                     <div class="flex xs12 mt-2">
                         <va-radio
-                            v-for="(option, index) in props.positions"
+                            v-for="(option, index) in props.designation"
                             :key="index"
                             v-model="position"
                             :label="option.title"
@@ -62,7 +62,7 @@ export default {
     components: { FormDialog },
 
     props: {
-        positions: {
+        designations: {
             type: Array,
             required: true,
         },

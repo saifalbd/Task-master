@@ -23,6 +23,7 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
+            'phone'=>fake()->unique()->phoneNumber(),
             'email_verified_at' => now(),
             'password' => Hash::make(12345), // password
             'remember_token' => Str::random(10),
@@ -51,9 +52,9 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             $user_id = 1;
             $employee_id = $user->id;
-            $position_id = 1;
+            $designation_id = 1;
             DB::table('user-employee')->insert(compact('user_id','employee_id'));
-            DB::table('user_employee_positions')->insert(compact('user_id','employee_id','position_id'));
+            DB::table('user_employee_designations')->insert(compact('user_id','employee_id','designation_id'));
 
         });
     }
