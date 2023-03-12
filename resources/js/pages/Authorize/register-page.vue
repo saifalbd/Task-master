@@ -23,6 +23,8 @@
                     <el-input
                         size="large"
                         v-model="ruleForm.password"
+                        type="password"
+                        show-password
                     ></el-input>
                 </el-form-item>
 
@@ -30,6 +32,8 @@
                     <el-input
                         size="large"
                         v-model="ruleForm.password_confirmation"
+                         type="password"
+                        show-password
                     ></el-input>
                 </el-form-item>
 
@@ -59,6 +63,7 @@ import { defineComponent, reactive, ref } from "vue";
 import { mainStore } from "../../store";
 import { Open } from "@element-plus/icons-vue";
 import { hasIn } from "lodash";
+import {useRouter} from 'vue-router';
 
 export default defineComponent({
     components: {
@@ -67,6 +72,7 @@ export default defineComponent({
     setup() {
         const ruleFormRef = ref();
         const busy = ref(false);
+        const router = useRouter();
         const ruleForm = reactive({
             name: "saiful islam",
             email: "test@gmail.com",
@@ -133,7 +139,7 @@ export default defineComponent({
                         //  main.addToken(data.token)
                         //  main.addUser(data.user);
 
-                        this.$router.push({ name: "login" });
+                        router.push({ name: "login" });
 
                         // console.log(data);
                     } catch (error) {
