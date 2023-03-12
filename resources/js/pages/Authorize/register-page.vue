@@ -74,8 +74,8 @@ export default defineComponent({
         const busy = ref(false);
         const router = useRouter();
         const ruleForm = reactive({
-            name: "saiful islam",
-            email: "test@gmail.com",
+            name: "",
+            email: "",
             password: "",
             password_confirmation: "",
             phone: "",
