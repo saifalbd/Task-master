@@ -5,20 +5,18 @@
     </div>
     <div v-if="task">
       <show-task :auth_id="auth_id" :id="id" :task="task">
-        <div>
-          <h1>
-            Employe: <b>{{ task.assigner.name }}</b>
-          </h1>
-
-          <div>
-            Task Assin: <b>{{ task.start }}</b>
-          </div>
-          <div>
-            DeadLine: <b>{{ task.end }}</b>
-          </div>
-          <div>
-            Status:
-            <status-btn :dropdown="true" :status="task.status">
+        
+            <el-descriptions direction="horizontal" :column="1" size="large" border>
+          <el-descriptions-item label="Assigner:">
+             <el-link>
+     <el-avatar :size="25" :src="task.assigner.avatar.url" />
+      <b style="font-size:15px; margin-left:5px">{{
+            task.assigner.name
+          }}</b>
+    </el-link>
+            
+          </el-descriptions-item>
+          <el-descriptions-item label="Status:"><status-btn  :dropdown="true" :status="task.status">
               <ul class="status-dropdown">
                 <li
                   v-for="(s, index) in statusList.filter(
@@ -30,9 +28,12 @@
                   {{ s.title }}
                 </li>
               </ul>
-            </status-btn>
-          </div>
-        </div>
+            </status-btn></el-descriptions-item>
+             <el-descriptions-item label="Asigned Date:"><b>{{useDateFormat(new Date(task.start), 'DD MMM YY')}}</b></el-descriptions-item>
+            <el-descriptions-item label="DeadLine Date:"><b>{{useDateFormat(new Date(task.end), 'DD MMM YY')}}</b></el-descriptions-item>
+        </el-descriptions>
+       
+        
       </show-task>
     </div>
   </app-layout>
@@ -47,6 +48,7 @@ import { statusList } from "../../../Plugins/utility";
 import {mainStore} from '../../../store/index'
 import { ref,reactive } from "vue";
 import { useToast } from "vuestic-ui";
+import {useDateFormat} from '@vueuse/core';
 export default {
   props: {
     id: {
@@ -103,6 +105,7 @@ export default {
       task,
       changeStatus,
       statusList,
+      useDateFormat
     };
   },
 };

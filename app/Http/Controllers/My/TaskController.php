@@ -16,7 +16,9 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $user_id = $request->user_id;
-        $builder = Task::query()->where('employee_id',$user_id)->with(['category','assigner']);
+        $builder = Task::query()->whereHas('employee',function($q)use($user_id){
+            $q->where('employee_id',$user_id);
+        })->with(['category','assigner.avatar']);
         $items = $builder->paginate($request->perPage);
         return response()->json($items);
     }
@@ -31,7 +33,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load(['category','assigner','attachments','comments'=>fn($q)=>$q->with('attachments')->where('parent_id',null)]);
+        $task->load(['category','assigner.avatar','attachments','comments'=>fn($q)=>$q->with('attachments')->where('parent_id',null)]);
         return response()->json($task);
     }
 
