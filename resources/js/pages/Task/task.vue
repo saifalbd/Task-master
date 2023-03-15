@@ -1,7 +1,9 @@
 <template>
   <app-layout :busy="busy">
     <div>
-      <page-title-box title="Show Task no job"> </page-title-box>
+      <page-title-box title="Show Task no job">
+        <back-button></back-button>
+      </page-title-box>
     </div>
     <div v-if="task">
       <show-task :auth_id="auth_id" :id="id" :task="task">
@@ -30,6 +32,7 @@ import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
 import ShowTask from "../../Components/ShowTask/index.vue";
 import StatusBtn from "../../Components/statusBtn.vue";
+import BackButton from '../../Components/BackButton.vue';
 import { reactive, ref } from "vue";
 import { mainStore } from "../../store/index";
 import {useDateFormat} from '@vueuse/core';
@@ -45,6 +48,7 @@ export default {
     PageTitleBox,
     ShowTask,
     StatusBtn,
+    BackButton
   },
   setup(props) {
     const main = mainStore();

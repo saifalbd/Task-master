@@ -1,7 +1,9 @@
 <template>
   <app-layout :busy="busy">
     <div>
-      <page-title-box title="Show Task"> </page-title-box>
+      <page-title-box title="Show Task">
+        
+      </page-title-box>
     </div>
     <div v-if="task">
       <show-task :auth_id="auth_id" :id="id" :task="task">
