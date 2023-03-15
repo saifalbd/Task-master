@@ -165,7 +165,7 @@ export default defineComponent({
       @update:show="notifyStore.toggleNodal($event)"
       @close="notifyStore.toggleNodal(false)"
     ></NotificationModel>
-    <ProfileEditModal :show="showProfileModal"></ProfileEditModal>
+    <!-- <ProfileEditModal :show="showProfileModal"></ProfileEditModal> -->
     <!-- <ChatModal v-model:show="showChatModal"></ChatModal> -->
   </div>
 </template>

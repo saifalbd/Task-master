@@ -1,51 +1,77 @@
 <template>
-    <div class="flex-right">
-        <va-button-group size="small" outline>
-              <va-button v-if="props.isView"
-            preset="primary"
-            size="small"
-            @click="emit('viewClick',true)"
-            ><va-icon size="small" name="visibility"></va-icon
-        ></va-button>  
-        <va-button
+  <div class="flex-right">
+    <el-button-group>
+      <el-button
+        type="primary"
+        size="small"
+        @click="emit('viewClick', true)"
+        v-if="props.isView"
+      >
+        <el-icon>
+          <edit />
+        </el-icon>
+      </el-button>
+      <el-button
+        type="primary"
+        size="small"
+        @click="emit('editClick', true)"
         v-if="isEdit"
-            preset="primary"
-            size="small"
-            @click="emit('editClick',true)"
-            ><va-icon size="small" name="edit"></va-icon
-        ></va-button>
-        <va-button v-if="isDelete" preset="primary" size="small"
-            ><va-icon
-                size="small"
-                name="delete"
-                color="#ed6c02"
-                @click="emit('removeClick',true)"
-            ></va-icon
-        ></va-button>
-    </va-button-group>
+      >
+        <el-icon>
+          <edit />
+        </el-icon>
+      </el-button>
+      <el-button
+        type="danger"
+        size="small"
+        @click="emit('removeClick', true)"
+        v-if="isDelete"
+      >
+        <el-icon>
+          <delete />
+        </el-icon>
+      </el-button>
+    </el-button-group>
+
     <slot></slot>
-    </div>
+  </div>
 </template>
 
 <script>
+import {
+  ArrowLeft,
+  ArrowRight,
+  Delete,
+  Edit,
+  Share,
+  Expand,
+} from "@element-plus/icons-vue";
 export default {
-    props:{
-        isView:{
-            type:Boolean,
-            default:false
-        },
-           isEdit:{
-            type:Boolean,
-            default:true
-        },
-        isDelete:{
-              type:Boolean,
-            default:true 
-        }
+  components: {
+    ArrowLeft,
+    ArrowRight,
+    Delete,
+    Edit,
+    Share,
+    Expand,
+  },
+  props: {
+    isView: {
+      type: Boolean,
+      default: false,
     },
-    setup(props,{emit}) {
-        return {emit,props};
+    isEdit: {
+      type: Boolean,
+      default: true,
     },
+    isDelete: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props, { emit }) {
+    return { emit, props };
+  },
 };
 </script>
 

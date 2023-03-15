@@ -1,120 +1,116 @@
 <template>
-    <va-modal
-        v-model="props.show"
-        :fullscreen="props.fullscreen"
-        hide-default-actions
-        no-outside-dismiss
-        class="form-sceen"
-    >
-        <va-inner-loading :loading="props.busy">
-            <div class="layout va-gutter-1">
-                <div class="row">
-                    <div class="flex xs12">
-                        <div class="item mb-4">
-                            <div class="form-title">
-                                <va-icon class="material-icons">add</va-icon>
-                                <span class="text">{{ title }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex xs12">
-                        <div class="item">
-                            <slot></slot>
-                        </div>
-                    </div>
-                    <div class="flex xs12">
-                        <div class="item actions-btns">
-                            <va-button
-                                color="danger"
-                                size="small"
-                                @click="close"
-                                ><va-icon class="material-icons">close</va-icon>
-                                Close</va-button
-                            >
-                              <va-button size="small" @click="next" v-if="props.isNext">
-                                <va-icon class="material-icons">keyboard_tab</va-icon>
-                              Next
-                            </va-button>
+  <el-dialog
+    v-model="props.show"
+    :before-close="handleClose"
+    :show-close="false"
+  >
+    <template #header="{ close, titleId, titleClass }">
+      <div
+        class="my-header"
+        style="display: flex; justify-content: space-between"
+      >
+        <h4 :id="titleId" :class="titleClass">{{ title }}</h4>
+        <el-button type="danger" size="small" @click="close">
+          <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
+          Close
+        </el-button>
+      </div>
+    </template>
 
-                            <va-button size="small" @click="add" v-else>
-                                <va-icon class="material-icons">add</va-icon>
-                                {{props.isEdit?'Replace':'Add'}}
-                            </va-button>
-                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </va-inner-loading>
-    </va-modal>
+    <slot></slot>
+
+    <template #footer>
+      <span class="dialog-footer" v-if="!busy">
+        <el-button type="primary" @click="next" v-if="props.isNext">
+          <el-icon>
+            <pointer />
+          </el-icon>
+          <span>Next</span>
+        </el-button>
+        <el-button type="primary" @click="add" v-else>
+          <el-icon>
+            <pointer />
+          </el-icon>
+          <span> {{ props.isEdit ? "Replace" : "Add" }}</span>
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
 import { defineComponent } from "vue";
+import { CircleCloseFilled, Pointer } from "@element-plus/icons-vue";
 
 export default defineComponent({
-    model: {
-        prop: "show",
-        event: "change",
+  components: { CircleCloseFilled, Pointer },
+  model: {
+    prop: "show",
+    event: "change",
+  },
+  props: {
+    show: {
+      type: Boolean,
+      default: true,
     },
-    props: {
-        show: {
-            type: Boolean,
-            default: true,
-        },
-        isEdit: {
-            type: Boolean,
-            default: false,
-        },
-        isNext:{
-            type:Boolean,
-            default:false
-        },
-        title: {
-            type: String,
-            required: true,
-        },
-        busy: {
-            type: Boolean,
-            default: false,
-        },
-        fullscreen: {
-            type: Boolean,
-            default: false,
-        },
+    isEdit: {
+      type: Boolean,
+      default: false,
     },
-    setup(props, { emit }) {
-        const close = () => {
-            emit("update:show", false);
-        };
-        const add = () => {
-            emit("add", true);
-        };
-        const next = ()=>{
-            emit('next',true)
-        }
-        return {
-            props,
-            close,
-            add,
-            next,
-        };
+    isNext: {
+      type: Boolean,
+      default: false,
     },
+    title: {
+      type: String,
+      required: true,
+    },
+    busy: {
+      type: Boolean,
+      default: false,
+    },
+    fullscreen: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props, { emit }) {
+    const close = () => {
+      emit("update:show", false);
+    };
+    const add = () => {
+      emit("add", true);
+    };
+    const next = () => {
+      emit("next", true);
+    };
+    const handleClose = (done) => {
+      done();
+      close();
+    };
+    return {
+      props,
+      close,
+      add,
+      next,
+      handleClose,
+    };
+  },
 });
 </script>
 
 <style scoped lang="scss">
 .form-title {
-    .text {
-        font-weight: bold;
-    }
+  .text {
+    font-weight: bold;
+  }
 }
 .actions-btns {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-    button {
-        margin: 0 5px;
-    }
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    margin: 0 5px;
+  }
 }
 </style>

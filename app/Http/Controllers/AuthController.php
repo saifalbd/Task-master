@@ -12,7 +12,10 @@ use App\Models\User;
 use App\Rules\BDPhone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
@@ -56,8 +59,8 @@ class AuthController extends Controller
         $email = $request->email;
         $name = $request->name;
         $phone = $request->phone;
-
-        $user =   User::create(compact('email', 'name', 'password', 'phone'));
+        $avatar_id = 1;
+        $user =   User::create(compact('email', 'name', 'password', 'phone','avatar_id'));
         $item = new AuthResource($user);
         return response()->json($item);
     }
@@ -155,5 +158,27 @@ class AuthController extends Controller
             $name = $item['name'];
             EmergencyContact::updateOrCreate(compact('type','user_id'),compact('relationship','phone','name'));
         }
+    }
+
+    public function submitForgetPasswordForm(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+        ]);
+
+        $token = Str::random(64);
+
+        DB::table('password_resets')->insert([
+            'email' => $request->email, 
+            'token' => $token, 
+            'created_at' => Carbon::now()
+          ]);
+
+        Mail::send('email.forgetPassword', ['token' => $token], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Reset Password');
+        });
+
+        return response()->json(['message'=>'We have e-mailed your password reset link!']);
     }
 }

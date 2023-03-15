@@ -57,7 +57,7 @@ class TaskAssigned extends Notification
     public function toSms($notifiable){
         $task = $this->task;
         $assigner = $task->assigner;
-        $employee = $task->employee;
+        $employee = $task->employee->model;
         $title = $task->title;
         $assignerName = $assigner->name;
         $message = $assignerName.' '.'আপনাকে নতুন টাস্ক দিয়েছেন বিষয় : '.$title;

@@ -111,29 +111,7 @@
             </el-descriptions>
           </div>
         </el-card>
-        <!-- <div class="s-card">
-          <div class="s-menu">
-                <va-button-dropdown preset="secondary" round>
-                  <ul class="drop-down-list">
-                    <li @click="item.showEdit =true">Edit</li>
-                    <li   @click="remove(item, index)">Delete</li>
-                  </ul>
-                </va-button-dropdown>
-          </div>
-          <div class="s-img-box">
-            <img :src="item.model.avatar.url" alt="" srcset="">
-          </div>
-          <div class="s-name">
-            {{item.model.name}}
-          </div>
-          
-          <div class="s-position">
-            {{item.designation.title}}
-          </div>
-          <div>
-            <el-button @click="goProfile(item.model.id)">Show</el-button>
-          </div>
-        </div> -->
+      
       </div>
     </div>
 

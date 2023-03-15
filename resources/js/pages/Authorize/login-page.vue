@@ -43,6 +43,10 @@
           Don't have an account yet?
           <el-link href="/register"><b>Register</b></el-link>
         </div>
+          <div class="redirect-info">
+         Forgot
+          <el-link href="/forgot-password"><b>Password</b></el-link>
+        </div>
       </el-form>
     </el-card>
   </div>
@@ -109,6 +113,8 @@ export default defineComponent({
 
             main.addToken(data.token);
             main.addUser(data.user);
+
+            console.log(data)
 
             router.push({ name: "home" });
 

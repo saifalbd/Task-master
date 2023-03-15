@@ -56,8 +56,7 @@ class TaskController extends Controller
         $user_id = $request->user_id;
         $title = $request->title;
         $category_id = $request->category;
-        $employee = Employee::findOrFail($request->employee);
-        $employee_id = $employee->employee_id;
+        $employee_id = $request->employee;
         
         $start = $request->start;
         $end = $request->end;
@@ -74,11 +73,13 @@ class TaskController extends Controller
         }
 
         $user = User::find($employee_id);
-        $user->notify(new TaskAssigned($task));
+        $task->fresh();
+       
+        $task->load(['category','employee.model']);
+        // $user->notify(new TaskAssigned($task));
 
       
-        $task->fresh();
-        $task->load(['category','employee.model']);
+       
         return response()->json($task);
         
 

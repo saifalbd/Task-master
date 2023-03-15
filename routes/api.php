@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
@@ -33,6 +34,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::put('/online/{user}',[AuthController::class,'online'])->name('online');
 Route::put('/offline/{user}',[AuthController::class,'offline'])->name('offline');
+Route::post('/forget-password',[AuthController::class,'submitForgetPasswordForm'])->name('forgetPassword');
 
 Route::middleware('auth:sanctum')->group(function(){
 
@@ -54,6 +56,8 @@ Route::middleware('auth:sanctum')->group(function(){
    
 
     Route::apiResource('/users',UserController::class)->names('user');
+
+    Route::apiResource('/contacts',ContactController::class)->names('contact');
 
     Route::apiResource('/departments',DepartmentController::class)->only(['index','store','update','destroy'])->names('department');
     Route::apiResource('/designations',DesignationController::class)->only(['index','store','update','destroy'])->names('designation');

@@ -29,22 +29,7 @@
             </div>
         </div>
 
-        <va-data-table
-            :items="items"
-            :columns="columns"
-            :hoverable="true"
-            v-model:sort-by="sortBy"
-            v-model:sorting-order="sortingOrder"
-        >
-            <template #cell(action)="{ rowData, rowIndex }">
-                <remove-edit-button
-                    @editClick="rowData.showEdit = true"
-                    @removeClick="remove(rowData, rowIndex)"
-                >
-                
-                </remove-edit-button>
-            </template>
-        </va-data-table>
+    
         <pagination :links="links" @page="fetchItems"></pagination>
         <create v-model:show="showCreate" @push="push"></create>
     </app-layout>
@@ -74,7 +59,7 @@ export default {
         const busy = ref(false)
          const toast = useToast();
         const items = ref([]);
-        const showCreate = ref(false);
+        const showCreate = ref(true);
         const links = ref([]);
 
         const perPage = ref(10);

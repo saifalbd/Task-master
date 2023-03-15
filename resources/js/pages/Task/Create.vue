@@ -2,7 +2,7 @@
     <form-dialog
         :show="props.show"
         @update:show="emit('update:show', $event)"
-        :busy="busy"
+        :busy="formBusy"
         title="Create Task"
         @add="save"
         :fullscreen="true"
@@ -104,6 +104,7 @@ export default {
 
     setup(props, { emit }) {
         let busy = ref(false);
+        const formBusy = ref(false);
         const form = ref(null);
         let title = ref("");
         let category = ref(null);
@@ -117,6 +118,7 @@ export default {
             let url = route("task.store");
             let valid = await form.value.validate();
             if (!valid) return null;
+            formBusy.value = true;
             try {
                 const formData = new FormData();
                 formData.append("title", title.value);
@@ -141,6 +143,7 @@ export default {
                 console.error(error);
                 validErorrs(error);
             }
+            formBusy.value = false
         };
 
         return {
@@ -150,6 +153,7 @@ export default {
             save,
             rs,
             busy,
+            formBusy,
 
             title,
             start,

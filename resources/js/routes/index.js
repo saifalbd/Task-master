@@ -16,6 +16,13 @@ const routes = [
         component: () => import("../pages/Authorize/register-page.vue"),
     },
     {
+        path: "/forgot-password",
+        name: "forgotPassword",
+        component: () => import("../pages/Authorize/forgotPassword.vue"),
+    },
+
+    
+    {
         path: "/home",
         name: "home",
         component: () => import("../pages/Home/index.vue"),
@@ -24,6 +31,11 @@ const routes = [
         path: "/categories",
         name: "category",
         component: () => import("../pages/Category/index.vue"),
+    },
+    {
+        path:'/contacts',
+        name:'contact',
+        component: () => import("../pages/Contact/index.vue"),
     },
     {
         path: "/departments",
@@ -40,6 +52,12 @@ const routes = [
         name: "employee",
         component: () => import("../pages/Employee/index.vue"),
     },
+    {
+        path: "/clients",
+        name: "client",
+        component: () => import("../pages/Client/index.vue"),
+    },
+
     {
         path: "/teams",
         name: "team",

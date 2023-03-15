@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Category;
 use App\Models\Chat;
 use App\Models\Comment;
+use App\Models\Contact;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
@@ -58,6 +59,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('department',Department::class);
         Route::model('designation',Designation::class);
         Route::model('todo',Todo::class);
+        Route::model('contact',Contact::class);
         
         Route::model('chat',Chat::class);
         Route::model('comment',Comment::class);

@@ -6,11 +6,16 @@
         <b>Home</b>
       </el-menu-item>
 
+  <el-menu-item index="2" @click="go({ name: 'contact' })">
+        <el-icon><avatar /></el-icon>
+        <b>Contacts</b>
+      </el-menu-item>
+      
    <el-menu-item index="2" @click="go({ name: 'employee' })">
         <el-icon><avatar /></el-icon>
         <b>Employees</b>
       </el-menu-item>
-         <el-menu-item index="3" @click="go({ name: 'department' })">
+         <el-menu-item index="3" @click="go({ name: 'client' })">
         <el-icon><user /></el-icon>
         <b>Clients</b>
       </el-menu-item>

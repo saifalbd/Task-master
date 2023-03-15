@@ -29,26 +29,27 @@
             </div>
         </div>
 
-        <va-data-table
-            :items="items"
-            :columns="columns"
-            :hoverable="true"
-            v-model:sort-by="sortBy"
-            v-model:sorting-order="sortingOrder"
-        >
-            <template #cell(action)="{ rowData, rowIndex }">
-                <remove-edit-button
-                    @editClick="rowData.showEdit = true"
-                    @removeClick="remove(rowData, rowIndex)"
+
+
+  <el-table   :data="items" border style="width: 100%">
+    <el-table-column prop="id" label="serial"/>
+    <el-table-column prop="title" label="title" />
+
+        <el-table-column fixed="right" label="Operations" width="120">
+      <template #default="{row,$index}">
+         <remove-edit-button
+                    @editClick="row.showEdit = true"
+                    @removeClick="remove(row, $index)"
                 >
                    <edit
-                        v-model:show="rowData.showEdit"
-                        :item="rowData"
-                        @replace="replace($event, rowIndex)"
+                        v-model:show="row.showEdit"
+                        :item="row"
+                        @replace="replace($event, $index)"
                     ></edit>
                 </remove-edit-button>
-            </template>
-        </va-data-table>
+      </template>
+    </el-table-column>
+  </el-table>
         <pagination :links="links" @page="fetchItems"></pagination>
         <create v-model:show="showCreate" @push="push"></create>
     </app-layout>
@@ -96,6 +97,7 @@ export default {
         ];
         const sortingOrder = ref("asc");
 
+     
         // START METHODS
         const fetchItems = async (page) => {
             busy.value = true;
@@ -148,6 +150,7 @@ export default {
             remove,
             links,
             busy,
+        
         };
     },
 };
