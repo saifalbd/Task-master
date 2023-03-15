@@ -8,7 +8,7 @@
         v-if="props.isView"
       >
         <el-icon>
-          <edit />
+          <expand />
         </el-icon>
       </el-button>
       <el-button

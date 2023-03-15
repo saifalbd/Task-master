@@ -203,7 +203,7 @@ export default {
     },
     setup() {
         // Start Propertis
-        const isCardWise = ref(true);
+        const isCardWise = ref(false);
         const busy = ref(true);
         const toast = useToast();
         const router = useRouter();
@@ -214,7 +214,7 @@ export default {
         const showCreate = ref(false);
         const links = ref([]);
 
-        const perPage = ref(10);
+        const perPage = ref(50);
         const sortBy = ref("title");
         const columns = [
             { key: "id", sortable: true, sortingOptions: ["desc", "asc"] },

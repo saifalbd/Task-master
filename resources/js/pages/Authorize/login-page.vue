@@ -58,7 +58,7 @@ import { mainStore } from "../../store";
 import { useRouter } from "vue-router";
 import { Open } from "@element-plus/icons-vue";
 import { hasIn } from "lodash";
-
+import { ElNotification } from 'element-plus'
 export default defineComponent({
   components: {
     Open,
@@ -98,7 +98,15 @@ export default defineComponent({
       ],
     });
 
-    // whenLogout();
+
+const warning = (message) => {
+  ElNotification({
+    title: 'Warning',
+    message,
+    type: 'warning',
+  })
+}
+
 
     const login = async (formEl) => {
       await formEl.validate(async (valid, fields) => {
@@ -127,11 +135,15 @@ export default defineComponent({
               const list = res.data.errors;
 
               if (hasIn(list, "loginEmail")) {
-                errors.userName = list.loginEmail[0];
+                let error = list.loginEmail[0];
+                errors.userName = error
+                warning(error)
               }
 
               if (hasIn(list, "loginPassword")) {
-                errors.password = list.loginPassword[0];
+                let error =  list.loginPassword[0];
+                errors.password = error
+                            warning(error)
               }
             }
           }
