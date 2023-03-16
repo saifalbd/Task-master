@@ -25,10 +25,10 @@
                                 class="list__item"
                                 v-for="(notify, index) in notifyStore.taskNotifications"
                                 :key="index"
-                                @click="go({name:'job.task.show',params:{id:notify.data.task_id}})"
+                                @click="go({name:'job.task.show',params:{id:notify.data.task_id}},notify.id)"
                             >
                                 <va-list-item-section avatar>
-                                    <va-avatar>
+                                    <va-avatar :size="40">
                                         <img :src="notify.fromUser.avatar.url" />
                                     </va-avatar>
                                 </va-list-item-section>
@@ -41,9 +41,19 @@
                                     <va-list-item-label
                                       
                                         :lines="index + 1"
-                                    >
-                                        {{ notify.data.message }}
+                                    v-if="notify.type =='TaskStatusChanged'">
+
+                                        {{ notify.data.message }} Changed Status From 
+                                        <status-btn-vue :status="notify.data.beforeStatus" size="small" plain></status-btn-vue>
+                                        To  <status-btn-vue :status="notify.data.status"  size="small" plain></status-btn-vue>
                                     </va-list-item-label>
+                                     <va-list-item-label
+                                      
+                                        :lines="index + 1"
+                                    v-else>
+                                        {{ notify.data.message }} 
+                                    </va-list-item-label>
+
                                 </va-list-item-section>
 
                                 <va-list-item-section icon>
@@ -62,10 +72,11 @@
                                 class="list__item"
                                 v-for="(notify, index) in notifyStore.employeeAssignedNotifications"
                                 :key="index"
+                                @click="go({name:'userProfile',params:{user:notify.data.user_id}},notify.id)"
                             >
                                 <va-list-item-section avatar>
-                                    <va-avatar>
-                                        <!-- <img :src="contact.img" /> -->
+                                    <va-avatar :size="40">
+                                     <img :src="notify.fromUser.avatar.url" />
                                     </va-avatar>
                                 </va-list-item-section>
 
@@ -113,7 +124,12 @@ import { defineComponent, ref, watch,computed } from "vue";
 import {notificationStore} from '../store/notification';
 import {useRouter} from 'vue-router';
 
+import statusBtnVue from "../Components/statusBtn.vue";
+
 export default defineComponent({
+    components:{
+statusBtnVue
+    },
     model: {
         prop: "show",
         event: "change",
@@ -136,7 +152,8 @@ export default defineComponent({
             emit("update:show", false);
         };
 
-         const go = (to)=>{
+         const go = (to,id)=>{
+        axios.put(route('markAsReadNotify',{id}),{})
             close()
             router.push(to);
         }

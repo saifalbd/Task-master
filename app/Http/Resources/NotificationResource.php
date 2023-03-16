@@ -21,6 +21,7 @@ class NotificationResource extends JsonResource
         $user->load('avatar');
     
         return [
+            'id'=>$this->id,
             'type'=>Str::afterLast($this->type, '\\'),
             'data'=>$this->data,
             'fromUser'=>$user,

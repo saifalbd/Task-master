@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function(){
     
 
     Route::get('/notifications',[UserController::class,'notifications'])->name('notification');
+    Route::put('/mark-as-read-notify/{id}',[UtilityController::class,'markAsReadNotify'])->name('markAsReadNotify');
     Route::apiResource('/category',CategoryController::class)->names('category');
     Route::post('/avatar',[AuthController::class,'uploadAvatar'])->name('avatar');
     Route::get('/users/by-email',[UserController::class,'showByEmail'])->name('user.showByEmail');

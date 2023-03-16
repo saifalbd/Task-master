@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Task;
 use App\Models\User;
 use App\Notifications\TaskAssigned;
+use App\Notifications\TaskStatusChanged;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -117,8 +118,14 @@ class TaskController extends Controller
      */
     public function changeStatus(Request $request, Task $task)
     {
+        $beforeStatus = $task->status;
         $request->validate(['status'=>['required','numeric']]);
         $status = $request->status;
+
+        $user = $task->user;
+
+        $user->notify(new TaskStatusChanged($task,$beforeStatus,$status));
+
         $task->update(compact('status'));
         return response()->json($task);
     }

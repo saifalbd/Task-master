@@ -22,10 +22,11 @@ export const notificationStore = defineStore("notifications", {
                 this.count = data.length;
             });
         },
+       
     },
     getters:{
         taskNotifications(){
-            return this.notifications.filter((e) => e.type == "TaskAssigned");
+            return this.notifications.filter((e) =>["TaskAssigned" , "TaskStatusChanged"].includes(e.type));
         },
         employeeAssignedNotifications(){
             return this.notifications.filter(e=>e.type=='EmployeeAssigned')
