@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\My\ProjectController as MyProjectController;
 use App\Http\Controllers\My\TaskController as MyTaskController;
 use App\Http\Controllers\ProjectController;
@@ -64,7 +65,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('/designations',DesignationController::class)->only(['index','store','update','destroy'])->names('designation');
 
 
-    Route::get('employee-proposals',[EmployeeController::class,'employeeProposal'])->name('employeeProposal');
+    Route::get('/employee-proposals',[EmployeeController::class,'employeeProposal'])->name('employeeProposal');
     Route::get('/accept-proposal/{employee}',[EmployeeController::class,'acceptProposal'])->name('acceptProposal');
     Route::get('/deny-proposal/{employee}',[EmployeeController::class,'denyProposal'])->name('denyProposal');
     Route::apiResource('/employees',EmployeeController::class)->names('employee');
@@ -96,6 +97,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::apiResource('/chats',ChatController::class)->only(['index','store','destroy'])->names('chat');
 
 //changeStatus
+
+Route::prefix('/home')->name('home.')->group(function(){
+    Route::get('/tasks',[HomeController::class,'recentTasks'])->name('recentTask');
+});
 
     Route::prefix('/my')->name('my.')->group(function(){
         Route::apiResource('/task',MyTaskController::class)->only(['index','show','update'])->names('task');

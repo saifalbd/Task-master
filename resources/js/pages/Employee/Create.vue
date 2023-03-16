@@ -106,7 +106,7 @@ export default {
     const checkEmail = ref(false);
     const form = ref(null);
     let name = ref("");
-    let email = ref("s@g.com");
+    let email = ref("");
     let phone = ref("");
     let password = ref('');
     let confirm_password = ref('')

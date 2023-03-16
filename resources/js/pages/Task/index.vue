@@ -167,7 +167,7 @@
               "
               title="Show"
             >
-              <el-icon>
+              <el-icon :size="20">
                 <expand />
               </el-icon>
             </el-button>
@@ -177,7 +177,7 @@
               @click="rowData.showEdit = true"
               title="edit"
             >
-              <el-icon>
+              <el-icon :size="20">
                 <edit />
               </el-icon>
             </el-button>

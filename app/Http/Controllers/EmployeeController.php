@@ -31,6 +31,7 @@ class EmployeeController extends Controller
     public function employeeProposal(Request $request)
     {
     $user_id = $request->user_id;
+
     return Employee::query()->where('employee_id',$user_id)->where('accepted',false)->with(['user.avatar','designation'])->get();
     }
 
