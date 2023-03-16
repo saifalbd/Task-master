@@ -2,7 +2,7 @@
   <app-layout :busy="busy">
     <div>
       <page-title-box title="Show Task">
-        
+        <back-button></back-button>
       </page-title-box>
     </div>
     <div v-if="task">
@@ -51,6 +51,7 @@ import {mainStore} from '../../../store/index'
 import { ref,reactive } from "vue";
 import { useToast } from "vuestic-ui";
 import {useDateFormat} from '@vueuse/core';
+import BackButton from '../../../Components/BackButton.vue';
 export default {
   props: {
     id: {
@@ -63,6 +64,7 @@ export default {
     PageTitleBox,
     ShowTask,
     StatusBtn,
+    BackButton
   },
   setup(props) {
     const task = ref(null);

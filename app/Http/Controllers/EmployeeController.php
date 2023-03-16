@@ -53,8 +53,8 @@ class EmployeeController extends Controller
             'email' => ['required', 'email'],
             'name' => ['required', 'string'],
             'designation' => ['required', 'numeric'],
-            'phone'=> ['required', 'numeric',new BDPhone,Rule::unique('users','phone')],
-            'password'=>['required','string']
+            'phone'=> ['required', 'numeric',new BDPhone,Rule::unique('users','phone')->whereNot('email',$request->email)],
+            'password'=>['nullable','string']
         ]);
 
      
