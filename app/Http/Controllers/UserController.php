@@ -20,7 +20,7 @@ class UserController extends Controller
 
 
     public function notifications(Request $request){
-        $user = User::find(1);
+        $user = User::find($request->user_id);
         $notifications = $user->unreadNotifications;
         $collection = NotificationResource::collection($notifications);
         return response()->json($collection);

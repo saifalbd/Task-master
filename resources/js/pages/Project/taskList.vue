@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import StatusBtn from "../../Components/statusBtn.vue";
 import RemoveEditButton from "../../Components/RemoveEditButton.vue";
 import Taskmodel from "./Taskmodel.vue";

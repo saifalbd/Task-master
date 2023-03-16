@@ -85,6 +85,11 @@ const routes = [
         component: () => import("../pages/Task/task.vue"),
         props: (route) => ({ id: route.params.id }),
     },
+    {
+        path:'/task-archives',
+        name:'task.archive',
+        component:()=>import("../pages/Task/archives.vue")
+    },
 
     /**Start My Jobs */
 
@@ -110,6 +115,13 @@ const routes = [
         component: () => import("../pages/MyJob/Task/show.vue"),
         props: (route) => ({ id: route.params.id }),
     },
+
+    {
+        path:'/jobs/task-archives',
+        name:'job.task.archive',
+        component:()=>import("../pages/MyJob/Task/Archives.vue")
+    },
+  
     {
         path: "/chats",
         name: "chat",

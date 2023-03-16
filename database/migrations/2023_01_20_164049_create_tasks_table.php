@@ -23,9 +23,15 @@ return new class extends Migration
             $table->date('end');
             $table->tinyInteger('status')->default(0);
             $table->longText('description')->nullable();
+            $table->boolean('user_star')->default(0);
+            $table->boolean('employee_star')->default(0);
+            $table->boolean('user_archive')->default(0);
+            $table->boolean('employee_archive')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
+
+    
     }
 
     /**
@@ -35,6 +41,7 @@ return new class extends Migration
      */
     public function down()
     {
+    
         Schema::dropIfExists('tasks');
     }
 };

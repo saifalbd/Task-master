@@ -78,9 +78,15 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/project/{project}/change-status',[ProjectController::class,'changeStatus'])->name('project.changeStatus');
     Route::apiResource('/projects',ProjectController::class)->names('project');
     
+
     Route::apiResource('/projects.project-tasks',ProjectTaskController::class)->names('project.task');
     Route::apiResource('/tasks',TaskController::class)->names('task');
+    Route::get('/task-archives',[TaskController::class,'archives'])->name('task.archives');
+    Route::post('/task-archives/{task}',[TaskController::class,'doArchive'])->name('task.doArchive');
     Route::post('/tasks/{task}/change-status',[TaskController::class,'changeStatus'])->name('task.changeStatus');
+    Route::post('/tasks/{task}/change-star',[TaskController::class,'changeStar'])->name('task.changeStar');
+
+
     Route::post('/comments/{comment}/toggle-likes',[CommentController::class,'toggleLikes'])->name('comment.toggleLike');
     Route::apiResource('/comments',CommentController::class)->names('comment');
     Route::get('/chat-users',[ChatController::class,'chatUsers'])->name('chatUsers');
@@ -92,6 +98,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::prefix('/my')->name('my.')->group(function(){
         Route::apiResource('/task',MyTaskController::class)->only(['index','show','update'])->names('task');
+        Route::get('/task-archives',[MyTaskController::class,'archives'])->name('task.archives');
         Route::apiResource('/project',MyProjectController::class)->only(['index','show','update'])->names('project');
     });
     

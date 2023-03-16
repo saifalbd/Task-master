@@ -18,7 +18,16 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $builder = Task::query()->user($request->user()->id)->with(['category','employee.model.avatar']);
+        $user_id = $request->user_id;
+        $builder = Task::query()->user($user_id)->archiveList('user',false)->with(['category','employee.model.avatar']);
+        $items = $builder->paginate($request->perPage);
+        return response()->json($items);
+    }
+
+
+    public function archives(Request $request){
+        $user_id = $request->user_id;
+        $builder = Task::query()->user($user_id)->archiveList('user',true)->with(['category','employee.model.avatar']);
         $items = $builder->paginate($request->perPage);
         return response()->json($items);
     }
@@ -75,8 +84,8 @@ class TaskController extends Controller
         $user = User::find($employee_id);
         $task->fresh();
        
-        $task->load(['category','employee.model']);
-        // $user->notify(new TaskAssigned($task));
+        $task->load(['category','employee.model.avatar']);
+        $user->notify(new TaskAssigned($task));
 
       
        
@@ -112,6 +121,19 @@ class TaskController extends Controller
         $status = $request->status;
         $task->update(compact('status'));
         return response()->json($task);
+    }
+
+    public function changeStar(Request $request,Task $task){
+        $request->validate(['star'=>['required','numeric'],'prop'=>['required','string']]);
+        $task->update([$request->prop=>$request->star]);
+    }
+
+    public function doArchive(Request $request,Task $task){
+
+        $request->validate(['do'=>['required','in:0,1'],'prop'=>['required','string']]);
+        $task->update([$request->prop=>$request->do]);
+
+        return $task;
     }
 
     /**

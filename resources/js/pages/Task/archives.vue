@@ -1,17 +1,9 @@
 <template>
   <app-layout :busy="busy">
     <div>
-      <page-title-box title="Task">
-        <create-button
-          title="Add Task"
-          @click="showCreate = true"
-        ></create-button>
-          <el-button type="primary" @click="router.push({name:'task.archive'})">
-            <el-icon>
-              <download/>
-            </el-icon>
-            Archives
-          </el-button>
+      <page-title-box title="Task Archives">
+       <back-button></back-button>
+          
       </page-title-box>
     </div>
 
@@ -226,6 +218,7 @@ import { confirm, removeSuccess, dropdowns } from "../../Plugins/utility";
 import { useToast } from "vuestic-ui";
 import { useRouter } from "vue-router";
 import StatusBtn from "../../Components/statusBtn.vue";
+import BackButton from '../../Components/BackButton.vue';
 import {sortBy} from 'lodash';
 import {
   Delete,
@@ -261,6 +254,7 @@ export default {
     Download,
     Star,
     StarFilled,
+    BackButton
   },
   setup() {
     // Start Propertis
@@ -306,7 +300,7 @@ export default {
     });
     const fetchItems = async (page) => {
       try {
-        const url = route("task.index", {
+        const url = route("task.archives", {
           perPage: perPage.value,
           page: page,
         });

@@ -16,11 +16,14 @@ class NotificationResource extends JsonResource
      */
     public function toArray($request)
     {
+
+        $user = User::find($this->data['user_id']);
+        $user->load('avatar');
     
         return [
             'type'=>Str::afterLast($this->type, '\\'),
             'data'=>$this->data,
-            'fromUser'=>User::find($this->data['user_id']),
+            'fromUser'=>$user,
             'read_at'=>$this->read_at,
             'atNow'=>$this->created_at->diffForHumans(null,null,true)
         ];

@@ -25,10 +25,13 @@ export const notificationStore = defineStore("notifications", {
     },
     getters:{
         taskNotifications(){
-            return this.notifications.filter((e) => e.type == "TaskAssign");
+            return this.notifications.filter((e) => e.type == "TaskAssigned");
         },
         employeeAssignedNotifications(){
             return this.notifications.filter(e=>e.type=='EmployeeAssigned')
-        }
+        },
+     
+
+        
     }
 });

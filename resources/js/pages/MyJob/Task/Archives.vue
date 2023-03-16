@@ -1,13 +1,8 @@
 <template>
   <app-layout :busy="busy">
     <div>
-      <page-title-box title="My Task (jobs)">
-         <el-button type="primary" @click="go({name:'job.task.archive'})">
-            <el-icon>
-              <download/>
-            </el-icon>
-            Archives
-          </el-button>
+      <page-title-box title="My Task Archives (jobs)">
+         <back-button-vue/>
       </page-title-box>
     </div>
     <div class="row mt-4">
@@ -72,7 +67,7 @@
                   <el-button
                     type="primary"
                     size="small"
-                    title="Archive"
+                    title="Restore From Archive"
                     @click="doArchive(t, i)"
                   >
                     <el-icon>
@@ -112,10 +107,13 @@ import { ref } from "vue";
 import StatusBtn from "../../../Components/statusBtn.vue";
 import {StarFilled,Expand,Download} from '@element-plus/icons-vue';
 import {useRouter} from 'vue-router';
+
+import BackButtonVue from '../../../Components/BackButton.vue';
 export default {
   components: {
     AppLayout,
     PageTitleBox,
+    BackButtonVue,
     StatusBtn,
     StarFilled,Expand,Download
   },
@@ -131,7 +129,7 @@ export default {
     }
     const fetchItems = async () => {
       try {
-        const url = route("my.task.index");
+        const url = route("my.task.archives");
         const { data } = await axios.get(url);
         items.value = data.data;
         links.value = data.links;

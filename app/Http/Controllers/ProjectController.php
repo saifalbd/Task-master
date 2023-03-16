@@ -24,8 +24,9 @@ class ProjectController extends Controller
 
 
     public function members(Project $project){
-        $items =  $project->team->members()->get();
+        $items =  $project->team->members()->with('model')->get();
         $manager = $project->manager;
+        $manager->load('model');
 
         return array_merge($items->toArray(),[$manager]);
     }
@@ -106,7 +107,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project->load(['category','team','manager','assigner','attachments']);
+        $project->load(['category','team','manager','assigner.avatar','attachments']);
         return response()->json($project);
     }
 

@@ -9,7 +9,7 @@ export class ChatItem {
         this.chat = chat;
         this.isSend = chat.isSend;
         this.isHover = false;
-        let messageDom = el("span", `${this.isSend?'Send':'Recieve'}: ${chat.message}`)
+        let messageDom = el("span", ` ${chat.message}`)
         this.chatRow = el(".chat-row", {}, [
             this.fileBox(chat),
             messageDom,
@@ -75,7 +75,7 @@ export class ChatItem {
             }
          
         }else{
-            return el('span','span')
+            return el('span','')
         }
     }
 

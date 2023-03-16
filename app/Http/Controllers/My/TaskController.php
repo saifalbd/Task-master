@@ -16,7 +16,16 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $user_id = $request->user_id;
-        $builder = Task::query()->whereHas('employee',function($q)use($user_id){
+        $builder = Task::query()->archiveList('employee',false)->whereHas('employee',function($q)use($user_id){
+            $q->where('employee_id',$user_id);
+        })->with(['category','assigner.avatar']);
+        $items = $builder->paginate($request->perPage);
+        return response()->json($items);
+    }
+
+    public function archives(Request $request){
+        $user_id = $request->user_id;
+        $builder = Task::query()->archiveList('employee',true)->whereHas('employee',function($q)use($user_id){
             $q->where('employee_id',$user_id);
         })->with(['category','assigner.avatar']);
         $items = $builder->paginate($request->perPage);

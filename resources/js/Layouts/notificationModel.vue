@@ -17,6 +17,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- taskNotifications -->
                     <div class="flex xs12" v-if="notifyStore.taskNotifications.length">
                         <va-list>
                             <va-list-label> TaskNotifications </va-list-label>
@@ -24,10 +25,11 @@
                                 class="list__item"
                                 v-for="(notify, index) in notifyStore.taskNotifications"
                                 :key="index"
+                                @click="go({name:'job.task.show',params:{id:notify.data.task_id}})"
                             >
                                 <va-list-item-section avatar>
                                     <va-avatar>
-                                        <!-- <img :src="contact.img" /> -->
+                                        <img :src="notify.fromUser.avatar.url" />
                                     </va-avatar>
                                 </va-list-item-section>
 
@@ -109,6 +111,7 @@
 <script>
 import { defineComponent, ref, watch,computed } from "vue";
 import {notificationStore} from '../store/notification';
+import {useRouter} from 'vue-router';
 
 export default defineComponent({
     model: {
@@ -124,12 +127,19 @@ export default defineComponent({
     },
     setup(props, { emit }) {
         const notifyStore = notificationStore();
+        const router = useRouter();
+       
        
         const busy = ref(false);
         const title = "Notifications";
         const close = () => {
             emit("update:show", false);
         };
+
+         const go = (to)=>{
+            close()
+            router.push(to);
+        }
       
 
         return {
@@ -137,6 +147,7 @@ export default defineComponent({
             busy,
             props,
             close,
+            go,
             notifyStore
         };
     },
@@ -144,6 +155,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.list__item{
+    cursor: pointer;
+}
 .form-title {
     .text {
         font-weight: bold;

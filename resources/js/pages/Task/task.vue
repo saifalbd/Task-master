@@ -19,8 +19,8 @@
             
           </el-descriptions-item>
           <el-descriptions-item label="Status:"><status-btn :status="task.status"></status-btn></el-descriptions-item>
-             <el-descriptions-item label="Asigned Date:"><b>{{useDateFormat(new Date(task.start), 'DD MMM YY')}}</b></el-descriptions-item>
-            <el-descriptions-item label="DeadLine Date:"><b>{{useDateFormat(new Date(task.end), 'DD MMM YY')}}</b></el-descriptions-item>
+             <el-descriptions-item label="Asigned Date:"><b>{{atNow(task.start)}}</b></el-descriptions-item>
+            <el-descriptions-item label="DeadLine Date:"><b>{{atNow(task.end)}}</b></el-descriptions-item>
         </el-descriptions>
       </show-task>
     </div>
@@ -36,6 +36,7 @@ import BackButton from '../../Components/BackButton.vue';
 import { reactive, ref } from "vue";
 import { mainStore } from "../../store/index";
 import {useDateFormat} from '@vueuse/core';
+import moment from 'moment';
 export default {
   props: {
     id: {
@@ -56,6 +57,9 @@ export default {
     const task = ref(null);
     const busy = ref(true);
 
+
+    const atNow = (date)=> moment(date).format('DD MMM YY');
+
     const show = async () => {
       busy.value = true;
       try {
@@ -74,7 +78,8 @@ export default {
       auth_id,
       id: props.id,
       task,
-      useDateFormat
+      useDateFormat,
+      atNow
     };
   },
 };

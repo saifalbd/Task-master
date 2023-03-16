@@ -9,19 +9,34 @@
           <task-list :tasks="tasks" :project_id="project.id" />
         </template>
         <div>
-          <h1>
-            Assigner: <b>{{ project.assigner.name }}</b>
-          </h1>
-          <h1>
-            Team: <b>{{ project.team.title }}</b>
-          </h1>
-          <div>Status: <status-btn :status="project.status"></status-btn></div>
-          <div>
-            Project Assin: <b>{{ project.start }}</b>
-          </div>
-          <div>
-            DeadLine: <b>{{ project.end }}</b>
-          </div>
+          <el-descriptions
+            direction="horizontal"
+            :column="1"
+            size="large"
+            border
+          >
+            <el-descriptions-item label="Assigner:">
+              <el-link>
+                <el-avatar :size="25" :src="project.assigner.avatar.url" />
+                <b style="font-size: 15px; margin-left: 5px">{{
+                  project.assigner.name
+                }}</b>
+              </el-link>
+            </el-descriptions-item>
+            <el-descriptions-item label="Team:">{{
+              project.team.title
+            }}</el-descriptions-item>
+            <el-descriptions-item label="Status:"
+              ><status-btn :status="project.status"></status-btn
+            ></el-descriptions-item>
+            <el-descriptions-item label="Asigned Date:"
+              ><b>{{ atNow(project.start) }}</b></el-descriptions-item
+            >
+            <el-descriptions-item label="DeadLine Date:"
+              ><b>{{ atNow(project.end) }}</b></el-descriptions-item
+            >
+          </el-descriptions>
+
           <div>
             <create-button
               title="Add Task"
@@ -52,6 +67,8 @@ import StatusBtn from "../../Components/statusBtn.vue";
 import CreateButton from "../../Components/CreateButton.vue";
 import AddTask from "./AddTask.vue";
 import TaskList from "./taskList.vue";
+import moment from "moment";
+import { dropdowns } from "../../Plugins/utility";
 export default {
   props: {
     id: {
@@ -70,7 +87,7 @@ export default {
   },
   setup(props) {
     const main = mainStore();
-    const auth_id = ref(main.auth_id);
+    const auth_id = ref(parseInt(main.auth_id));
     const project = ref(null);
     // Start Propertis
     const busy = ref(true);
@@ -95,19 +112,21 @@ export default {
 
     axios
       .get(route("project.members", { project: props.id }))
-      .then(({ data }) => (members.value = data));
-    axios
-      .get(route("category.index", { all: true }))
-      .then(({ data }) => (categories.value = data));
+      .then(({ data }) => (members.value = data.map(item=>{
+        return {id:item.id,name:item.model.name}
+      })));
+    dropdowns("categories", (data) => {
+      categories.value = data;
+    });
 
     const push = (data) => {
-        tasks.value.push(data);
-        showCreateTask.value = false;
+      tasks.value.push(data);
+      showCreateTask.value = false;
     };
 
-     const fetchTasks = async () => {
+    const fetchTasks = async () => {
       try {
-        const url = route("project.task.index", { project:props.id });
+        const url = route("project.task.index", { project: props.id });
         const { data } = await axios.get(url);
         tasks.value = data.map((item) => {
           item.showModel = false;
@@ -118,7 +137,9 @@ export default {
       }
     };
 
-    fetchTasks()
+    fetchTasks();
+
+    const atNow = (date) => moment(date).format("DD MMM YY");
 
     return {
       showCreateTask,
@@ -129,7 +150,8 @@ export default {
       members,
       categories,
       push,
-      tasks
+      tasks,
+      atNow,
     };
   },
 };
