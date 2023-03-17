@@ -2,7 +2,7 @@
   <app-layout :busy="busy">
     <div>
       <page-title-box title="My Task Archives (jobs)">
-         <back-button-vue/>
+        <back-button-vue />
       </page-title-box>
     </div>
     <div class="row mt-4">
@@ -44,19 +44,47 @@
           </tr>
         </thead>
         <tbody>
-          <template v-for="(t,i) in items" :key="t.id">
+          <template v-for="(t, i) in items" :key="t.id">
             <tr>
-                <td>
-                     <el-button @click="addStar(t)" size="small" :type="t.employee_star?'warning':''" plain round>
-          <el-icon>
-            <star-filled/>
-          </el-icon>
-        </el-button>
-                </td>
+              <td>
+                <el-button
+                  @click="addStar(t)"
+                  size="small"
+                  :type="t.employee_star ? 'warning' : ''"
+                  plain
+                  round
+                >
+                  <el-icon>
+                    <star-filled />
+                  </el-icon>
+                </el-button>
+              </td>
               <td>{{ t.id }}</td>
-              <td>{{ t.title }}</td>
+        <td>
+                <el-link @click="
+                      go({
+                        name: 'job.task.show',
+                        params: { id: t.id },
+                      })
+                    "><b>{{t.title}}</b></el-link>
+              </td>
               <td>{{ t.category.title }}</td>
-              <td>{{ t.assigner.name }}</td>
+              <td>
+                <el-link
+                  :underline="false"
+                  @click="
+                    go({
+                      name: 'userProfile',
+                      params: { user: t.assigner.id },
+                    })
+                  "
+                >
+                  <el-avatar :size="25" :src="t.assigner.avatar.url" />
+                  <b class="ml-1">
+                    {{ t.assigner.name }}
+                  </b>
+                </el-link>
+              </td>
               <td>{{ t.start }}</td>
               <td>{{ t.end }}</td>
               <td>
@@ -105,17 +133,19 @@ import AppLayout from "../../../Layouts/app-layout.vue";
 import PageTitleBox from "../../../Components/PageTitleBox.vue";
 import { ref } from "vue";
 import StatusBtn from "../../../Components/statusBtn.vue";
-import {StarFilled,Expand,Download} from '@element-plus/icons-vue';
-import {useRouter} from 'vue-router';
+import { StarFilled, Expand, Download } from "@element-plus/icons-vue";
+import { useRouter } from "vue-router";
 
-import BackButtonVue from '../../../Components/BackButton.vue';
+import BackButtonVue from "../../../Components/BackButton.vue";
 export default {
   components: {
     AppLayout,
     PageTitleBox,
     BackButtonVue,
     StatusBtn,
-    StarFilled,Expand,Download
+    StarFilled,
+    Expand,
+    Download,
   },
   setup() {
     const router = useRouter();
@@ -124,9 +154,9 @@ export default {
     const links = ref([]);
     const perPage = ref(10);
 
-    const go = (to)=>{
-        router.push(to)
-    }
+    const go = (to) => {
+      router.push(to);
+    };
     const fetchItems = async () => {
       try {
         const url = route("my.task.archives");
@@ -141,7 +171,7 @@ export default {
     fetchItems();
 
     const addStar = (item) => {
-        const {employee_star} = item;
+      const { employee_star } = item;
       item.employee_star = !employee_star;
       axios.post(route("task.changeStar", { task: item.id }), {
         prop: "employee_star",
@@ -157,7 +187,7 @@ export default {
       });
     };
 
-    return { items, links, perPage, busy,go,doArchive,addStar };
+    return { items, links, perPage, busy, go, doArchive, addStar };
   },
 };
 </script>

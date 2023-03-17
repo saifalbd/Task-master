@@ -119,14 +119,24 @@ class TaskController extends Controller
     public function changeStatus(Request $request, Task $task)
     {
         $beforeStatus = $task->status;
-        $request->validate(['status'=>['required','numeric']]);
+        //notify
+        $request->validate(
+            ['status'=>['required','numeric'],
+            'notify'=>['required','in:0,1']
+            ]);
         $status = $request->status;
+        $notify = $request->notify;
 
-        $user = $task->user;
-
-        $user->notify(new TaskStatusChanged($task,$beforeStatus,$status));
+      
+       
 
         $task->update(compact('status'));
+
+        if($notify){
+            $user = $task->user;
+            $user->notify(new TaskStatusChanged($task,$beforeStatus,$status));
+        }
+        
         return response()->json($task);
     }
 

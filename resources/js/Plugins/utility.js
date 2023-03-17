@@ -179,14 +179,19 @@ export const statusList = sortBy(
             status: 2,
         },
         {
-            title: "Completed",
+            title: "Submit",
             color: "success",
             status: 3,
         },
         {
+            title: "Completed",
+            color: "success",
+            status: 4,
+        },
+        {
             title: "Cancel",
             color: "danger",
-            status: 4,
+            status: 5,
         },
     ],
     "status"

@@ -59,9 +59,32 @@
         </el-button>
                 </td>
               <td>{{ t.id }}</td>
-              <td>{{ t.title }}</td>
+              <td>
+                <el-link @click="
+                      go({
+                        name: 'job.task.show',
+                        params: { id: t.id },
+                      })
+                    "><b>{{t.title}}</b></el-link>
+              </td>
               <td>{{ t.category.title }}</td>
-              <td>{{ t.assigner.name }}</td>
+              <td><el-link
+          :underline="false"
+          @click="
+            go({
+              name: 'userProfile',
+              params: { user: t.assigner.id },
+            })
+          "
+        >
+          <el-avatar :size="25" :src="t.assigner.avatar.url" />
+          <b class="ml-1">
+            {{ t.assigner.name }}
+          </b>
+        </el-link></td>
+               
+        
+ 
               <td>{{ t.start }}</td>
               <td>{{ t.end }}</td>
               <td>

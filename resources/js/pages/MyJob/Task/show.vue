@@ -23,7 +23,7 @@
                 <li
                   v-for="(s, index) in statusList.filter(
                     (e) => e.status != task.status
-                  )"
+                  ).filter(e=>e.status !=4)"
                   :key="index"
                   @click="changeStatus(s.status)"
                 >
@@ -89,7 +89,7 @@ export default {
     const changeStatus = async (status) => {
       try {
         const url = route("task.changeStatus", { task: props.id });
-        const { data } = await axios.post(url, { status });
+        const { data } = await axios.post(url, { status,notify:1 });
         task.value.status = status;
         init({
           message: "Succsess Fully Update Status",

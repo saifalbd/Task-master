@@ -120,6 +120,14 @@
      
       v-model:sorting-order="sortingOrder"
     >
+    <template #cell(title)="{rowData}">
+  <el-link @click="
+                      go({
+                        name: 'task.show',
+                        params: { id: rowData.id },
+                      })
+                    "><b>{{rowData.title}}</b></el-link>
+    </template>
        <template #cell(user_star)="{ rowData}">
         <el-button @click="addStar(rowData)" size="small" :type="rowData.user_star?'warning':''" plain round>
           <el-icon>

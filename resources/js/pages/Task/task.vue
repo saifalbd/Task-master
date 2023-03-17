@@ -18,7 +18,17 @@
     </el-link>
             
           </el-descriptions-item>
-          <el-descriptions-item label="Status:"><status-btn :status="task.status"></status-btn></el-descriptions-item>
+          <el-descriptions-item label="Status:"><status-btn :dropdown="true" :status="task.status">
+             <ul class="status-dropdown">
+                <li
+                  v-for="(s, index) in statusList.filter(e=>![0,1,2,3].includes(e.status))"
+                  :key="index"
+                  @click="changeStatus(s.status)"
+                >
+                  {{ s.title }}
+                </li>
+              </ul>
+            </status-btn></el-descriptions-item>
              <el-descriptions-item label="Asigned Date:"><b>{{atNow(task.start)}}</b></el-descriptions-item>
             <el-descriptions-item label="DeadLine Date:"><b>{{atNow(task.end)}}</b></el-descriptions-item>
         </el-descriptions>
@@ -37,6 +47,8 @@ import { reactive, ref } from "vue";
 import { mainStore } from "../../store/index";
 import {useDateFormat} from '@vueuse/core';
 import moment from 'moment';
+import { statusList } from "../../Plugins/utility";
+import { useToast } from "vuestic-ui";
 export default {
   props: {
     id: {
@@ -56,6 +68,8 @@ export default {
     const auth_id = main.auth_id;
     const task = ref(null);
     const busy = ref(true);
+        const { init } = useToast();
+
 
 
     const atNow = (date)=> moment(date).format('DD MMM YY');
@@ -73,13 +87,31 @@ export default {
     };
     show();
 
+     const changeStatus = async (status) => {
+      try {
+        const url = route("task.changeStatus", { task: props.id });
+        const { data } = await axios.post(url, { status,notify:0 });
+        task.value.status = status;
+        init({
+          message: "Succsess Fully Update Status",
+          color: "#432c50",
+          closeable: true,
+          duration: 4000,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     return {
       busy,
       auth_id,
       id: props.id,
       task,
       useDateFormat,
-      atNow
+      atNow,
+      statusList,
+      changeStatus
     };
   },
 };

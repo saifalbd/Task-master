@@ -47,8 +47,8 @@
                   <el-descriptions-item label="Designation:"
                     >Designation</el-descriptions-item
                   >
-                  <el-descriptions-item label="Joining Date:"
-                    >{{d.created_at}}</el-descriptions-item
+                  <el-descriptions-item label="Joining:"
+                    >{{atNow(d.created_at)}}</el-descriptions-item
                   >
                 </el-descriptions>
                 <div style="text-align: center" class="mt-3">
@@ -180,6 +180,7 @@ import PersonalInformationEditVue from './PersonalInformationEdit.vue';
 import EmergencyContactEditVue from './EmergencyContactEdit.vue';
 import ChangeAvatar from './ChangeAvatar.vue';
 import { mainStore } from "../../store/index";
+import moment from 'moment';
 export default {
   props:{
     user_id:{
@@ -210,7 +211,9 @@ export default {
       busy.value = false;
     });
 
-    return { d, busy,showProfileEdit,showPersonalInfoEdit,showEmergencyConEdit,showAvatarModel,user_id };
+    const atNow = (date)=>moment(date).fromNow();
+
+    return {atNow, d, busy,showProfileEdit,showPersonalInfoEdit,showEmergencyConEdit,showAvatarModel,user_id };
   },
 };
 </script>

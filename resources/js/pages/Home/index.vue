@@ -4,16 +4,17 @@
       <page-title-box></page-title-box>
     </div>
     <div class="home-page">
-      <div>
-        <el-card class="box-card">
+      <el-row :gutter="24">
+        <el-col :sm="24" :md="12"  v-for="(box,index) in tasks" :key="index">
+        <el-card class="box-card mb-3">
           <template #header>
             <div class="card-header">
-              <span>Recent Tasks</span>
+              <span><b>{{box.title}}</b></span>
             </div>
           </template>
           <ul class="recent-task-list">
             <li
-              v-for="(item, i) in tasks"
+              v-for="(item, i) in box.items"
               :key="i"
               @click="go({ name: 'task.show', params: { id: item.id } })"
             >
@@ -40,8 +41,9 @@
             </li>
           </ul>
         </el-card>
-      </div>
-      <div></div>
+        </el-col>
+      </el-row>
+     
       <div>
         <el-card class="box-card">
           <template #header>
@@ -51,21 +53,48 @@
           </template>
           <ul class="employee-proposals">
             <li v-for="(proposal, i) in employeeProposals" :key="i">
-              <div class="avatar-box" @click="go({name:'userProfile',params:{user:proposal.user.id}})">
+              <div
+                class="avatar-box"
+                @click="
+                  go({
+                    name: 'userProfile',
+                    params: { user: proposal.user.id },
+                  })
+                "
+              >
                 <va-avatar :src="proposal.user.avatar.url" :size="30" />
               </div>
               <div class="line-one">
                 <div>
-                  <el-link :underline="false" @click="go({name:'userProfile',params:{user:proposal.user.id}})"><b>{{proposal.user.name }}</b></el-link>
-                  <small style="text-align:center;">{{ atNow(proposal.created_at) }}</small>
+                  <el-link
+                    :underline="false"
+                    @click="
+                      go({
+                        name: 'userProfile',
+                        params: { user: proposal.user.id },
+                      })
+                    "
+                    ><b>{{ proposal.user.name }}</b></el-link
+                  >
+                  <small style="text-align: center">{{
+                    atNow(proposal.created_at)
+                  }}</small>
                 </div>
                 <div>Send you Employee Proposal as empoyeee</div>
               </div>
               <div class="line-two">
-                <el-button size="small" type="primary"    @click="Accepted(proposal, i)">
+                <el-button
+                  size="small"
+                  type="primary"
+                  @click="Accepted(proposal, i)"
+                >
                   Accepted
                 </el-button>
-                  <el-button size="small" type="danger"  @click="Deny(proposal, i)">
+                <el-button
+                  size="small"
+                  type="danger"
+                  @click="Deny(proposal, i)"
+                >
                   Deny
                 </el-button>
               </div>
@@ -74,14 +103,13 @@
         </el-card>
       </div>
     </div>
- 
   </app-layout>
 </template>
 
 <script>
 import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
-import { ref } from "vue";
+import { ref,computed } from "vue";
 
 import { recentTasks } from "./api";
 import moment from "moment";
@@ -96,7 +124,11 @@ export default {
   setup() {
     const busy = ref(false);
     const router = useRouter();
-    const tasks = ref([]);
+    const pendingTasks = ref([]);
+    const acceptedTasks = ref([]);
+    const workingTasks = ref([]);
+    const submitedTasks = ref([]);
+    const completedTasks = ref([]);
 
     const atNow = (date) => {
       return moment(date).fromNow();
@@ -105,8 +137,45 @@ export default {
       router.push(to);
     };
 
-    recentTasks((data) => {
-      tasks.value = data;
+    recentTasks(0, (data) => {
+      pendingTasks.value = data;
+    });
+    recentTasks(1, (data) => {
+      acceptedTasks.value = data;
+    });
+    recentTasks(2, (data) => {
+      workingTasks.value = data;
+    });
+    recentTasks(3, (data) => {
+      submitedTasks.value = data;
+    });
+    recentTasks(4, (data) => {
+      completedTasks.value = data;
+    });
+
+    const tasks = computed(()=>{
+      return [
+      {
+        title: "Pending Tasks",
+        items: pendingTasks.value,
+      },
+      {
+        title: "Accepted Tasks",
+        items: acceptedTasks.value,
+      },
+      {
+        title: "Working Tasks",
+        items: workingTasks.value,
+      },
+      {
+        title: "Submited Tasks",
+        items: submitedTasks.value,
+      },
+      {
+        title: "Completed Tasks",
+        items: completedTasks.value,
+      },
+    ]
     });
 
     const employeeProposals = ref([]);
@@ -146,20 +215,6 @@ export default {
   .list-title {
     margin: 5px;
   }
-  .s-card {
-    border: 1px solid black;
-    width: 250px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
-    .s-card-body {
-      padding: 5px;
-      text-align: center;
-    }
-    .s-card-footer {
-      padding: 5px;
-      display: flex;
-      justify-content: space-around;
-    }
-  }
+ 
 }
 </style>
