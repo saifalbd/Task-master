@@ -48,6 +48,6 @@ class Employee extends Model
 
 
     public function scopeEmail(Builder $builder,$email){
-        return $builder->whereHas('model', fn(Builder $query)=>$query->where('email', 'like', $email));
+        return $builder->whereHas('model', fn(Builder $query)=>$query->where('email', $email));
     }
 }

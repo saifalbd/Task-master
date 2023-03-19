@@ -128,9 +128,9 @@
           ><b>{{ rowData.name }}</b></el-link
         >
       </template>
-      <template #cell(accepted)="{ value }">
+      <template #cell(accepted)="{ rowData }">
         <va-button preset="plain" class="mr-6 mb-2">{{
-          value ? "accepted" : "pending"
+          rowData.accepted? "accepted" : "pending"
         }}</va-button>
       </template>
       <template #cell(action)="{ rowData, rowIndex }">

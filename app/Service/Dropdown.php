@@ -20,7 +20,7 @@ class Dropdown
 
 
     public function employees(){
-        return Employee::query()->where('user_id',$this->user_id)->with('model')->get()->map(function($employe){
+        return Employee::query()->where('user_id',$this->user_id)->where('accepted',true)->with('model')->get()->map(function($employe){
             $id = $employe->id;
             $name = $employe->model->name;
             return compact('id','name');

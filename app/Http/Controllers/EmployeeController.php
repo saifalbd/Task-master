@@ -69,15 +69,17 @@ class EmployeeController extends Controller
         $user_id = $request->user_id;
       
 
-        $canEmployee = Employee::query()->email($email)->first();
+        $canEmployee = Employee::query()->where('user_id',$user_id)->email($email)->first();
         if($canEmployee){
+       
+            $canEmployee->load(['designation','model.avatar']);
             return response()->json($canEmployee);
         }
 
 
 
         $canUser = User::query()->whereEmail($email)->first();
-        $accepted = true;
+        $accepted = false;
 
         if($canUser){
             $employee_id = $canUser->id;

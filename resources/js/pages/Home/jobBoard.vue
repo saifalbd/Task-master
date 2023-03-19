@@ -16,7 +16,7 @@
             <li
               v-for="(item, i) in box.items"
               :key="i"
-              @click="go({ name: 'task.show', params: { id: item.id } })"
+              @click="go({ name: 'job.task.show', params: { id: item.id } })"
             >
               <div class="avatar-box">
                 <el-avatar :size="25">
