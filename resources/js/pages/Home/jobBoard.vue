@@ -1,9 +1,9 @@
 <template>
   <app-layout :busy="busy">
     <div>
-      <page-title-box title="Home Board"></page-title-box>
+      <page-title-box title="Job Board"></page-title-box>
     </div>
-    <div class="home-page admin">
+    <div class="home-page job">
       <el-row :gutter="24">
         <el-col :sm="24" :md="8"  v-for="(box,index) in tasks" :key="index">
         <el-card class="box-card mb-3">
@@ -20,11 +20,11 @@
             >
               <div class="avatar-box">
                 <el-avatar :size="25">
-                  <img :src="item.employee.model.avatar.url" />
+                  <img :src="item.assigner.avatar.url" />
                 </el-avatar>
               </div>
               <div class="task-line">
-                <b>{{ item.employee.model.name }}</b>
+                <b>{{ item.assigner.name }}</b>
                 <small class="center">{{ atNow(item.created_at) }}</small>
               </div>
              <div class="text-box">
@@ -36,64 +36,7 @@
         </el-col>
       </el-row>
      
-      <div>
-        <el-card class="box-card">
-          <template #header>
-            <div class="card-header">
-              <span>Employee Proposal</span>
-            </div>
-          </template>
-          <ul class="employee-proposals">
-            <li v-for="(proposal, i) in employeeProposals" :key="i">
-              <div
-                class="avatar-box"
-                @click="
-                  go({
-                    name: 'userProfile',
-                    params: { user: proposal.user.id },
-                  })
-                "
-              >
-                <va-avatar :src="proposal.user.avatar.url" :size="30" />
-              </div>
-              <div class="line-one">
-                <div>
-                  <el-link
-                    :underline="false"
-                    @click="
-                      go({
-                        name: 'userProfile',
-                        params: { user: proposal.user.id },
-                      })
-                    "
-                    ><b>{{ proposal.user.name }}</b></el-link
-                  >
-                  <small style="text-align: center">{{
-                    atNow(proposal.created_at)
-                  }}</small>
-                </div>
-                <div>Send you Employee Proposal as empoyeee</div>
-              </div>
-              <div class="line-two">
-                <el-button
-                  size="small"
-                  type="primary"
-                  @click="Accepted(proposal, i)"
-                >
-                  Accepted
-                </el-button>
-                <el-button
-                  size="small"
-                  type="danger"
-                  @click="Deny(proposal, i)"
-                >
-                  Deny
-                </el-button>
-              </div>
-            </li>
-          </ul>
-        </el-card>
-      </div>
+  
     </div>
   </app-layout>
 </template>
@@ -103,7 +46,7 @@ import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
 import { ref,computed } from "vue";
 
-import { recentTasks } from "./api";
+import {recentJobTasks as recentTasks } from "./api";
 import moment from "moment";
 import { useRouter } from "vue-router";
 import statusBtnVue from "../../Components/statusBtn.vue";
@@ -170,30 +113,11 @@ export default {
     ]
     });
 
-    const employeeProposals = ref([]);
+   
 
-    axios.get(route("employeeProposal")).then(({ data }) => {
-      employeeProposals.value = data;
-    });
+  
 
-    const Accepted = async (employee, index) => {
-      try {
-        await axios.get(route("acceptProposal", { employee }));
-        employeeProposals.value.splice(index, 1);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    const Deny = async (employee, index) => {
-      try {
-        await axios.get(route("denyProposal", { employee }));
-        employeeProposals.value.splice(index, 1);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    return { atNow, go, busy, employeeProposals, Accepted, Deny, tasks };
+    return { atNow, go, busy, tasks };
   },
 };
 </script>

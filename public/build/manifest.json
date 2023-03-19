@@ -1,445 +1,207 @@
 {
   "resources/js/pages/Home/index.css": {
-    "file": "assets/index-1ff150d2.css",
+    "file": "assets/index-3d1c2fed.css",
     "src": "resources/js/pages/Home/index.css"
-  },
-  "resources/js/pages/Team/index.css": {
-    "file": "assets/index-337ab758.css",
-    "src": "resources/js/pages/Team/index.css"
-  },
-  "resources/js/pages/Project/show.css": {
-    "file": "assets/show-46af6b86.css",
-    "src": "resources/js/pages/Project/show.css"
-  },
-  "resources/js/pages/MyJob/Task/Archives.css": {
-    "file": "assets/Archives-4fda2bc9.css",
-    "src": "resources/js/pages/MyJob/Task/Archives.css"
-  },
-  "resources/js/pages/Designation/index.css": {
-    "file": "assets/index-a8265ae8.css",
-    "src": "resources/js/pages/Designation/index.css"
   },
   "FormDialog.css": {
     "file": "assets/FormDialog-e789f78a.css",
     "src": "FormDialog.css"
   },
   "index.css": {
-    "file": "assets/index-8b22c31e.css",
+    "file": "assets/index-6d6a9909.css",
     "src": "index.css"
-  },
-  "resources/js/pages/Task/archives.css": {
-    "file": "assets/archives-bedb0d77.css",
-    "src": "resources/js/pages/Task/archives.css"
-  },
-  "app-layout.css": {
-    "file": "assets/app-layout-bf6953a9.css",
-    "src": "app-layout.css"
-  },
-  "resources/js/pages/Project/index.css": {
-    "file": "assets/index-89c6da72.css",
-    "src": "resources/js/pages/Project/index.css"
-  },
-  "resources/js/pages/MyJob/Project/index.css": {
-    "file": "assets/index-38c77de1.css",
-    "src": "resources/js/pages/MyJob/Project/index.css"
-  },
-  "resources/css/app.scss": {
-    "file": "assets/app-52a74f7d.css",
-    "src": "resources/css/app.scss",
-    "isEntry": true
-  },
-  "resources/js/pages/Profile/index.css": {
-    "file": "assets/index-8cb3bbc3.css",
-    "src": "resources/js/pages/Profile/index.css"
-  },
-  "resources/js/pages/MyJob/Project/show.css": {
-    "file": "assets/show-4473ac7f.css",
-    "src": "resources/js/pages/MyJob/Project/show.css"
-  },
-  "resources/js/pages/Department/index.css": {
-    "file": "assets/index-fe409cdf.css",
-    "src": "resources/js/pages/Department/index.css"
-  },
-  "resources/js/pages/Category/index.css": {
-    "file": "assets/index-1753c2d6.css",
-    "src": "resources/js/pages/Category/index.css"
-  },
-  "resources/js/pages/MyJob/Task/index.css": {
-    "file": "assets/index-26d1827a.css",
-    "src": "resources/js/pages/MyJob/Task/index.css"
-  },
-  "resources/js/pages/Task/index.css": {
-    "file": "assets/index-366ef9d0.css",
-    "src": "resources/js/pages/Task/index.css"
   },
   "resources/js/pages/Contact/index.css": {
     "file": "assets/index-1310eb68.css",
     "src": "resources/js/pages/Contact/index.css"
   },
+  "resources/js/pages/Department/index.css": {
+    "file": "assets/index-fe409cdf.css",
+    "src": "resources/js/pages/Department/index.css"
+  },
+  "resources/js/pages/Home/jobBoard.css": {
+    "file": "assets/jobBoard-ae5c217a.css",
+    "src": "resources/js/pages/Home/jobBoard.css"
+  },
+  "resources/js/pages/Team/index.css": {
+    "file": "assets/index-337ab758.css",
+    "src": "resources/js/pages/Team/index.css"
+  },
+  "resources/js/pages/Category/index.css": {
+    "file": "assets/index-1753c2d6.css",
+    "src": "resources/js/pages/Category/index.css"
+  },
+  "resources/js/pages/Task/archives.css": {
+    "file": "assets/archives-bedb0d77.css",
+    "src": "resources/js/pages/Task/archives.css"
+  },
+  "resources/js/pages/MyJob/Project/index.css": {
+    "file": "assets/index-38c77de1.css",
+    "src": "resources/js/pages/MyJob/Project/index.css"
+  },
   "resources/js/pages/Employee/index.css": {
     "file": "assets/index-4066012e.css",
     "src": "resources/js/pages/Employee/index.css"
+  },
+  "resources/js/pages/Project/index.css": {
+    "file": "assets/index-89c6da72.css",
+    "src": "resources/js/pages/Project/index.css"
+  },
+  "resources/js/pages/Designation/index.css": {
+    "file": "assets/index-a8265ae8.css",
+    "src": "resources/js/pages/Designation/index.css"
+  },
+  "resources/js/pages/Task/index.css": {
+    "file": "assets/index-c7ec1198.css",
+    "src": "resources/js/pages/Task/index.css"
+  },
+  "resources/js/pages/MyJob/Task/Archives.css": {
+    "file": "assets/Archives-4fda2bc9.css",
+    "src": "resources/js/pages/MyJob/Task/Archives.css"
+  },
+  "resources/js/pages/MyJob/Task/index.css": {
+    "file": "assets/index-00061932.css",
+    "src": "resources/js/pages/MyJob/Task/index.css"
+  },
+  "app-layout.css": {
+    "file": "assets/app-layout-1a1603d3.css",
+    "src": "app-layout.css"
+  },
+  "resources/js/pages/Project/show.css": {
+    "file": "assets/show-46af6b86.css",
+    "src": "resources/js/pages/Project/show.css"
+  },
+  "resources/css/app.scss": {
+    "file": "assets/app-90ce59ee.css",
+    "src": "resources/css/app.scss",
+    "isEntry": true
+  },
+  "resources/js/pages/MyJob/Project/show.css": {
+    "file": "assets/show-4473ac7f.css",
+    "src": "resources/js/pages/MyJob/Project/show.css"
+  },
+  "resources/js/pages/Profile/index.css": {
+    "file": "assets/index-8cb3bbc3.css",
+    "src": "resources/js/pages/Profile/index.css"
   },
   "resources/js/app.css": {
     "file": "assets/app-ac5ce065.css",
     "src": "resources/js/app.css"
   },
   "resources/js/pages/Authorize/register-page.vue": {
-    "file": "assets/register-page-d7a06917.js",
+    "file": "assets/register-page-02e4ca51.js",
     "src": "resources/js/pages/Authorize/register-page.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js"
     ]
   },
-  "resources/js/pages/Authorize/forgotPassword.vue": {
-    "file": "assets/forgotPassword-fb313db2.js",
-    "src": "resources/js/pages/Authorize/forgotPassword.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/pages/Authorize/login-page.vue": {
-    "file": "assets/login-page-0f388109.js",
-    "src": "resources/js/pages/Authorize/login-page.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_useToast-c3bf6ae8.js": {
-    "file": "assets/useToast-c3bf6ae8.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_Pagination-912d8bd3.js": {
-    "file": "assets/Pagination-912d8bd3.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/pages/MyJob/Task/Archives.vue": {
-    "file": "assets/Archives-48719bf3.js",
-    "src": "resources/js/pages/MyJob/Task/Archives.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "resources/js/app.js",
-      "_BackButton-86c0013f.js"
-    ],
-    "css": [
-      "assets/Archives-4fda2bc9.css"
-    ]
-  },
-  "_index-3f9f24ef.js": {
-    "file": "assets/index-3f9f24ef.js",
+  "_index-bd59b9ec.js": {
+    "file": "assets/index-bd59b9ec.js",
     "imports": [
       "_icon-7c2f508c.js",
       "resources/js/app.js"
-    ]
-  },
-  "_CreateButton-a2dd5868.js": {
-    "file": "assets/CreateButton-a2dd5868.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_BackButton-86c0013f.js": {
-    "file": "assets/BackButton-86c0013f.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_RemoveEditButton-b2c637d7.js": {
-    "file": "assets/RemoveEditButton-b2c637d7.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "_index-c13326a9.js": {
-    "file": "assets/index-c13326a9.js",
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_moment-fbc5633a.js",
-      "resources/js/app.js",
-      "_icon-7c2f508c.js",
-      "_index-3f9f24ef.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/index-8b22c31e.css"
-    ]
-  },
-  "_Edit-61168de1.js": {
-    "file": "assets/Edit-61168de1.js",
-    "imports": [
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_moment-fbc5633a.js",
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/pages/Project/index.vue": {
-    "file": "assets/index-6d10184c.js",
-    "src": "resources/js/pages/Project/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "resources/js/app.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_moment-fbc5633a.js",
-      "_CreateButton-a2dd5868.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/index-89c6da72.css"
-    ]
-  },
-  "resources/js/pages/MyJob/Task/index.vue": {
-    "file": "assets/index-437c6331.js",
-    "src": "resources/js/pages/MyJob/Task/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "resources/js/app.js"
-    ],
-    "css": [
-      "assets/index-26d1827a.css"
-    ]
-  },
-  "_PageTitleBox-3291f9d9.js": {
-    "file": "assets/PageTitleBox-3291f9d9.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/pages/MyJob/Project/show.vue": {
-    "file": "assets/show-2d7e1431.js",
-    "src": "resources/js/pages/MyJob/Project/show.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "resources/js/app.js",
-      "_index-c13326a9.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_moment-fbc5633a.js",
-      "_icon-7c2f508c.js",
-      "_index-3f9f24ef.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/show-4473ac7f.css"
-    ]
-  },
-  "resources/js/pages/Chat/index.vue": {
-    "file": "assets/index-fd093eef.js",
-    "src": "resources/js/pages/Chat/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "resources/js/app.js",
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_icon-7c2f508c.js"
     ]
   },
   "_icon-7c2f508c.js": {
     "file": "assets/icon-7c2f508c.js"
   },
-  "resources/js/pages/ToDoList/index.vue": {
-    "file": "assets/index-e76ffd81.js",
-    "src": "resources/js/pages/ToDoList/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_CreateButton-a2dd5868.js",
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "resources/js/app.js",
-      "_FormDialog-0d177dd5.js",
-      "_moment-fbc5633a.js"
-    ]
-  },
-  "_index-810449cf.js": {
-    "file": "assets/index-810449cf.js",
-    "imports": [
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/pages/Client/index.vue": {
-    "file": "assets/index-826f7990.js",
-    "src": "resources/js/pages/Client/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "_CreateButton-a2dd5868.js",
-      "resources/js/app.js"
-    ]
-  },
-  "resources/js/pages/Employee/index.vue": {
-    "file": "assets/index-f4148826.js",
-    "src": "resources/js/pages/Employee/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "resources/js/app.js",
-      "_CreateButton-a2dd5868.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/index-4066012e.css"
-    ]
-  },
-  "resources/js/pages/Department/index.vue": {
-    "file": "assets/index-3723c411.js",
-    "src": "resources/js/pages/Department/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "resources/js/app.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_CreateButton-a2dd5868.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/index-fe409cdf.css"
-    ]
-  },
-  "resources/js/pages/Team/index.vue": {
-    "file": "assets/index-73af58ce.js",
-    "src": "resources/js/pages/Team/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "resources/js/app.js",
-      "_CreateButton-a2dd5868.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/index-337ab758.css"
-    ]
-  },
-  "resources/js/pages/Designation/index.vue": {
-    "file": "assets/index-d1aba343.js",
-    "src": "resources/js/pages/Designation/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "resources/js/app.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_CreateButton-a2dd5868.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/index-a8265ae8.css"
-    ]
-  },
-  "resources/js/pages/Task/task.vue": {
-    "file": "assets/task-e2c492b0.js",
-    "src": "resources/js/pages/Task/task.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_index-50005b25.js",
-      "_BackButton-86c0013f.js",
-      "resources/js/app.js",
-      "_moment-fbc5633a.js",
-      "_useToast-c3bf6ae8.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_icon-7c2f508c.js",
-      "_index-3f9f24ef.js"
-    ]
-  },
-  "resources/js/pages/Task/index.vue": {
-    "file": "assets/index-dba783a0.js",
-    "src": "resources/js/pages/Task/index.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_Edit-61168de1.js",
-      "_CreateButton-a2dd5868.js",
-      "resources/js/app.js",
-      "_useToast-c3bf6ae8.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_moment-fbc5633a.js"
-    ],
-    "css": [
-      "assets/index-366ef9d0.css"
-    ]
-  },
   "resources/js/pages/MyJob/Project/index.vue": {
-    "file": "assets/index-146e53b8.js",
+    "file": "assets/index-19fab4ac.js",
     "src": "resources/js/pages/MyJob/Project/index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "_RemoveEditButton-b2c637d7.js",
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "_RemoveEditButton-e735f819.js",
       "resources/js/app.js"
     ],
     "css": [
       "assets/index-38c77de1.css"
     ]
   },
-  "resources/js/pages/MyJob/Task/show.vue": {
-    "file": "assets/show-a0ea0306.js",
-    "src": "resources/js/pages/MyJob/Task/show.vue",
+  "resources/js/pages/Home/index.vue": {
+    "file": "assets/index-d6738a30.js",
+    "src": "resources/js/pages/Home/index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_index-50005b25.js",
-      "resources/js/app.js",
-      "_BackButton-86c0013f.js",
-      "_useToast-c3bf6ae8.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_api-5314060c.js",
       "_moment-fbc5633a.js",
-      "_icon-7c2f508c.js",
-      "_index-3f9f24ef.js"
+      "resources/js/app.js"
+    ],
+    "css": [
+      "assets/index-3d1c2fed.css"
     ]
   },
-  "_FormDialog-0d177dd5.js": {
-    "file": "assets/FormDialog-0d177dd5.js",
+  "_BackButton-90e1862a.js": {
+    "file": "assets/BackButton-90e1862a.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/Client/index.vue": {
+    "file": "assets/index-37a98e45.js",
+    "src": "resources/js/pages/Client/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "_CreateButton-487176b0.js",
+      "resources/js/app.js"
+    ]
+  },
+  "_Edit-2c736150.js": {
+    "file": "assets/Edit-2c736150.js",
+    "imports": [
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_moment-fbc5633a.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/Contact/index.vue": {
+    "file": "assets/index-a754cc1f.js",
+    "src": "resources/js/pages/Contact/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "resources/js/app.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_CreateButton-487176b0.js",
+      "_RemoveEditButton-e735f819.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/index-1310eb68.css"
+    ]
+  },
+  "resources/js/pages/Designation/index.vue": {
+    "file": "assets/index-b529ce08.js",
+    "src": "resources/js/pages/Designation/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "resources/js/app.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_CreateButton-487176b0.js",
+      "_RemoveEditButton-e735f819.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/index-a8265ae8.css"
+    ]
+  },
+  "_FormDialog-bc8e4f1c.js": {
+    "file": "assets/FormDialog-bc8e4f1c.js",
     "imports": [
       "resources/js/app.js"
     ],
@@ -447,145 +209,407 @@
       "assets/FormDialog-e789f78a.css"
     ]
   },
-  "resources/js/pages/Contact/index.vue": {
-    "file": "assets/index-a673dd91.js",
-    "src": "resources/js/pages/Contact/index.vue",
+  "resources/js/pages/Task/task.vue": {
+    "file": "assets/task-4055657f.js",
+    "src": "resources/js/pages/Task/task.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_index-572b57d8.js",
+      "_BackButton-90e1862a.js",
       "resources/js/app.js",
-      "_FormDialog-0d177dd5.js",
-      "_CreateButton-a2dd5868.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/index-1310eb68.css"
-    ]
-  },
-  "resources/js/pages/Project/show.vue": {
-    "file": "assets/show-e286c7ba.js",
-    "src": "resources/js/pages/Project/show.vue",
-    "isDynamicEntry": true,
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "resources/js/app.js",
-      "_index-c13326a9.js",
-      "_CreateButton-a2dd5868.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
       "_moment-fbc5633a.js",
-      "_RemoveEditButton-b2c637d7.js",
+      "_useToast-5adcc40c.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
       "_icon-7c2f508c.js",
-      "_index-3f9f24ef.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/show-46af6b86.css"
+      "_index-bd59b9ec.js"
     ]
   },
-  "resources/js/pages/Task/archives.vue": {
-    "file": "assets/archives-df5006af.js",
-    "src": "resources/js/pages/Task/archives.vue",
+  "resources/js/pages/MyJob/Task/Archives.vue": {
+    "file": "assets/Archives-eb0180c9.js",
+    "src": "resources/js/pages/MyJob/Task/Archives.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_Edit-61168de1.js",
-      "_CreateButton-a2dd5868.js",
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
       "resources/js/app.js",
-      "_BackButton-86c0013f.js",
-      "_useToast-c3bf6ae8.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_moment-fbc5633a.js"
+      "_BackButton-90e1862a.js"
     ],
     "css": [
-      "assets/archives-bedb0d77.css"
+      "assets/Archives-4fda2bc9.css"
+    ]
+  },
+  "resources/js/pages/ToDoList/index.vue": {
+    "file": "assets/index-5f8d9c50.js",
+    "src": "resources/js/pages/ToDoList/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_CreateButton-487176b0.js",
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "resources/js/app.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_moment-fbc5633a.js"
+    ]
+  },
+  "_index-572b57d8.js": {
+    "file": "assets/index-572b57d8.js",
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_moment-fbc5633a.js",
+      "resources/js/app.js",
+      "_icon-7c2f508c.js",
+      "_index-bd59b9ec.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/index-6d6a9909.css"
+    ]
+  },
+  "resources/js/pages/MyJob/Task/show.vue": {
+    "file": "assets/show-df55e85a.js",
+    "src": "resources/js/pages/MyJob/Task/show.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_index-572b57d8.js",
+      "resources/js/app.js",
+      "_BackButton-90e1862a.js",
+      "_useToast-5adcc40c.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_moment-fbc5633a.js",
+      "_icon-7c2f508c.js",
+      "_index-bd59b9ec.js"
+    ]
+  },
+  "_Pagination-8ac6ea5b.js": {
+    "file": "assets/Pagination-8ac6ea5b.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_useToast-5adcc40c.js": {
+    "file": "assets/useToast-5adcc40c.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_index-1b2e1ce6.js": {
+    "file": "assets/index-1b2e1ce6.js",
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_moment-fbc5633a.js",
+      "resources/js/app.js",
+      "_icon-7c2f508c.js",
+      "_index-bd59b9ec.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/index-8b22c31e.css"
+    ]
+  },
+  "resources/js/pages/Department/index.vue": {
+    "file": "assets/index-42d57453.js",
+    "src": "resources/js/pages/Department/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "resources/js/app.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_CreateButton-487176b0.js",
+      "_RemoveEditButton-e735f819.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/index-fe409cdf.css"
+    ]
+  },
+  "_PageTitleBox-c4608ada.js": {
+    "file": "assets/PageTitleBox-c4608ada.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "_CreateButton-487176b0.js": {
+    "file": "assets/CreateButton-487176b0.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/MyJob/Project/show.vue": {
+    "file": "assets/show-b75ff736.js",
+    "src": "resources/js/pages/MyJob/Project/show.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "resources/js/app.js",
+      "_index-1b2e1ce6.js",
+      "_RemoveEditButton-e735f819.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_moment-fbc5633a.js",
+      "_icon-7c2f508c.js",
+      "_index-bd59b9ec.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/show-4473ac7f.css"
     ]
   },
   "resources/js/pages/Profile/index.vue": {
-    "file": "assets/index-d6533334.js",
+    "file": "assets/index-1412c32d.js",
     "src": "resources/js/pages/Profile/index.vue",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js",
-      "_app-layout-ddd4ecde.js",
+      "_app-layout-07ff5ad6.js",
       "_moment-fbc5633a.js"
     ],
     "css": [
       "assets/index-8cb3bbc3.css"
     ]
   },
-  "_index-50005b25.js": {
-    "file": "assets/index-50005b25.js",
-    "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_moment-fbc5633a.js",
-      "resources/js/app.js",
-      "_icon-7c2f508c.js",
-      "_index-3f9f24ef.js",
-      "_useToast-c3bf6ae8.js"
-    ],
-    "css": [
-      "assets/index-6d6a9909.css"
-    ]
-  },
-  "resources/js/pages/Home/index.vue": {
-    "file": "assets/index-2bb59968.js",
-    "src": "resources/js/pages/Home/index.vue",
+  "resources/js/pages/Authorize/login-page.vue": {
+    "file": "assets/login-page-7fc3a3c2.js",
+    "src": "resources/js/pages/Authorize/login-page.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/Task/index.vue": {
+    "file": "assets/index-efc975f2.js",
+    "src": "resources/js/pages/Task/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "_RemoveEditButton-e735f819.js",
+      "_Edit-2c736150.js",
+      "_CreateButton-487176b0.js",
+      "resources/js/app.js",
+      "_moment-fbc5633a.js",
+      "_useToast-5adcc40c.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js"
+    ],
+    "css": [
+      "assets/index-c7ec1198.css"
+    ]
+  },
+  "resources/js/pages/Authorize/forgotPassword.vue": {
+    "file": "assets/forgotPassword-05fdaab0.js",
+    "src": "resources/js/pages/Authorize/forgotPassword.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/MyJob/Task/index.vue": {
+    "file": "assets/index-791a6987.js",
+    "src": "resources/js/pages/MyJob/Task/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "resources/js/app.js",
+      "_moment-fbc5633a.js"
+    ],
+    "css": [
+      "assets/index-00061932.css"
+    ]
+  },
+  "_index-6bd5dc00.js": {
+    "file": "assets/index-6bd5dc00.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/Project/index.vue": {
+    "file": "assets/index-3c05a020.js",
+    "src": "resources/js/pages/Project/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "_RemoveEditButton-e735f819.js",
+      "resources/js/app.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_moment-fbc5633a.js",
+      "_CreateButton-487176b0.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/index-89c6da72.css"
+    ]
+  },
+  "resources/js/pages/Task/archives.vue": {
+    "file": "assets/archives-feafce96.js",
+    "src": "resources/js/pages/Task/archives.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "_RemoveEditButton-e735f819.js",
+      "_Edit-2c736150.js",
+      "_CreateButton-487176b0.js",
+      "resources/js/app.js",
+      "_BackButton-90e1862a.js",
+      "_useToast-5adcc40c.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_moment-fbc5633a.js"
+    ],
+    "css": [
+      "assets/archives-bedb0d77.css"
+    ]
+  },
+  "_api-5314060c.js": {
+    "file": "assets/api-5314060c.js"
+  },
+  "_RemoveEditButton-e735f819.js": {
+    "file": "assets/RemoveEditButton-e735f819.js",
+    "imports": [
+      "resources/js/app.js"
+    ]
+  },
+  "resources/js/pages/Chat/index.vue": {
+    "file": "assets/index-44cd43f5.js",
+    "src": "resources/js/pages/Chat/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_icon-7c2f508c.js"
+    ]
+  },
+  "resources/js/pages/Team/index.vue": {
+    "file": "assets/index-c5c13756.js",
+    "src": "resources/js/pages/Team/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "_RemoveEditButton-e735f819.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "resources/js/app.js",
+      "_CreateButton-487176b0.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/index-337ab758.css"
+    ]
+  },
+  "resources/js/pages/Home/jobBoard.vue": {
+    "file": "assets/jobBoard-40922d4f.js",
+    "src": "resources/js/pages/Home/jobBoard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_api-5314060c.js",
       "_moment-fbc5633a.js",
       "resources/js/app.js"
     ],
     "css": [
-      "assets/index-1ff150d2.css"
+      "assets/jobBoard-ae5c217a.css"
     ]
   },
   "resources/js/pages/Category/index.vue": {
-    "file": "assets/index-8659f03f.js",
+    "file": "assets/index-894d427c.js",
     "src": "resources/js/pages/Category/index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_app-layout-ddd4ecde.js",
-      "_PageTitleBox-3291f9d9.js",
-      "_Pagination-912d8bd3.js",
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
       "resources/js/app.js",
-      "_FormDialog-0d177dd5.js",
-      "_index-810449cf.js",
-      "_CreateButton-a2dd5868.js",
-      "_RemoveEditButton-b2c637d7.js",
-      "_useToast-c3bf6ae8.js"
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_CreateButton-487176b0.js",
+      "_RemoveEditButton-e735f819.js",
+      "_useToast-5adcc40c.js"
     ],
     "css": [
       "assets/index-1753c2d6.css"
     ]
   },
-  "_app-layout-ddd4ecde.js": {
-    "file": "assets/app-layout-ddd4ecde.js",
+  "resources/js/pages/Project/show.vue": {
+    "file": "assets/show-f2e4a392.js",
+    "src": "resources/js/pages/Project/show.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "resources/js/app.js",
+      "_index-1b2e1ce6.js",
+      "_CreateButton-487176b0.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "_moment-fbc5633a.js",
+      "_RemoveEditButton-e735f819.js",
+      "_icon-7c2f508c.js",
+      "_index-bd59b9ec.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/show-46af6b86.css"
+    ]
+  },
+  "_app-layout-07ff5ad6.js": {
+    "file": "assets/app-layout-07ff5ad6.js",
     "imports": [
       "resources/js/app.js"
     ],
     "css": [
-      "assets/app-layout-bf6953a9.css"
+      "assets/app-layout-1a1603d3.css"
     ]
   },
   "_moment-fbc5633a.js": {
     "file": "assets/moment-fbc5633a.js"
   },
+  "resources/js/pages/Employee/index.vue": {
+    "file": "assets/index-2f37fa06.js",
+    "src": "resources/js/pages/Employee/index.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_app-layout-07ff5ad6.js",
+      "_PageTitleBox-c4608ada.js",
+      "_Pagination-8ac6ea5b.js",
+      "_FormDialog-bc8e4f1c.js",
+      "_index-6bd5dc00.js",
+      "resources/js/app.js",
+      "_CreateButton-487176b0.js",
+      "_RemoveEditButton-e735f819.js",
+      "_useToast-5adcc40c.js"
+    ],
+    "css": [
+      "assets/index-4066012e.css"
+    ]
+  },
   "resources/js/app.js": {
-    "file": "assets/app-15300521.js",
+    "file": "assets/app-65c4e35f.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
@@ -593,6 +617,7 @@
       "resources/js/pages/Authorize/register-page.vue",
       "resources/js/pages/Authorize/forgotPassword.vue",
       "resources/js/pages/Home/index.vue",
+      "resources/js/pages/Home/jobBoard.vue",
       "resources/js/pages/Category/index.vue",
       "resources/js/pages/Contact/index.vue",
       "resources/js/pages/Department/index.vue",

@@ -100,6 +100,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
 Route::prefix('/home')->name('home.')->group(function(){
     Route::get('/tasks',[HomeController::class,'recentTasks'])->name('recentTask');
+    Route::get('/job-tasks',[HomeController::class,'recentJobTasks'])->name('recentJobTask');
 });
 
     Route::prefix('/my')->name('my.')->group(function(){

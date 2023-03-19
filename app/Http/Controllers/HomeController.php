@@ -15,8 +15,18 @@ class HomeController extends Controller
         ]);
         $status = $request->status;
         $items = Task::query()->user($user_id)->archiveList('user',false)->where('status',$status)->with(['category','employee.model.avatar'])->latest()->limit(10)->get();
-
         return $items;
+    }
 
+    public function recentJobTasks(Request $request){
+        $user_id = $request->user_id;
+        $request->validate([
+            'status'=>['required','numeric']
+        ]);
+        $status = $request->status;
+        $items = Task::query()->archiveList('employee',false)->where('status',$status)->whereHas('employee',function($q)use($user_id){
+            $q->where('employee_id',$user_id);
+        })->with(['category','assigner.avatar'])->latest()->limit(10)->get();
+        return $items;
     }
 }

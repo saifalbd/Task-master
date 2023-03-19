@@ -1,10 +1,20 @@
 <template>
   <div class="asside-box">
     <el-menu default-active="1">
-      <el-menu-item index="1" @click="go({ name: 'home' })">
-        <el-icon><home-filled /></el-icon>
-        <b>Home</b>
-      </el-menu-item>
+      <el-sub-menu index="1">
+        <template #title>
+          <el-icon><home-filled /></el-icon>
+          <b>Home</b>
+        </template>
+        <el-menu-item index="1-1" @click="go({ name: 'home' })">
+          <el-icon><home-filled /></el-icon>
+          <b>Admin Board</b>
+        </el-menu-item>
+         <el-menu-item index="1-2" @click="go({ name: 'job.home' })">
+          <el-icon><home-filled /></el-icon>
+          <b>Job Board</b>
+        </el-menu-item>
+      </el-sub-menu>
 
       <el-menu-item index="2" @click="go({ name: 'contact' })">
         <el-icon><avatar /></el-icon>

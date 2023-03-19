@@ -21,7 +21,7 @@
           <el-descriptions-item label="Status:"><status-btn :dropdown="true" :status="task.status">
              <ul class="status-dropdown">
                 <li
-                  v-for="(s, index) in statusList.filter(e=>![0,1,2,3].includes(e.status))"
+                  v-for="(s, index) in statusList.filter(e=>![0,1,2,3,6,7].includes(e.status))"
                   :key="index"
                   @click="changeStatus(s.status)"
                 >

@@ -29,7 +29,8 @@ class AuthController extends Controller
         ]);
 
         $user = User::query()->whereEmail($request->email)->first();
-        if ($user && Hash::check($request->password, $user->password)) {
+        $password = $request->password;
+        if ($user && Hash::check($password, $user->password)) {
             $token = $user->createToken('token-name');
             $token = $token->plainTextToken;
 

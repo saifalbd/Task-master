@@ -193,6 +193,16 @@ export const statusList = sortBy(
             color: "danger",
             status: 5,
         },
+        {
+            title: "Need To Discus",
+            color: "danger",
+            status: 6,
+        },
+        {
+            title: "Hold",
+            color: "info",
+            status: 7,
+        },
     ],
     "status"
 );

@@ -18,7 +18,7 @@ class TaskController extends Controller
         $user_id = $request->user_id;
         $builder = Task::query()->archiveList('employee',false)->whereHas('employee',function($q)use($user_id){
             $q->where('employee_id',$user_id);
-        })->with(['category','assigner.avatar']);
+        })->with(['category','assigner.avatar'])->latest();
         $items = $builder->paginate($request->perPage);
         return response()->json($items);
     }

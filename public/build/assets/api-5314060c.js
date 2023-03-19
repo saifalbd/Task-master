@@ -1,0 +1,1 @@
+const e=async(a,t)=>{const{data:s}=await axios.get(route("home.recentTask",{status:a}));t(s)},o=async(a,t)=>{const{data:s}=await axios.get(route("home.recentJobTask",{status:a}));t(s)};export{o as a,e as r};

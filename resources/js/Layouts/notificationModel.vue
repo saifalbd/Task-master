@@ -25,29 +25,29 @@
                                 class="list__item"
                                 v-for="(notify, index) in notifyStore.taskNotifications"
                                 :key="index"
-                                @click="go({name:'job.task.show',params:{id:notify.data.task_id}},notify.id)"
+                              
                             >
-                                <va-list-item-section avatar>
+                                <va-list-item-section avatar   @click="go({name:'userProfile',params:{user:notify.data.user_id}},notify.id)">
                                     <va-avatar :size="40">
                                         <img :src="notify.fromUser.avatar.url" />
                                     </va-avatar>
                                 </va-list-item-section>
 
                                 <va-list-item-section>
-                                    <va-list-item-label>
-                                       {{notify.fromUser.name}}
+                                    <va-list-item-label   @click="go({name:'userProfile',params:{user:notify.data.user_id}},notify.id)">
+                                       <el-link :underline="false"><b>{{notify.fromUser.name}}</b></el-link>
                                     </va-list-item-label>
 
-                                    <va-list-item-label
+                                    <va-list-item-label    @click="go({name:'job.task.show',params:{id:notify.data.task_id}},notify.id)"
                                       
                                         :lines="index + 1"
                                     v-if="notify.type =='TaskStatusChanged'">
 
                                         {{ notify.data.message }} Changed Status From 
-                                        <status-btn-vue :status="notify.data.beforeStatus" size="small" plain></status-btn-vue>
-                                        To  <status-btn-vue :status="notify.data.status"  size="small" plain></status-btn-vue>
+                                        <status-btn-vue :status="notify.data.beforeStatus" size="small"></status-btn-vue>
+                                        To  <status-btn-vue :status="notify.data.status"  size="small"></status-btn-vue>
                                     </va-list-item-label>
-                                     <va-list-item-label
+                                     <va-list-item-label   @click="go({name:'job.task.show',params:{id:notify.data.task_id}},notify.id)"
                                       
                                         :lines="index + 1"
                                     v-else>
@@ -74,7 +74,7 @@
                                 :key="index"
                                 @click="go({name:'userProfile',params:{user:notify.data.user_id}},notify.id)"
                             >
-                                <va-list-item-section avatar>
+                                <va-list-item-section avatar >
                                     <va-avatar :size="40">
                                      <img :src="notify.fromUser.avatar.url" />
                                     </va-avatar>
@@ -82,7 +82,7 @@
 
                                 <va-list-item-section>
                                     <va-list-item-label>
-                                       {{notify.fromUser.name}}
+                                     <b>  {{notify.fromUser.name}}</b>
                                     </va-list-item-label>
 
                                     <va-list-item-label
@@ -174,6 +174,12 @@ statusBtnVue
 <style scoped lang="scss">
 .list__item{
     cursor: pointer;
+    border-bottom: 1px solid #0000001f;
+    padding: 3px 0;
+    &:hover{
+        background-color: #d8f5d84d;
+    }
+    
 }
 .form-title {
     .text {

@@ -1,13 +1,16 @@
 .home-page{
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr;
 
-    
+    &.admin{
+        grid-template-columns: 2fr 1fr;    
+    }
+
     .recent-task-list{
         li{
             cursor: pointer;
             display: grid;
-            grid-template-columns: 45px auto;
+            grid-template-columns: 30px auto;
             padding: 3px 0;
             border-bottom: 1px solid #0000001f;
             &:last-child{

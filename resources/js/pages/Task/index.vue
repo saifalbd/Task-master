@@ -6,12 +6,15 @@
           title="Add Task"
           @click="showCreate = true"
         ></create-button>
-          <el-button type="primary" @click="router.push({name:'task.archive'})">
-            <el-icon>
-              <download/>
-            </el-icon>
-            Archives
-          </el-button>
+        <el-button
+          type="primary"
+          @click="router.push({ name: 'task.archive' })"
+        >
+          <el-icon>
+            <download />
+          </el-icon>
+          Archives
+        </el-button>
       </page-title-box>
     </div>
 
@@ -111,27 +114,38 @@
         </el-card>
       </el-col>
     </el-row>
-<!--  v-model:sort-by="sortBy" -->
+    <!--  v-model:sort-by="sortBy" -->
     <va-data-table
       v-else
       :items="items"
       :columns="columns"
       :hoverable="true"
-     
       v-model:sorting-order="sortingOrder"
     >
-    <template #cell(title)="{rowData}">
-  <el-link @click="
-                      go({
-                        name: 'task.show',
-                        params: { id: rowData.id },
-                      })
-                    "><b>{{rowData.title}}</b></el-link>
+    <template #cell(created_at)="{value}">
+      <span>{{atNow(value)}}</span>
     </template>
-       <template #cell(user_star)="{ rowData}">
-        <el-button @click="addStar(rowData)" size="small" :type="rowData.user_star?'warning':''" plain round>
+      <template #cell(title)="{ rowData }">
+        <el-link
+          @click="
+            go({
+              name: 'task.show',
+              params: { id: rowData.id },
+            })
+          "
+          ><b>{{ rowData.title }}</b></el-link
+        >
+      </template>
+      <template #cell(user_star)="{ rowData }">
+        <el-button
+          @click="addStar(rowData)"
+          size="small"
+          :type="rowData.user_star ? 'warning' : ''"
+          plain
+          round
+        >
           <el-icon>
-            <star-filled/>
+            <star-filled />
           </el-icon>
         </el-button>
       </template>
@@ -158,7 +172,12 @@
       <template #cell(action)="{ rowData, rowIndex }">
         <div>
           <el-button-group>
-            <el-button type="primary" size="small" title="Archive" @click="doArchive(rowData, rowIndex)">
+            <el-button
+              type="primary"
+              size="small"
+              title="Archive"
+              @click="doArchive(rowData, rowIndex)"
+            >
               <el-icon>
                 <download />
               </el-icon>
@@ -234,7 +253,7 @@ import { confirm, removeSuccess, dropdowns } from "../../Plugins/utility";
 import { useToast } from "vuestic-ui";
 import { useRouter } from "vue-router";
 import StatusBtn from "../../Components/statusBtn.vue";
-import {sortBy} from 'lodash';
+import { sortBy } from "lodash";
 import {
   Delete,
   More,
@@ -248,6 +267,7 @@ import {
   Star,
   StarFilled,
 } from "@element-plus/icons-vue";
+import moment from "moment";
 export default {
   components: {
     AppLayout,
@@ -286,7 +306,7 @@ export default {
     const perPage = ref(50);
     // const sortBy = ref("title");
     const columns = [
-      { key: "user_star",label:'Star', sortable: true },
+      { key: "user_star", label: "Star", sortable: true },
       { key: "id", sortable: true, sortingOptions: ["desc", "asc"] },
       { key: "title", sortable: true },
 
@@ -294,7 +314,7 @@ export default {
       { key: "employee", label: "Employee", sortable: true },
       { key: "start", label: "Start", sortable: true },
       { key: "end", label: "Dead Line", sortable: true },
-
+      { key: "created_at", label: "AtNow", sortable: false },
       { key: "status", sortable: true },
       {
         key: "action",
@@ -320,10 +340,13 @@ export default {
         });
         const { data } = await axios.get(url);
         links.value = data.links;
-        items.value = sortBy(addProtos(data.data, {
-          action: true,
-          showEdit: false,
-        }),'user_star').reverse();
+        items.value = sortBy(
+          addProtos(data.data, {
+            action: true,
+            showEdit: false,
+          }),
+          "user_star"
+        ).reverse();
       } catch (error) {
         console.error(error);
       }
@@ -352,17 +375,22 @@ export default {
       }
     };
 
-    const addStar = (item)=>{
-      
+    const addStar = (item) => {
       item.user_star = !item.user_star;
-      axios.post(route('task.changeStar',{task:item.id}),{prop:'user_star', star:item.user_star?0:1})
-    }
+      axios.post(route("task.changeStar", { task: item.id }), {
+        prop: "user_star",
+        star: item.user_star ? 0 : 1,
+      });
+    };
 
-    const doArchive = (item,index)=>{
-       items.value.splice(index, 1);
-      axios.post(route('task.doArchive',{task:item.id}),{prop:'user_archive', do:item.user_archive?0:1})
-    }
-
+    const doArchive = (item, index) => {
+      items.value.splice(index, 1);
+      axios.post(route("task.doArchive", { task: item.id }), {
+        prop: "user_archive",
+        do: item.user_archive ? 0 : 1,
+      });
+    };
+    const atNow = (date) => moment(date).fromNow();
     return {
       busy,
       showCreate,
@@ -370,7 +398,7 @@ export default {
       sortingOrder,
       items,
       columns,
-    
+
       push,
       replace,
       fetchItems,
@@ -379,6 +407,7 @@ export default {
       remove,
       addStar,
       doArchive,
+      atNow,
       links,
       router,
       isCardWise,

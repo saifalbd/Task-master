@@ -44,6 +44,7 @@
             <th>Assigner</th>
             <th>Start</th>
             <th>DeadLine</th>
+             <th>AtNow</th>
             <th>Status</th>
             <th>Show</th>
           </tr>
@@ -87,6 +88,7 @@
  
               <td>{{ t.start }}</td>
               <td>{{ t.end }}</td>
+              <td>{{atNow(t.created_at)}}</td>
               <td>
                 <status-btn :status="t.status" size="small"></status-btn>
               </td>
@@ -135,6 +137,7 @@ import { ref } from "vue";
 import StatusBtn from "../../../Components/statusBtn.vue";
 import {StarFilled,Expand,Download} from '@element-plus/icons-vue';
 import {useRouter} from 'vue-router';
+import moment from 'moment';
 export default {
   components: {
     AppLayout,
@@ -152,6 +155,8 @@ export default {
     const go = (to)=>{
         router.push(to)
     }
+    const atNow = (date)=>moment(date).fromNow();
+
     const fetchItems = async () => {
       try {
         const url = route("my.task.index");
@@ -182,7 +187,7 @@ export default {
       });
     };
 
-    return { items, links, perPage, busy,go,doArchive,addStar };
+    return { items, links, perPage, busy,atNow,go,doArchive,addStar };
   },
 };
 </script>
