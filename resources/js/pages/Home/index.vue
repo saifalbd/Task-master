@@ -3,9 +3,9 @@
     <div>
       <page-title-box title="Home Board"></page-title-box>
     </div>
-    <div class="home-page admin">
-      <el-row :gutter="24">
-        <el-col :sm="24" :md="8"  v-for="(box,index) in tasks" :key="index">
+    <div class="home-page admin" :class="{hasProposal:!!employeeProposals.length}">
+      <div class="task-box-list">
+        <div :sm="24" :md="4.8"  v-for="(box,index) in tasks" :key="index">
         <el-card class="box-card mb-3">
           <template #header>
             <div class="card-header">
@@ -33,10 +33,10 @@
             </li>
           </ul>
         </el-card>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
      
-      <div>
+      <div class="right-side-bar">
         <el-card class="box-card">
           <template #header>
             <div class="card-header">

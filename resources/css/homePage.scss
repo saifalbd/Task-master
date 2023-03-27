@@ -3,7 +3,28 @@
     grid-template-columns: 1fr;
 
     &.admin{
-        grid-template-columns: 2fr 1fr;    
+        @media (min-width: 768px) {
+            .right-side-bar{
+                display: none;
+            }
+            .task-box-list{
+                display: grid;
+                grid-template-columns: repeat(5,1fr);
+                grid-gap: 5px;
+            }
+            &.hasProposal{
+                grid-template-columns: 2fr 1fr; 
+                .right-side-bar{
+                    display: block;
+                } 
+                .task-box-list{
+                    display: grid;
+                    grid-template-columns: repeat(3,1fr);
+                }
+            }
+        }
+      
+        
     }
 
     .recent-task-list{
