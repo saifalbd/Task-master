@@ -9,12 +9,18 @@ import { chatStore } from "../store/chat";
 import { useRouter } from "vue-router";
 import ChatModal from "./ChatModal.vue";
 import { whenLogout } from "../Plugins/utility";
+import { breakpointsTailwind, useBreakpoints, useResizeObserver } from '@vueuse/core'
+import {
+DArrowLeft,DArrowRight
+} from "@element-plus/icons-vue";
 export default defineComponent({
   components: {
     AsideBar,
     NotificationModel,
     ProfileEditModal,
     ChatModal,
+DArrowLeft,
+DArrowRight
   },
   props: {
     title: { type: String, default: "title" },
@@ -27,6 +33,8 @@ export default defineComponent({
   setup(props) {
     const main = mainStore();
     const chat = chatStore();
+     const el = ref(null)
+    const lg = ref(false);
     const chatUnreadcount = computed(() => chat.totalUnreadCount);
     let token = main.token;
     let user = main.user;
@@ -65,13 +73,28 @@ export default defineComponent({
       router.push({name:'profile'})
     }
 
+       const responsive  = ()=>{
+      const breakpoints = useBreakpoints(breakpointsTailwind);
+const largerThanSm = breakpoints.greater('sm') // only larger than sm
+
+lg.value = largerThanSm.value;
+    }
+
+ useResizeObserver(el, (entries) => {
+      responsive();
+    })
+
+
+
     onMounted(() => {
+     
       axios.get(route("chatUnreadcount")).then(({ data }) => {
         chat.increaseTotalUnread(data);
       });
     });
 
     return {
+      lg,
       avatar,
       props,
       notifyStore,
@@ -88,19 +111,27 @@ export default defineComponent({
 });
 </script>
 <template>
-  <div class="main-layout">
+<div ref="el" class="main-layout" :class="{lg}">
     <div class="info-bar" :class="{ show: props.showInfoBar }">
       <div class="info-bar-body">
         <slot name="info"></slot>
       </div>
     </div>
+    
     <div class="asside">
-      <AsideBar></AsideBar>
+      <AsideBar :lg="!!lg"></AsideBar>
     </div>
     <div class="main-content">
       <div class="inner">
         <div class="top-nav">
-          <div class="page-title">Task Master</div>
+       
+          <div class="page-title">
+            <el-button round @click="lg=!lg">
+              <el-icon v-if="lg"><DArrowLeft /></el-icon>
+              <el-icon v-else><DArrowRight /></el-icon>
+              </el-button>
+            <span class="hidden-sm-and-down">Task Master</span>
+            </div>
           <div class="right-side">
             <slot name="custom"></slot>
             <va-badge

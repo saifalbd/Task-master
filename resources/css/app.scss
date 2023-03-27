@@ -19,6 +19,7 @@
 @import './profile.scss';
 @import './homePage.scss';
 
+
 .flex-center{
     display: flex;
     justify-content: center;
@@ -28,10 +29,15 @@
 
 .main-layout{
     display: grid;
-    grid-template-columns: 200px auto;
+    grid-template-columns:auto  1fr;
     .asside{
         min-height: 100vh;
+ 
     }
+    &.lg{
+        grid-template-columns: 200px auto;
+    }
+ 
     .info-bar{
         position: fixed;
         top: 0;
@@ -73,7 +79,7 @@
                 height: $topNavHeight;
 
                 
-                border-bottom: $mainBorderSize solid $redbookColor;
+                border-bottom: $mainBorderSize solid transparent;
                 border-bottom-left-radius: $topNavHeight;
                 border-bottom-right-radius: $topNavHeight;
                 background-color: #f5f9fb;

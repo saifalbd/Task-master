@@ -1,10 +1,10 @@
 <template>
   <div class="asside-box">
-    <el-menu default-active="1">
+    <el-menu :collapse="!props.lg" default-active="1">
       <el-sub-menu index="1">
         <template #title>
           <el-icon><home-filled /></el-icon>
-          <b>Home</b>
+          <span style="font-weight:bold">Employees</span>
         </template>
         <el-menu-item index="1-1" @click="go({ name: 'home' })">
           <el-icon><home-filled /></el-icon>
@@ -18,13 +18,13 @@
 
       <el-menu-item index="2" @click="go({ name: 'contact' })">
         <el-icon><avatar /></el-icon>
-        <b>Contacts</b>
+    <template #title><b>Contacts</b></template>
       </el-menu-item>
 
       <el-sub-menu index="2">
         <template #title>
           <el-icon><avatar /></el-icon>
-          <b>Employees</b>
+            <span style="font-weight:bold">Employees</span>
         </template>
         <el-menu-item index="2-1" @click="go({ name: 'employee' })">
           <el-icon><avatar /></el-icon>
@@ -43,45 +43,47 @@
 
       <el-menu-item index="3" @click="go({ name: 'client' })">
         <el-icon><user /></el-icon>
-        <b>Clients</b>
+          <template #title><b>Clients</b></template>
       </el-menu-item>
       <el-menu-item index="4" @click="go({ name: 'category' })">
         <el-icon><connection /></el-icon>
-        <b>Category</b>
+           <template #title><b>Category</b></template>
+      
       </el-menu-item>
 
       <el-menu-item index="7" @click="go({ name: 'team' })">
         <el-icon><management /></el-icon>
-        <b>Teams</b>
+            <template #title><b>Teams</b></template>
+       
       </el-menu-item>
       <el-sub-menu index="8">
         <template #title>
           <el-icon><files /></el-icon>
-          <b>Projects</b>
+            <span style="font-weight:bold">Projects</span>
         </template>
         <el-menu-item index="8-1" @click="go({ name: 'project' })">
-          <b>Assignments</b>
+          <b>Assignments (Project)</b>
         </el-menu-item>
         <el-menu-item index="8-2" @click="go({ name: 'job.project' })">
-          <b>jobs</b>
+          <b>Jobs (Job)</b>
         </el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="9">
         <template #title>
           <el-icon><files /></el-icon>
-          <b>Tasks</b>
+          <span style="font-weight:bold">Tasks</span>
         </template>
         <el-menu-item index="9-1" @click="go({ name: 'task' })">
-          <b>Assignments</b>
+          <b>Assignments (Task)</b>
         </el-menu-item>
         <el-menu-item index="9-2" @click="go({ name: 'job.task' })">
-          <b>jobs</b>
+          <b>Jobs (Task)</b>
         </el-menu-item>
       </el-sub-menu>
 
       <el-menu-item index="10" @click="go({ name: 'toDoList' })">
         <el-icon><home-filled /></el-icon>
-        <b>toDoList</b>
+          <template #title> <b>toDoList</b></template>
       </el-menu-item>
     </el-menu>
   </div>
@@ -103,6 +105,12 @@ import { defineComponent, reactive } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
+    props:{
+    lg:{
+      type:Boolean,
+      required:true,
+    }
+  },
   components: {
     HomeFilled,
     Collection,
@@ -113,13 +121,14 @@ export default defineComponent({
     Position,
     User,
   },
-  setup() {
+  setup(props) {
     const router = useRouter();
     const go = (to) => {
       router.push(to);
     };
 
     return {
+      props,
       go,
     };
   },

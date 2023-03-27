@@ -6,7 +6,8 @@ import router from './routes';
 import { createVuestic } from 'vuestic-ui'
 import 'vuestic-ui/css'
 import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+import 'element-plus/dist/index.css';
+import 'element-plus/theme-chalk/display.css';
 
 import { createPinia } from 'pinia'
 
