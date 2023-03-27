@@ -50,8 +50,9 @@
                 grid-row-end: 3;
             }
             .task-line{
-                display: grid;
-                grid-template-columns: auto 75px;
+                display: flex;
+                justify-content: space-between;
+                
                 .center{
                     text-align: center;
                 }

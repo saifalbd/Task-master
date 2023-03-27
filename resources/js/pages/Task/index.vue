@@ -170,18 +170,24 @@
         <status-btn :status="value" size="small"></status-btn>
       </template>
       <template #cell(action)="{ rowData, rowIndex }">
-        <div>
-          <el-button-group>
-            <el-button
-              type="primary"
-              size="small"
-              title="Archive"
-              @click="doArchive(rowData, rowIndex)"
-            >
-              <el-icon>
-                <download />
+        <div style="min-width:100px">
+              <el-dropdown split-button type="info" size="small">
+    <el-icon :size="20">
+                <expand />
               </el-icon>
-            </el-button>
+
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item :icon="Edit"  @click="rowData.showEdit = true">Edit</el-dropdown-item>
+          <el-dropdown-item :icon="Delete"      @click="remove(rowData, rowIndex)">Remove</el-dropdown-item>
+          <el-dropdown-item :icon="Download" @click="doArchive(rowData, rowIndex)">Archive</el-dropdown-item>
+
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+
+          <!-- <el-button-group>
+            
 
             <el-button
               type="primary"
@@ -218,7 +224,7 @@
                 <delete />
               </el-icon>
             </el-button>
-          </el-button-group>
+          </el-button-group> -->
 
           <edit-vue
             v-model:show="rowData.showEdit"
@@ -255,13 +261,14 @@ import { useRouter } from "vue-router";
 import StatusBtn from "../../Components/statusBtn.vue";
 import { sortBy } from "lodash";
 import {
-  Delete,
+ 
   More,
   List,
   Box,
   Search,
   Collection,
   Expand,
+   Delete,
   Edit,
   Download,
   Star,
@@ -270,23 +277,23 @@ import {
 import moment from "moment";
 export default {
   components: {
+     Delete,
+  Edit,
+  Download,
     AppLayout,
     PageTitleBox,
     Pagination,
     Create,
     EditVue,
-    Edit,
     List,
     Box,
     CreateButton,
     RemoveEditButton,
     StatusBtn,
-    Delete,
     More,
     Search,
     Collection,
     Expand,
-    Download,
     Star,
     StarFilled,
   },
@@ -379,7 +386,7 @@ export default {
       item.user_star = !item.user_star;
       axios.post(route("task.changeStar", { task: item.id }), {
         prop: "user_star",
-        star: item.user_star ? 0 : 1,
+        star: item.user_star ? 1: 0,
       });
     };
 
@@ -392,6 +399,9 @@ export default {
     };
     const atNow = (date) => moment(date).fromNow();
     return {
+       Delete,
+  Edit,
+  Download,
       busy,
       showCreate,
       perPage,
