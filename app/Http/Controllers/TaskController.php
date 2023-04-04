@@ -82,7 +82,8 @@ class TaskController extends Controller
             $task->attachments()->sync(collect($list)->pluck('id')->toArray());
         }
 
-        $user = User::find($employee_id);
+        $employee = Employee::findOrFail($employee_id);
+        $user = User::find($employee->employee_id);
         $task->fresh();
        
         $task->load(['category','employee.model.avatar']);

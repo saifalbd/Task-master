@@ -1,7 +1,12 @@
 <template>
   <app-layout :busy="busy">
     <div>
-      <page-title-box title="Home Board"></page-title-box>
+      <page-title-box title="Home Board">
+         <create-button
+          title="Add Task"
+          @click="showCreate = true"
+        ></create-button>
+      </page-title-box>
     </div>
     <div
       class="home-page admin"
@@ -119,28 +124,42 @@
         </el-card>
       </div>
     </div>
+    <add-task    v-model:show="showCreate"
+      :employees="employees"
+      :categories="categories"
+      @push="push"></add-task>
   </app-layout>
 </template>
 
 <script>
 import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
-import { ref, computed } from "vue";
+import { ref, computed,onMounted } from "vue";
 import { statusList } from "../../Plugins/utility";
 import { recentTasks } from "./api";
 import moment from "moment";
 import { useRouter } from "vue-router";
 import statusBtnVue from "../../Components/statusBtn.vue";
 import { ArrowDown } from "@element-plus/icons-vue";
+import CreateButton from "../../Components/CreateButton.vue";
+import AddTask from '../Task/Create.vue';
+import { dropdowns } from "../../Plugins/utility";
 export default {
   components: {
+    CreateButton,
     ArrowDown,
     AppLayout,
     PageTitleBox,
     statusBtnVue,
+    AddTask,
   },
   setup() {
     const busy = ref(false);
+    const showCreate = ref(false);
+     const employees = ref([]);
+    const categories = ref([]);
+
+
     const router = useRouter();
     const pendingTasks = ref([]);
     const acceptedTasks = ref([]);
@@ -235,16 +254,33 @@ export default {
       }
     };
 
+const push = (data)=>{
+  pendingTasks.value.push(data);
+  showCreate.value = false
+}
+    onMounted(()=>{
+      dropdowns("employees", (data) => {
+      employees.value = data;
+    });
+
+    dropdowns("categories", (data) => {
+      categories.value = data;
+    });
+    })
+
     return {
       atNow,
       go,
+      push,
       changeStatus,
       statusList,
       busy,
       employeeProposals,
       Accepted,
       Deny,
+      showCreate,
       tasks,
+          employees,categories
     };
   },
 };

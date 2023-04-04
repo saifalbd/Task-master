@@ -124,6 +124,7 @@
           </template>
         </tbody>
       </table>
+         <pagination :links="links" @page="fetchItems"></pagination>
     </div>
   </app-layout>
 </template>
@@ -135,7 +136,7 @@ import { ref } from "vue";
 import StatusBtn from "../../../Components/statusBtn.vue";
 import { StarFilled, Expand, Download } from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
-
+import Pagination from "../../../Components/Pagination.vue";
 import BackButtonVue from "../../../Components/BackButton.vue";
 export default {
   components: {
@@ -146,20 +147,21 @@ export default {
     StarFilled,
     Expand,
     Download,
+    Pagination
   },
   setup() {
     const router = useRouter();
     const busy = ref(true);
     const items = ref([]);
     const links = ref([]);
-    const perPage = ref(10);
+    const perPage = ref(50);
 
     const go = (to) => {
       router.push(to);
     };
-    const fetchItems = async () => {
+    const fetchItems = async (page=1) => {
       try {
-        const url = route("my.task.archives");
+        const url = route("my.task.archives",{page,perPage:perPage.value});
         const { data } = await axios.get(url);
         items.value = data.data;
         links.value = data.links;
@@ -187,7 +189,7 @@ export default {
       });
     };
 
-    return { items, links, perPage, busy, go, doArchive, addStar };
+    return { items, links, perPage, busy, go, doArchive, addStar,fetchItems };
   },
 };
 </script>

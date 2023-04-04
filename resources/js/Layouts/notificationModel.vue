@@ -57,8 +57,9 @@
                                 </va-list-item-section>
 
                                 <va-list-item-section icon>
-                                    <va-icon
-                                        name="remove_red_eye"
+                                    <!-- visibility_off -->
+                                    <va-icon @click="read(notify)"
+                                        :name="notify.read_at?'visibility_off':'remove_red_eye'"
                                         color="background-tertiary"
                                     />
                                 </va-list-item-section>
@@ -151,9 +152,14 @@ statusBtnVue
         const close = () => {
             emit("update:show", false);
         };
+        const read = (notify)=>{
+          
+              axios.put(route('markAsReadNotify',{id:notify.id}),{read:notify.read_at?0:1})
+                notify.read_at = true
+        }
 
          const go = (to,id)=>{
-        axios.put(route('markAsReadNotify',{id}),{})
+        axios.put(route('markAsReadNotify',{id}),{read:1})
             close()
             router.push(to);
         }
@@ -165,6 +171,7 @@ statusBtnVue
             props,
             close,
             go,
+            read,
             notifyStore
         };
     },

@@ -16,7 +16,9 @@ class UtilityController extends Controller
         return $rep->{$slug}();
     }
 
-    public function markAsReadNotify($id){
-        DB::table('notifications')->where('id',$id)->update(['read_at'=>now()]);
+    public function markAsReadNotify(Request $request, $id){
+        $request->validate(['read'=>['required','in:0,1']]);
+        $read = $request->read?now():null;
+        DB::table('notifications')->where('id',$id)->update(['read_at'=>$read]);
     }
 }
