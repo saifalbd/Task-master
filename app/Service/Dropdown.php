@@ -23,7 +23,8 @@ class Dropdown
         return Employee::query()->where('user_id',$this->user_id)->where('accepted',true)->with('model')->get()->map(function($employe){
             $id = $employe->id;
             $name = $employe->model->name;
-            return compact('id','name');
+            $user_id = $employe->model->id;
+            return compact('id','name','user_id');
         });
     }
 

@@ -6,6 +6,22 @@
           title="Add Task"
           @click="showCreate = true"
         ></create-button>
+         <el-dropdown>
+      <el-button type="primary" style="margin-left:15px;">
+       Employees<el-icon class="el-icon--right"><arrow-down /></el-icon>
+      </el-button>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item v-for="em in employees" :key="em.id" @click="
+            go({
+              name: 'userProfile',
+              params: { user: em.user_id },
+            })
+          ">{{em.name}}</el-dropdown-item>
+          
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
       </page-title-box>
     </div>
     <div
