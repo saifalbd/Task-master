@@ -172,7 +172,10 @@
       <template #cell(action)="{ rowData, rowIndex }">
         <div style="min-width:100px">
               <el-dropdown split-button type="info" size="small">
-    <el-icon :size="20">
+    <el-icon :size="20" @click="go({
+                  name: 'task.show',
+                  params: { id: rowData.id },
+                })">
                 <expand />
               </el-icon>
 
@@ -331,7 +334,13 @@ export default {
     ];
     const sortingOrder = ref("asc");
 
+    
+
     // START METHODS
+
+    const go = (to) => {
+      router.push(to);
+    };
     dropdowns("employees", (data) => {
       employees.value = data;
     });
@@ -420,6 +429,7 @@ export default {
       atNow,
       links,
       router,
+      go,
       isCardWise,
     };
   },

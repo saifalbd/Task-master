@@ -2,26 +2,30 @@
   <app-layout :busy="busy">
     <div>
       <page-title-box title="Home Board">
-         <create-button
+        <create-button
           title="Add Task"
           @click="showCreate = true"
         ></create-button>
-         <el-dropdown>
-      <el-button type="primary" style="margin-left:15px;">
-       Employees<el-icon class="el-icon--right"><arrow-down /></el-icon>
-      </el-button>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item v-for="em in employees" :key="em.id" @click="
-            go({
-              name: 'userProfile',
-              params: { user: em.user_id },
-            })
-          ">{{em.name}}</el-dropdown-item>
-          
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+        <el-dropdown>
+          <el-button type="primary" style="margin-left: 15px">
+            Employees<el-icon class="el-icon--right"><arrow-down /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+                v-for="em in employees"
+                :key="em.id"
+                @click="
+                  go({
+                    name: 'userProfile',
+                    params: { user: em.user_id },
+                  })
+                "
+                >{{ em.name }}</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </page-title-box>
     </div>
     <div
@@ -57,13 +61,18 @@
                     <template #dropdown>
                       <el-dropdown-menu>
                         <el-dropdown-item
-                          v-for="(s, index) in statusList.filter(
-                            (e) => ![0, 1, 2, 3, 6, 7].includes(e.status)
-                          ).filter(s=>s.status!=item.status)"
+                          v-for="(s, index) in statusList
+                            .filter(
+                              (e) => ![0, 1, 2, 3, 6, 7].includes(e.status)
+                            )
+                            .filter((s) => s.status != item.status)"
                           :key="index"
-                          @click="changeStatus(s.status,item.id,box.items,i)"
+                          @click="changeStatus(s.status, item.id, box.items, i)"
                         >
                           {{ s.title }}
+                        </el-dropdown-item>
+                        <el-dropdown-item v-if="item.status == 4" @click="doArchive(item, i)">
+                          Archive
                         </el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
@@ -140,17 +149,19 @@
         </el-card>
       </div>
     </div>
-    <add-task    v-model:show="showCreate"
+    <add-task
+      v-model:show="showCreate"
       :employees="employees"
       :categories="categories"
-      @push="push"></add-task>
+      @push="push"
+    ></add-task>
   </app-layout>
 </template>
 
 <script>
 import AppLayout from "../../Layouts/app-layout.vue";
 import PageTitleBox from "../../Components/PageTitleBox.vue";
-import { ref, computed,onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { statusList } from "../../Plugins/utility";
 import { recentTasks } from "./api";
 import moment from "moment";
@@ -158,7 +169,7 @@ import { useRouter } from "vue-router";
 import statusBtnVue from "../../Components/statusBtn.vue";
 import { ArrowDown } from "@element-plus/icons-vue";
 import CreateButton from "../../Components/CreateButton.vue";
-import AddTask from '../Task/Create.vue';
+import AddTask from "../Task/Create.vue";
 import { dropdowns } from "../../Plugins/utility";
 export default {
   components: {
@@ -172,9 +183,8 @@ export default {
   setup() {
     const busy = ref(false);
     const showCreate = ref(false);
-     const employees = ref([]);
+    const employees = ref([]);
     const categories = ref([]);
-
 
     const router = useRouter();
     const pendingTasks = ref([]);
@@ -222,7 +232,7 @@ export default {
         },
         {
           title: "Submited Tasks",
-          isSubmit:true,
+          isSubmit: true,
           items: submitedTasks.value,
         },
         {
@@ -255,40 +265,46 @@ export default {
       }
     };
 
-      const changeStatus = async (status,task,items,i) => {
-     
+    const changeStatus = async (status, task, items, i) => {
       try {
-        const url = route("task.changeStatus", { task});
+        const url = route("task.changeStatus", { task });
 
-        const { data } = await axios.post(url, { status,notify:0 });
-      
-   
-       
-        items.splice(i,1)
+        const { data } = await axios.post(url, { status, notify: 0 });
+
+        items.splice(i, 1);
       } catch (error) {
         console.error(error);
       }
     };
 
-const push = (data)=>{
-  pendingTasks.value.push(data);
-  showCreate.value = false
-}
-    onMounted(()=>{
+    const push = (data) => {
+      pendingTasks.value.push(data);
+      showCreate.value = false;
+    };
+    onMounted(() => {
       dropdowns("employees", (data) => {
-      employees.value = data;
+        employees.value = data;
+      });
+
+      dropdowns("categories", (data) => {
+        categories.value = data;
+      });
     });
 
-    dropdowns("categories", (data) => {
-      categories.value = data;
-    });
-    })
+     const doArchive = (item, index) => {
+      completedTasks.value.splice(index, 1);
+      axios.post(route("task.doArchive", { task: item.id }), {
+        prop: "user_archive",
+        do: item.user_archive ? 0 : 1,
+      });
+    };
 
     return {
       atNow,
       go,
       push,
       changeStatus,
+      doArchive,
       statusList,
       busy,
       employeeProposals,
@@ -296,7 +312,8 @@ const push = (data)=>{
       Deny,
       showCreate,
       tasks,
-          employees,categories
+      employees,
+      categories,
     };
   },
 };

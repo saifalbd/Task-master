@@ -60,7 +60,7 @@ class TaskController extends Controller
             'end' => ['required', 'date'],
             'description' => ['nullable', 'string'],
             'attachments'=>['nullable','array'],
-            'attachments.*'=>['required','image'],
+            'attachments.*'=>['required','file'],
         ]);
 
         $user_id = $request->user_id;
