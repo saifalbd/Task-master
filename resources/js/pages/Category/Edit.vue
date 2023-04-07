@@ -132,7 +132,7 @@ export default {
             let valid = await form.value.validate();
             if (!valid) return null;
             try {
-                const { data } = await axios.put(url, { title: title.value });
+                const { data } = await axios.put(url, { title: title.value,color });
                 emit(
                     "replace",
                     addProtos(data, {
