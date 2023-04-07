@@ -11,10 +11,15 @@ class HomeController extends Controller
     public function recentTasks(Request $request){
         $user_id = $request->user_id;
         $request->validate([
-            'status'=>['required','numeric']
+            'status'=>['required','numeric'],
+            'employee'=>['nullable','numeric']
         ]);
         $status = $request->status;
-        $items = Task::query()->user($user_id)->archiveList('user',false)->where('status',$status)->with(['category','employee.model.avatar'])->latest()->limit(10)->get();
+        $employee = $request->employee;
+        $items = Task::query()->user($user_id)
+        ->archiveList('user',false)->where('status',$status)
+        ->when($employee,fn($q)=>$q->employee($employee))
+        ->with(['category','employee.model.avatar'])->latest()->limit(10)->get();
         return $items;
     }
 

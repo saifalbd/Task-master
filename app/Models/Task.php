@@ -59,6 +59,10 @@ class Task extends Model
     {
         return $builder->where("user_id", $user_id);
     }
+    public function scopeEmployee(Builder $builder, $employee_id)
+    {
+        return $builder->where("employee_id", $employee_id);
+    }
 
     public function scopeArchiveList(Builder $builder,$prop,$bool){
         $builder->where($prop.'_archive',$bool);

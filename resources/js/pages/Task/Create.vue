@@ -49,7 +49,7 @@
                         </va-select>
                     </div>
 
-                    <div class="flex xs6 in-box">
+                    <div class="flex xs4 in-box">
                         <va-input
                             v-model="start"
                             label="Start *"
@@ -58,7 +58,7 @@
                             :rules="rs('start', true)"
                         />
                     </div>
-                    <div class="flex xs6 in-box">
+                    <div class="flex xs4 in-box">
                         <va-input
                             v-model="end"
                             type="date"
@@ -67,6 +67,11 @@
                             :rules="rs('dead line', true)"
                         />
                     </div>
+                    <div class="flex xs4 in-box">
+                          <va-time-input  label="Dead Line *" v-model="endTime" />
+                    </div>
+
+                  
                     <div class="flex xs12 in-box">
                         <va-file-upload v-model="attachments" dropzone />
                     </div>
@@ -111,6 +116,7 @@ export default {
         let employee = ref(null);
         const start = ref(moment().format(dateFormat));
         const end = ref(null);
+        const endTime = ref(new Date())
         const description = ref("");
         const attachments = ref([]);
 
@@ -158,6 +164,7 @@ export default {
             title,
             start,
             end,
+            endTime,
             employee,
             category,
             description,

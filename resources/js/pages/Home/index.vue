@@ -3,6 +3,7 @@
     <div>
       <page-title-box title="Home Board">
       
+      <create-button title="Add Task" @click="showCreate =!showCreate"/>
         <el-dropdown>
           <el-button type="primary" style="margin-left: 15px">
             Employees<el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -10,13 +11,17 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
+              
+                @click="
+                  loadTask(null)
+                "
+                >All Employees</el-dropdown-item
+              >
+              <el-dropdown-item
                 v-for="em in employees"
                 :key="em.id"
                 @click="
-                  go({
-                    name: 'userProfile',
-                    params: { user: em.user_id },
-                  })
+                  loadTask(em.id)
                 "
                 >{{ em.name }}</el-dropdown-item
               >
@@ -36,9 +41,7 @@
                 <span
                   ><b>{{ box.title }}</b></span
                 >
-                <el-button   @click="showCreate = true">
-             <el-icon class="el-icon--right"><plus /></el-icon>
-                </el-button>
+               
               </div>
             <ul class="recent-task-list">
               <li v-for="(item, i) in box.items" :key="i" :style="{
@@ -203,21 +206,25 @@ export default {
       router.push(to);
     };
 
-    recentTasks(0, (data) => {
+    const loadTask = (employee=null)=>{
+      recentTasks(0, (data) => {
       pendingTasks.value = data;
-    });
+    },employee);
     recentTasks(1, (data) => {
       acceptedTasks.value = data;
-    });
+    },employee);
     recentTasks(2, (data) => {
       workingTasks.value = data;
-    });
+    },employee);
     recentTasks(3, (data) => {
       submitedTasks.value = data;
-    });
+    },employee);
     recentTasks(4, (data) => {
       completedTasks.value = data;
-    });
+    },employee);
+    }
+
+    loadTask()
 
     const tasks = computed(() => {
       return [
@@ -308,6 +315,7 @@ export default {
       push,
       changeStatus,
       doArchive,
+      loadTask,
       statusList,
       busy,
       employeeProposals,

@@ -32,46 +32,17 @@
 
           <div class="flex xs12 md4 mt-2" v-if="showColor">
             <label for="">Background Color</label>
-            <va-color-palette
-              v-model="color.bg"
-              :palette="[
-                '#154EC1',
-                '#767C88',
-                '#262824',
-                '#FFFFFF',
-                '#FFD43A',
-                '#E42222',
-              ]"
-            />
+                    <va-color-input    v-model="color.bg" />
           </div>
           <div class="flex xs12 md4 mt-2" v-if="showColor">
             <label for="">Text Color</label>
-            <va-color-palette
-              v-model="color.text"
-              :palette="[
-                '#154EC1',
-                '#767C88',
-                '#262824',
-                '#FFFFFF',
-                '#FFD43A',
-                '#E42222',
-              ]"
-            />
+                    <va-color-input    v-model="color.text" />
           </div>
 
           <div class="flex xs12 md4 mt-2" v-if="showColor">
             <label for="">Border Color Color</label>
-            <va-color-palette
-              v-model="color.border"
-              :palette="[
-                '#154EC1',
-                '#767C88',
-                '#262824',
-                '#FFFFFF',
-                '#FFD43A',
-                '#E42222',
-              ]"
-            />
+             <va-color-input    v-model="color.border" />
+            
           </div>
 
           <div class="flex xs12 mt-4" v-if="showColor">

@@ -1,0 +1,1 @@
+import{aa as c,ab as l,ac as n,ad as i}from"./app-3dad6f25.js";const I=()=>{var s;const e=(s=c())==null?void 0:s.appContext,a=[];return{init:o=>{const t=l(o,e);return t&&a.push(t),t},close:o=>n(o),closeAll:(o=!1)=>i(o?void 0:e),closeAllCreatedInThisHook:()=>{a.forEach(o=>n(o))}}};export{I as u};
