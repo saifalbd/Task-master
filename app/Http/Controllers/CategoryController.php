@@ -42,7 +42,13 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate(['title'=>['required',new UniqueBy('categories',$request->user_id)]]);
+        $request->validate([
+            'title'=>['required',new UniqueBy('categories',$request->user_id)],
+            'color'=>['required','array'],
+            'color.bg'=>['required','string'],
+            'color.text'=>['required','string'],
+            'color.border'=>['required','string'],
+            ]);
     
       $category =  $request->user()->categories()->create($request->toArray());
       return response()->json($category);
@@ -79,7 +85,13 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $request->validate(['title'=>['required',new UniqueSkipBy('categories',$request->user_id,$category->id)]]);
+        $request->validate([
+            'title'=>['required',new UniqueSkipBy('categories',$request->user_id,$category->id)],
+            'color'=>['required','array'],
+            'color.bg'=>['required','string'],
+            'color.text'=>['required','string'],
+            'color.border'=>['required','string'],
+            ]);
         $category->update($request->toArray());
         return response()->json($category);
         

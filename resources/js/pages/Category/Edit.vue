@@ -18,6 +18,77 @@
                               :rules="rs('title',true)"
                         />
                     </div>
+                       <div
+            class="flex xs12 mt-2"
+            style="display: flex; align-items: center"
+          >
+            <va-switch
+              v-model="showColor"
+              true-inner-label="Hide Color"
+              false-inner-label="Show Color"
+              class="mr-6"
+            />
+          </div>
+
+          <div class="flex xs12 md4 mt-2" v-if="showColor">
+            <label for="">Background Color</label>
+            <va-color-palette
+              v-model="color.bg"
+              :palette="[
+                '#154EC1',
+                '#767C88',
+                '#262824',
+                '#FFFFFF',
+                '#FFD43A',
+                '#E42222',
+              ]"
+            />
+          </div>
+          <div class="flex xs12 md4 mt-2" v-if="showColor">
+            <label for="">Text Color</label>
+            <va-color-palette
+              v-model="color.text"
+              :palette="[
+                '#154EC1',
+                '#767C88',
+                '#262824',
+                '#FFFFFF',
+                '#FFD43A',
+                '#E42222',
+              ]"
+            />
+          </div>
+
+          <div class="flex xs12 md4 mt-2" v-if="showColor">
+            <label for="">Border Color Color</label>
+            <va-color-palette
+              v-model="color.border"
+              :palette="[
+                '#154EC1',
+                '#767C88',
+                '#262824',
+                '#FFFFFF',
+                '#FFD43A',
+                '#E42222',
+              ]"
+            />
+          </div>
+
+          <div class="flex xs12 mt-4" v-if="showColor">
+            <div
+              class="custom-card"
+              :style="{
+                border: `2px solid ${color.border}`,
+                color: color.text,
+                backgroundColor: color.bg,
+              }"
+            >
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus
+              eveniet ad eligendi molestiae doloribus. Explicabo obcaecati rem
+              laboriosam voluptatibus aperiam veniam, asperiores voluptatem ea,
+              recusandae voluptates quos tempora officiis quae?
+            </div>
+          </div>
                 </div>
             </div>
         </va-form>
@@ -25,7 +96,7 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { reactive, ref, watch } from "vue";
 import FormDialog from "../../Components/FormDialog.vue";
 import { validErorrs } from "../../Plugins/utility";
 import { rs } from "../../Plugins/Rule";
@@ -48,14 +119,13 @@ export default {
         const form = ref(null);
         let item = ref(props.item);
         let title = ref(props.item.title);
+            let color =reactive(props.item.color)
         watch(props.item, (o) => {
             item.value = o;
             title.value = o.title;
         });
 
-        let rules = {
-            title: [(v) => !!v || "title are requies"],
-        };
+          let showColor = ref(true);
 
         const save = async () => {
             let url = route("category.update", { category: item.value.id });
@@ -75,7 +145,7 @@ export default {
             }
         };
 
-        return { props, form, emit, save,rs, title, busy };
+        return { props, form, emit, save,rs, title, busy,showColor,color };
     },
 };
 </script>

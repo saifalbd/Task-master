@@ -10,7 +10,9 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'user_id'];
+    protected $fillable = ['title', 'user_id','color'];
+
+    protected $casts = ['color'=>'array'];
 
     public function scopeUser(Builder $builder, $user_id)
     {

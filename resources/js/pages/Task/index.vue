@@ -150,7 +150,7 @@
         </el-button>
       </template>
 
-      <template #cell(employee)="{ rowData }">
+      <template #cell(employeeName)="{ rowData }">
         <el-link
           :underline="false"
           @click="
@@ -189,45 +189,7 @@
       </template>
     </el-dropdown>
 
-          <!-- <el-button-group>
-            
-
-            <el-button
-              type="primary"
-              size="small"
-              @click="
-                router.push({
-                  name: 'task.show',
-                  params: { id: rowData.id },
-                })
-              "
-              title="Show"
-            >
-              <el-icon :size="20">
-                <expand />
-              </el-icon>
-            </el-button>
-            <el-button
-              type="primary"
-              size="small"
-              @click="rowData.showEdit = true"
-              title="edit"
-            >
-              <el-icon :size="20">
-                <edit />
-              </el-icon>
-            </el-button>
-            <el-button
-              type="danger"
-              size="small"
-              @click="remove(rowData, rowIndex)"
-              title="remove"
-            >
-              <el-icon>
-                <delete />
-              </el-icon>
-            </el-button>
-          </el-button-group> -->
+       
 
           <edit-vue
             v-model:show="rowData.showEdit"
@@ -321,10 +283,10 @@ export default {
       { key: "title", sortable: true },
 
       { key: "category.title", label: "Category", sortable: true },
-      { key: "employee", label: "Employee", sortable: true },
+      { key: "employeeName", label: "Employee", sortable: true },
       { key: "start", label: "Start", sortable: true },
       { key: "end", label: "Dead Line", sortable: true },
-      { key: "created_at", label: "AtNow", sortable: false },
+      { key: "created_at", label: "AtNow", sortable: true },
       { key: "status", sortable: true },
       {
         key: "action",
@@ -362,7 +324,10 @@ export default {
             showEdit: false,
           }),
           "user_star"
-        ).reverse();
+        ).reverse().map(em=>{
+          em.employeeName = em.employee.model.name;
+          return em;
+        });
       } catch (error) {
         console.error(error);
       }

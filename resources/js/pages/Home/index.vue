@@ -2,10 +2,7 @@
   <app-layout :busy="busy">
     <div>
       <page-title-box title="Home Board">
-        <create-button
-          title="Add Task"
-          @click="showCreate = true"
-        ></create-button>
+      
         <el-dropdown>
           <el-button type="primary" style="margin-left: 15px">
             Employees<el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -34,16 +31,21 @@
     >
       <div class="task-box-list">
         <div :sm="24" :md="4.8" v-for="(box, index) in tasks" :key="index">
-          <el-card class="box-card mb-3">
-            <template #header>
-              <div class="card-header">
+          <div class="box-card">
+           <div class="card-header">
                 <span
                   ><b>{{ box.title }}</b></span
                 >
+                <el-button   @click="showCreate = true">
+             <el-icon class="el-icon--right"><plus /></el-icon>
+                </el-button>
               </div>
-            </template>
             <ul class="recent-task-list">
-              <li v-for="(item, i) in box.items" :key="i">
+              <li v-for="(item, i) in box.items" :key="i" :style="{
+                border: `1px solid ${item.category.color.border}`,
+                color: item.category.color.text,
+                backgroundColor: item.category.color.bg,
+              }">
                 <div class="avatar-box">
                   <el-avatar :size="25">
                     <img :src="item.employee.model.avatar.url" />
@@ -86,7 +88,7 @@
                 </div>
               </li>
             </ul>
-          </el-card>
+          </div>
         </div>
       </div>
 
@@ -167,12 +169,13 @@ import { recentTasks } from "./api";
 import moment from "moment";
 import { useRouter } from "vue-router";
 import statusBtnVue from "../../Components/statusBtn.vue";
-import { ArrowDown } from "@element-plus/icons-vue";
+import { ArrowDown,Plus } from "@element-plus/icons-vue";
 import CreateButton from "../../Components/CreateButton.vue";
 import AddTask from "../Task/Create.vue";
 import { dropdowns } from "../../Plugins/utility";
 export default {
   components: {
+    Plus,
     CreateButton,
     ArrowDown,
     AppLayout,
