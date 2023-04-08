@@ -15,6 +15,8 @@ class Task extends Model
     'user_archive',
     'employee_star',
     'employee_archive',
+    'end_time',
+    'type_id',
 ];
  
     protected $casts = [
@@ -41,6 +43,10 @@ class Task extends Model
     }
     public function category(){
         return $this->belongsTo(Category::class,'category_id');
+    }
+
+    public function type(){
+        return $this->belongsTo(TaskType::class,'type_id');
     }
 
     public function attachments(){

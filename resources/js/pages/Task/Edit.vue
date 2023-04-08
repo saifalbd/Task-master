@@ -18,6 +18,18 @@
                             :rules="rs('title', true)"
                         />
                     </div>
+
+                      <div class="flex xs12 in-box">
+                        <va-select
+                            v-model="taskType"
+                            label="Task Type"
+                            placeholder="Type Here"
+                            
+                            text-by="title"
+                            value-by="id"
+                            :options="props.taskTypes"
+                        />
+                    </div>
                 
                     <div class="flex xs12 in-box">
                         <va-select
@@ -62,7 +74,7 @@
                         </va-select>
                     </div>
                    
-                    <div class="flex xs6 in-box">
+                    <div class="flex xs4 in-box">
                         <va-input
                             v-model="start"
                             label="Start *"
@@ -71,7 +83,7 @@
                             :rules="rs('start', true)"
                         />
                     </div>
-                    <div class="flex xs6 in-box">
+                    <div class="flex xs4 in-box">
                         <va-input
                             v-model="end"
                             type="date"
@@ -80,6 +92,10 @@
                             :rules="rs('dead line', true)"
                         />
                     </div>
+                      <div class="flex xs4 in-box">
+                          <va-time-input  label="End Time" v-model="endTime" />
+                    </div>
+
                     <div class="flex xs12 in-box">
                         <va-file-upload v-model="attachments" dropzone />
                     </div>
@@ -113,6 +129,10 @@ export default {
             type: Array,
             required: true,
         },
+          taskTypes:{
+        type:Array,
+        required:true,
+    },
 
         item:{
             type:Object,
@@ -126,10 +146,12 @@ export default {
         let busy = ref(false);
         const form = ref(null);
         let title = ref("");
+         const taskType = ref(null);
         let category = ref(null);
         let employee = ref(null);
         const start = ref(moment().format(dateFormat));
         const end = ref(null);
+        const endTime = ref(new Date())
         const description = ref("");
         const attachments = ref([]);
 
@@ -158,6 +180,8 @@ export default {
                 formData.append("employee", employee.value?.id);
                 formData.append("start", start.value);
                 formData.append("end", end.value);
+                 formData.append("endTime", endTime.value);
+                formData.append("taskType", taskType.value);
                 formData.append("description", description.value);
                 attachments.value.forEach((file,index)=>{
                      formData.append(`attachments[${index}]`,file); 
@@ -185,10 +209,11 @@ export default {
             save,
             rs,
             busy,
-          
+          taskType,
             title,
             start,
             end,
+            endTime,
             employee,
             category,
             description,

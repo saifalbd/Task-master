@@ -8,6 +8,15 @@
         ></create-button>
         <el-button
           type="primary"
+        @click="showTaskType=!showTaskType"
+        >
+          <el-icon>
+            <list />
+          </el-icon>
+          Task Types
+        </el-button>
+        <el-button
+          type="primary"
           @click="router.push({ name: 'task.archive' })"
         >
           <el-icon>
@@ -123,7 +132,11 @@
       v-model:sorting-order="sortingOrder"
     >
     <template #cell(created_at)="{value}">
-      <span>{{atNow(value)}}</span>
+     <span>{{atNow(value)}}</span>
+    </template>
+     <template #cell(end)="{rowData}">
+       <span>{{endDate(rowData)}}</span>
+      
     </template>
       <template #cell(title)="{ rowData }">
         <el-link
@@ -136,6 +149,7 @@
           ><b>{{ rowData.title }}</b></el-link
         >
       </template>
+      
       <template #cell(user_star)="{ rowData }">
         <el-button
           @click="addStar(rowData)"
@@ -196,6 +210,7 @@
             :item="rowData"
             :employees="employees"
             :categories="categories"
+            :taskTypes="taskTypes"
             @replace="replace($event, rowIndex)"
           ></edit-vue>
         </div>
@@ -206,13 +221,17 @@
       v-model:show="showCreate"
       :employees="employees"
       :categories="categories"
+      :taskTypes="taskTypes"
       @push="push"
     ></create>
+    <task-types-vue v-model:show="showTaskType" 
+    :taskTypes="taskTypes" @pushType="pushType" @removeType="removeType"></task-types-vue>
   </app-layout>
 </template>
 
 <script>
 import AppLayout from "../../Layouts/app-layout.vue";
+import TaskTypesVue from './TaskTypes.vue';
 import PageTitleBox from "../../Components/PageTitleBox.vue";
 import Pagination from "../../Components/Pagination.vue";
 import RemoveEditButton from "../../Components/RemoveEditButton.vue";
@@ -242,6 +261,7 @@ import {
 import moment from "moment";
 export default {
   components: {
+    TaskTypesVue,
      Delete,
   Edit,
   Download,
@@ -272,7 +292,9 @@ export default {
     const items = ref([]);
     const employees = ref([]);
     const categories = ref([]);
+    const taskTypes = ref([]);
     const showCreate = ref(false);
+    const showTaskType = ref(false);
     const links = ref([]);
 
     const perPage = ref(50);
@@ -283,6 +305,7 @@ export default {
       { key: "title", sortable: true },
 
       { key: "category.title", label: "Category", sortable: true },
+      { key: "typeName", label: "Type", sortable: true },
       { key: "employeeName", label: "Employee", sortable: true },
       { key: "start", label: "Start", sortable: true },
       { key: "end", label: "Dead Line", sortable: true },
@@ -303,6 +326,26 @@ export default {
     const go = (to) => {
       router.push(to);
     };
+
+    axios.get(route('taskType.index')).then(({data})=>{
+      taskTypes.value = data;
+    })
+    const pushType = (type)=>{
+      let has = taskTypes.value.find(e=>e.title==type.title);
+      if(has){
+        has.title = type.title;
+      }else{
+        taskTypes.value.push(type)
+      }
+      
+    }
+    const removeType = (id)=>{
+    
+      const index = taskTypes.value.findIndex(e=>e.id==id);
+      if(index){
+        taskTypes.value.splice(index,1)
+      }
+    }
     dropdowns("employees", (data) => {
       employees.value = data;
     });
@@ -326,6 +369,7 @@ export default {
           "user_star"
         ).reverse().map(em=>{
           em.employeeName = em.employee.model.name;
+          em.typeName = em.type?em.type.title:'';
           return em;
         });
       } catch (error) {
@@ -372,22 +416,36 @@ export default {
       });
     };
     const atNow = (date) => moment(date).fromNow();
+
+    const endDate=(item)=>{
+      if(item.end_time){
+        let d = `${item.end} ${item.end_time}`;
+        console.log(d)
+        return moment(d).format('MMM Do YY h:mm a');
+      }else{
+        return item.end;
+      }
+    }
     return {
        Delete,
   Edit,
   Download,
       busy,
+      showTaskType,
       showCreate,
       perPage,
       sortingOrder,
       items,
       columns,
-
+      endDate,
+      removeType,
+pushType,
       push,
       replace,
       fetchItems,
       employees,
       categories,
+      taskTypes,
       remove,
       addStar,
       doArchive,

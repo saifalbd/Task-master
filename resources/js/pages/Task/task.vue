@@ -18,6 +18,7 @@
     </el-link>
             
           </el-descriptions-item>
+          <el-descriptions-item label="Category:"><b>{{task.category.title}}</b></el-descriptions-item>
           <el-descriptions-item label="Status:"><status-btn :dropdown="true" :status="task.status">
              <ul class="status-dropdown">
                 <li
@@ -68,7 +69,7 @@ export default {
     const auth_id = main.auth_id;
     const task = ref(null);
     const busy = ref(true);
-        const { init } = useToast();
+    const { init } = useToast();
 
 
 

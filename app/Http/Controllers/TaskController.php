@@ -20,7 +20,7 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $user_id = $request->user_id;
-        $builder = Task::query()->user($user_id)->archiveList('user',false)->with(['category','employee.model.avatar']);
+        $builder = Task::query()->user($user_id)->archiveList('user',false)->with(['category','type','employee.model.avatar'])->latest();
         $items = $builder->paginate($request->perPage);
         return response()->json($items);
     }
@@ -28,7 +28,7 @@ class TaskController extends Controller
 
     public function archives(Request $request){
         $user_id = $request->user_id;
-        $builder = Task::query()->user($user_id)->archiveList('user',true)->with(['category','employee.model.avatar']);
+        $builder = Task::query()->user($user_id)->archiveList('user',true)->with(['category','type','employee.model.avatar'])->latest();
         $items = $builder->paginate($request->perPage);
         return response()->json($items);
     }
@@ -58,6 +58,8 @@ class TaskController extends Controller
             'employee' => ['required', 'numeric'],
             'start' => ['required', 'date'],
             'end' => ['required', 'date'],
+            'taskType'=>['nullable','numeric'],
+            'endTime'=>['nullable'],
             'description' => ['nullable', 'string'],
             'attachments'=>['nullable','array'],
             'attachments.*'=>['required','file'],
@@ -70,12 +72,14 @@ class TaskController extends Controller
         
         $start = $request->start;
         $end = $request->end;
+        $end_time = $request->endTime;
+        $type_id = $request->taskType;
         $description = $request->description;
 
 
         $attachments = $request->attachments;
         $status = 0;
-        $task = Task::create(compact('user_id','title','category_id','employee_id','start','end','description','status'));
+        $task = Task::create(compact('user_id','title','category_id','employee_id','start','end','end_time','type_id','description','status'));
         
         if($attachments && count($attachments)){
             $list = array_map(function($file){return Attachment::add($file,Task::class);},$attachments);
@@ -169,6 +173,8 @@ class TaskController extends Controller
             'employee' => ['required', 'numeric'],
             'start' => ['required', 'date'],
             'end' => ['required', 'date'],
+            'taskType'=>['nullable','numeric'],
+            'endTime'=>['nullable'],
             'description' => ['nullable', 'string'],
             'attachments'=>['nullable','array'],
             'attachments.*'=>['required','image'],
@@ -182,8 +188,10 @@ class TaskController extends Controller
         $start = $request->start;
         $end = $request->end;
         $description = $request->description;
+        $end_time = $request->endTime;
+        $type_id = $request->taskType;
 
-        $task->update(compact('title','category_id','employee_id','start','end','description'));
+        $task->update(compact('title','category_id','employee_id','start','end','end_time','type_id','description'));
 
         $attachments = $request->attachments;
 

@@ -15,6 +15,7 @@ use App\Http\Controllers\My\TaskController as MyTaskController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectTaskController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskTypeController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
@@ -87,6 +88,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/task-archives/{task}',[TaskController::class,'doArchive'])->name('task.doArchive');
     Route::post('/tasks/{task}/change-status',[TaskController::class,'changeStatus'])->name('task.changeStatus');
     Route::post('/tasks/{task}/change-star',[TaskController::class,'changeStar'])->name('task.changeStar');
+    Route::apiResource('/task-types',TaskTypeController::class)->only(['index','store','destroy','update'])->names('taskType');
 
 
     Route::post('/comments/{comment}/toggle-likes',[CommentController::class,'toggleLikes'])->name('comment.toggleLike');

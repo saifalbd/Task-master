@@ -19,6 +19,19 @@
                         />
                     </div>
 
+                     <div class="flex xs12 in-box">
+                        <va-select
+                            v-model="taskType"
+                            label="Task Type"
+                            placeholder="Type Here"
+                            
+                            text-by="title"
+                            value-by="id"
+                            :options="props.taskTypes"
+                        />
+                    </div>
+
+
                     <div class="flex xs12 in-box">
                         <va-select
                             v-model="category"
@@ -68,7 +81,8 @@
                         />
                     </div>
                     <div class="flex xs4 in-box">
-                          <va-time-input  label="Dead Line *" v-model="endTime" />
+                          <va-time-input  label="End Time" v-model="endTime" />
+                          <!-- :format="timeFormat" -->
                     </div>
 
                   
@@ -85,7 +99,7 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import FormDialog from "../../Components/FormDialog.vue";
 import { rs } from "../../Plugins/Rule";
 import moment from "moment";
@@ -105,6 +119,10 @@ export default {
             type: Array,
             required: true,
         },
+          taskTypes:{
+        type:Array,
+        required:true,
+    }
     },
 
     setup(props, { emit }) {
@@ -116,15 +134,33 @@ export default {
         let employee = ref(null);
         const start = ref(moment().format(dateFormat));
         const end = ref(null);
-        const endTime = ref(new Date())
+        const taskType = ref(null);
+        const endTime = ref(new Date)
+        const timeFormat =  (d) => d?.toLocaleTimeString?.()
         const description = ref("");
         const attachments = ref([]);
 
+
+        
+        const time = ()=>{
+            let t = moment(endTime.value);
+            if(moment().hour() !=t.hour()){
+                return t.format('h:mm');
+            }else{
+                return ''
+            }
+        }
+
         const save = async () => {
+          
+        
+
             let url = route("task.store");
             let valid = await form.value.validate();
             if (!valid) return null;
             formBusy.value = true;
+            
+             
             try {
                 const formData = new FormData();
                 formData.append("title", title.value);
@@ -132,6 +168,8 @@ export default {
                 formData.append("employee", employee.value?.id);
                 formData.append("start", start.value);
                 formData.append("end", end.value);
+                formData.append("endTime", time());
+                formData.append("taskType", taskType.value);
                 formData.append("description", description.value);
                 attachments.value.forEach((file,index)=>{
                      formData.append(`attachments[${index}]`,file); 
@@ -160,7 +198,8 @@ export default {
             rs,
             busy,
             formBusy,
-
+taskType,
+timeFormat,
             title,
             start,
             end,

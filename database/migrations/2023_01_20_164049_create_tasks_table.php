@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('title');
             $table->date('start');
             $table->date('end');
+            $table->time('end_time')->nullable();
+            $table->foreignId('type_id')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->longText('description')->nullable();
             $table->boolean('user_star')->default(0);
