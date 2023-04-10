@@ -45,11 +45,21 @@
         <el-icon><user /></el-icon>
           <template #title><b>Clients</b></template>
       </el-menu-item>
+
+        <el-sub-menu index="4">
+            <template #title>
+          <el-icon><connection /></el-icon>
+            <span style="font-weight:bold">Task Type & Category</span>
+        </template>
       <el-menu-item index="4" @click="go({ name: 'category' })">
         <el-icon><connection /></el-icon>
            <template #title><b>Category</b></template>
-      
       </el-menu-item>
+       <el-menu-item index="4" @click="go({ name: 'taskType' })">
+        <el-icon><connection /></el-icon>
+           <template #title><b>Task Type</b></template>
+      </el-menu-item>
+        </el-sub-menu>
 
       <el-menu-item index="7" @click="go({ name: 'team' })">
         <el-icon><management /></el-icon>

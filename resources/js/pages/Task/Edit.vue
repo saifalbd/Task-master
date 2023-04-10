@@ -27,6 +27,7 @@
                             
                             text-by="title"
                             value-by="id"
+                             searchable
                             :options="props.taskTypes"
                         />
                     </div>
@@ -39,6 +40,7 @@
                             :rules="rs('Category', true)"
                             text-by="title"
                             value-by="id"
+                             searchable
                             :options="props.categories"
                         />
                     </div>
@@ -58,6 +60,7 @@
                             :options="
                                 props.employees
                             "
+
                         >
                             <template #content="{ value }">
                                 <va-chip
@@ -100,7 +103,8 @@
                         <va-file-upload v-model="attachments" dropzone />
                     </div>
                     <div class="flex xs12" style="min-height:150px; margin-bottom:50px">
-                           <QuillEditor theme="snow" toolbar="minimal" contentType="html" v-model:content="description" placeholder="Description Html Contant"/>
+                           <QuillEditor theme="snow" toolbar="minimal" contentType="html" 
+                           v-model:content="description" placeholder="Description Html Contant"/>
                     </div>
                 </div>
             </div>

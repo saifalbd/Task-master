@@ -61,7 +61,7 @@
           </el-button-group>
         </div>
         <div class="item right">
-          <el-input placeholder="Type something">
+          <el-input placeholder="Type something" v-model="search">
             <template #prefix>
               <el-icon class="el-input__icon"><search /></el-icon>
             </template>
@@ -237,13 +237,13 @@ import Pagination from "../../Components/Pagination.vue";
 import RemoveEditButton from "../../Components/RemoveEditButton.vue";
 import Create from "./Create.vue";
 import EditVue from "./Edit.vue";
-import { ref } from "vue";
+import { ref,watch } from "vue";
 import CreateButton from "../../Components/CreateButton.vue";
 import { confirm, removeSuccess, dropdowns } from "../../Plugins/utility";
 import { useToast } from "vuestic-ui";
 import { useRouter } from "vue-router";
 import StatusBtn from "../../Components/statusBtn.vue";
-import { sortBy } from "lodash";
+import { lowerCase, sortBy } from "lodash";
 import {
  
   More,
@@ -288,7 +288,7 @@ export default {
     const busy = ref(true);
     const toast = useToast();
     const router = useRouter();
-
+    const realItems = ref();
     const items = ref([]);
     const employees = ref([]);
     const categories = ref([]);
@@ -296,6 +296,16 @@ export default {
     const showCreate = ref(false);
     const showTaskType = ref(false);
     const links = ref([]);
+
+    const search = ref('');
+
+    watch(search,(val)=>{
+      if(val){
+      items.value = realItems.value.filter(e=>lowerCase(e.title).search(lowerCase(val))>-1)
+      }else{
+        items.value = realItems.value;
+      }
+    })
 
     const perPage = ref(50);
     // const sortBy = ref("title");
@@ -361,7 +371,7 @@ export default {
         });
         const { data } = await axios.get(url);
         links.value = data.links;
-        items.value = sortBy(
+        const list = sortBy(
           addProtos(data.data, {
             action: true,
             showEdit: false,
@@ -371,7 +381,10 @@ export default {
           em.employeeName = em.employee.model.name;
           em.typeName = em.type?em.type.title:'';
           return em;
-        });
+        })
+        items.value = list;
+        realItems.value = list;
+
       } catch (error) {
         console.error(error);
       }
@@ -431,6 +444,7 @@ export default {
   Edit,
   Download,
       busy,
+      search,
       showTaskType,
       showCreate,
       perPage,

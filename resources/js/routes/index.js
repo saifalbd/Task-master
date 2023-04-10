@@ -38,6 +38,11 @@ const routes = [
         component: () => import("../pages/Category/index.vue"),
     },
     {
+        path: "/task-types",
+        name: "taskType",
+        component: () => import("../pages/Category/TaskTypes.vue"),
+    },
+    {
         path:'/contacts',
         name:'contact',
         component: () => import("../pages/Contact/index.vue"),

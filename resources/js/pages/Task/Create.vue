@@ -27,6 +27,7 @@
                             
                             text-by="title"
                             value-by="id"
+                             searchable
                             :options="props.taskTypes"
                         />
                     </div>
@@ -35,11 +36,12 @@
                     <div class="flex xs12 in-box">
                         <va-select
                             v-model="category"
-                            label="Project Category *"
+                            label="Task Category *"
                             placeholder="Category Here"
                             :rules="rs('Category', true)"
                             text-by="title"
                             value-by="id"
+                             searchable
                             :options="props.categories"
                         />
                     </div>
@@ -89,8 +91,9 @@
                     <div class="flex xs12 in-box">
                         <va-file-upload v-model="attachments" dropzone />
                     </div>
-                  <div class="flex xs12" style="min-height:150px; margin-bottom:50px">
-                           <QuillEditor theme="snow" toolbar="minimal" contentType="html" v-model:content="description" placeholder="Description Html Contant"/>
+                  <div class="flex xs12" style="min-height:150px; margin-bottom:50px" v-if="props.show">
+                           <QuillEditor theme="snow" toolbar="minimal" contentType="html" 
+                           v-model:content="description" placeholder="Description Html Contant"/>
                     </div>
                 </div>
             </div>
@@ -99,7 +102,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import FormDialog from "../../Components/FormDialog.vue";
 import { rs } from "../../Plugins/Rule";
 import moment from "moment";
@@ -133,14 +136,23 @@ export default {
         let category = ref(null);
         let employee = ref(null);
         const start = ref(moment().format(dateFormat));
-        const end = ref(null);
+        const end = ref(moment().add(1,'day').format(dateFormat));
         const taskType = ref(null);
         const endTime = ref(new Date)
         const timeFormat =  (d) => d?.toLocaleTimeString?.()
+        
         const description = ref("");
         const attachments = ref([]);
 
 
+        watch(()=>props.taskTypes,(vals)=>{
+            let has = vals.find(e=>e.is_default);
+            if(has){
+                taskType.value = has.id;
+            }
+        },{deep:true})
+
+      
         
         const time = ()=>{
             let t = moment(endTime.value);
@@ -176,6 +188,9 @@ export default {
                 })
 
                 const { data } = await axios.post(url,formData);
+
+                 title.value = '';
+            description.value = '';
                 emit(
                     "push",
                     addProtos(data, {
@@ -183,6 +198,7 @@ export default {
                         showEdit: false,
                     })
                 );
+           
             } catch (error) {
                 console.error(error);
                 validErorrs(error);
@@ -213,4 +229,4 @@ timeFormat,
 };
 </script>
 
-<style lang="scss" scoped></style>
+
