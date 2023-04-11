@@ -108,7 +108,7 @@ FormDialog
                 date:moment(form.date).format('YYYY-MM-DD'),
                 time:moment(form.time).format('h:mm:ss')
             })
-            title.value = ''
+            form.title= ''
            busy.value = false; 
         } catch (error) {
            console.error(error) 
