@@ -6,7 +6,10 @@
           title="Add Task"
           @click="showCreate = true"
         ></create-button>
-        <el-button type="primary" @click="showTaskType = !showTaskType">
+        <el-button
+          type="primary"
+        @click="showTaskType=!showTaskType"
+        >
           <el-icon>
             <list />
           </el-icon>
@@ -121,133 +124,98 @@
       </el-col>
     </el-row>
     <!--  v-model:sort-by="sortBy" -->
-   <div  class="table-box"  v-else>
-     <el-table
-    
-      :data="items"
-      :default-sort="{ prop: 'title', order: 'descending' }"
- 
+    <va-data-table
+      v-else
+      :items="items"
+      :columns="columns"
+      :hoverable="true"
+      v-model:sorting-order="sortingOrder"
     >
-      <el-table-column prop="user_star" label="Star" width="50">
-        <template #default="{ row }">
-          <el-button
-            @click="addStar(row)"
-            size="small"
-            :type="row.user_star ? 'warning' : ''"
-            plain
-            round
-          >
-            <el-icon>
-              <star-filled />
-            </el-icon>
-          </el-button>
-        </template>
-      </el-table-column>
+    <template #cell(created_at)="{value}">
+     <span>{{atNow(value)}}</span>
+    </template>
+     <template #cell(end)="{rowData}">
+       <span>{{endDate(rowData)}}</span>
+      
+    </template>
+      <template #cell(title)="{ rowData }">
+        <el-link
+          @click="
+            go({
+              name: 'task.show',
+              params: { id: rowData.id },
+            })
+          "
+          ><b>{{ rowData.title }}</b></el-link
+        >
+      </template>
+      
+      <template #cell(user_star)="{ rowData }">
+        <el-button
+          @click="addStar(rowData)"
+          size="small"
+          :type="rowData.user_star ? 'warning' : ''"
+          plain
+          round
+        >
+          <el-icon>
+            <star-filled />
+          </el-icon>
+        </el-button>
+      </template>
 
-      <el-table-column prop="title" label="Title" sortable>
-        <template #default="{ row }">
-          <el-link
-            @click="
-              go({
-                name: 'task.show',
-                params: { id: row.id },
-              })
-            "
-            ><b>{{ row.title }}</b></el-link
-          >
-        </template>
-      </el-table-column>
-      <el-table-column prop="category.title" label="Category" sortable />
-      <el-table-column prop="type.title" label="Type" sortable width="80" />
-      <el-table-column prop="employee.model.name" label="Employee" sortable>
-        <template #default="{ row }">
-          <el-link
-            :underline="false"
-            @click="
-              router.push({
-                name: 'userProfile',
-                params: { user: row.employee.model.id },
-              })
-            "
-          >
-            <el-avatar :size="25" :src="row.employee.model.avatar.url" />
-            <b class="ml-1">
-              {{ row.employee.model.name }}
-            </b>
-          </el-link>
-        </template>
-      </el-table-column>
-      <el-table-column prop="start" label="Start" sortable width="100" />
-      <el-table-column prop="end" label="End" sortable width="140">
-        <template #default="{ row }">
-          <span>{{ endDate(row) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="created_at"
-        label="AtNow"
-        sortable
-        :formatter="atNow"
-        width="100"
-      />
-
-      <el-table-column
-        fixed="right"
-        prop="status"
-        label="status"
-        sortable
-        width="100"
-      >
-        <template #default="{ row }">
-          <status-btn :status="row.status" size="small"></status-btn>
-        </template>
-      </el-table-column>
-
-      <el-table-column fixed="right" label="Operations" width="110">
-        <template #default="{ row, $index }">
-          <div style="min-width: 100px">
-            <el-dropdown split-button type="primary" size="small">
-              <el-icon
-                :size="20"
-                @click="
-                  go({
-                    name: 'task.show',
-                    params: { id: row.id },
-                  })
-                "
-              >
+      <template #cell(employeeName)="{ rowData }">
+        <el-link
+          :underline="false"
+          @click="
+            router.push({
+              name: 'userProfile',
+              params: { user: rowData.employee.model.id },
+            })
+          "
+        >
+          <el-avatar :size="25" :src="rowData.employee.model.avatar.url" />
+          <b class="ml-1">
+            {{ rowData.employee.model.name }}
+          </b>
+        </el-link>
+      </template>
+      <template #cell(status)="{ value }">
+        <status-btn :status="value" size="small"></status-btn>
+      </template>
+      <template #cell(action)="{ rowData, rowIndex }">
+        <div style="min-width:100px">
+              <el-dropdown split-button type="info" size="small">
+    <el-icon :size="20" @click="go({
+                  name: 'task.show',
+                  params: { id: rowData.id },
+                })">
                 <expand />
               </el-icon>
 
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item
-                    :icon="Edit"
-                    @click="
-                      go({
-                        name: 'task.edit',
-                        params: { id: row.id },
-                      })
-                    "
-                    >Edit</el-dropdown-item
-                  >
-                  <el-dropdown-item :icon="Delete" @click="remove(row, $index)"
-                    >Remove</el-dropdown-item
-                  >
-                  <el-dropdown-item
-                    :icon="Download"
-                    @click="doArchive(row, $index)"
-                    >Archive</el-dropdown-item
-                  >
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-   </div>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item :icon="Edit"  @click="rowData.showEdit = true">Edit</el-dropdown-item>
+          <el-dropdown-item :icon="Delete"      @click="remove(rowData, rowIndex)">Remove</el-dropdown-item>
+          <el-dropdown-item :icon="Download" @click="doArchive(rowData, rowIndex)">Archive</el-dropdown-item>
 
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+
+       
+
+          <edit-vue
+            v-model:show="rowData.showEdit"
+            :item="rowData"
+            :employees="employees"
+            :categories="categories"
+            :taskTypes="taskTypes"
+            @replace="replace($event, rowIndex)"
+          ></edit-vue>
+        </div>
+      </template>
+    </va-data-table>
     <pagination :links="links" @page="fetchItems"></pagination>
     <create
       v-model:show="showCreate"
@@ -256,23 +224,20 @@
       :taskTypes="taskTypes"
       @push="push"
     ></create>
-    <task-types-vue
-      v-model:show="showTaskType"
-      :taskTypes="taskTypes"
-      @pushType="pushType"
-      @removeType="removeType"
-    ></task-types-vue>
+    <task-types-vue v-model:show="showTaskType" 
+    :taskTypes="taskTypes" @pushType="pushType" @removeType="removeType"></task-types-vue>
   </app-layout>
 </template>
 
 <script>
 import AppLayout from "../../Layouts/app-layout.vue";
-import TaskTypesVue from "./TaskTypes.vue";
+import TaskTypesVue from './TaskTypes.vue';
 import PageTitleBox from "../../Components/PageTitleBox.vue";
 import Pagination from "../../Components/Pagination.vue";
 import RemoveEditButton from "../../Components/RemoveEditButton.vue";
 import Create from "./Create.vue";
-import { ref, watch } from "vue";
+import EditVue from "./Edit.vue";
+import { ref,watch } from "vue";
 import CreateButton from "../../Components/CreateButton.vue";
 import { confirm, removeSuccess, dropdowns } from "../../Plugins/utility";
 import { useToast } from "vuestic-ui";
@@ -280,13 +245,14 @@ import { useRouter } from "vue-router";
 import StatusBtn from "../../Components/statusBtn.vue";
 import { lowerCase, sortBy } from "lodash";
 import {
+ 
   More,
   List,
   Box,
   Search,
   Collection,
   Expand,
-  Delete,
+   Delete,
   Edit,
   Download,
   Star,
@@ -296,13 +262,14 @@ import moment from "moment";
 export default {
   components: {
     TaskTypesVue,
-    Delete,
-    Edit,
-    Download,
+     Delete,
+  Edit,
+  Download,
     AppLayout,
     PageTitleBox,
     Pagination,
     Create,
+    EditVue,
     List,
     Box,
     CreateButton,
@@ -330,17 +297,15 @@ export default {
     const showTaskType = ref(false);
     const links = ref([]);
 
-    const search = ref("");
+    const search = ref('');
 
-    watch(search, (val) => {
-      if (val) {
-        items.value = realItems.value.filter(
-          (e) => lowerCase(e.title).search(lowerCase(val)) > -1
-        );
-      } else {
+    watch(search,(val)=>{
+      if(val){
+      items.value = realItems.value.filter(e=>lowerCase(e.title).search(lowerCase(val))>-1)
+      }else{
         items.value = realItems.value;
       }
-    });
+    })
 
     const perPage = ref(50);
     // const sortBy = ref("title");
@@ -364,29 +329,33 @@ export default {
     ];
     const sortingOrder = ref("asc");
 
+    
+
     // START METHODS
 
     const go = (to) => {
       router.push(to);
     };
 
-    axios.get(route("taskType.index")).then(({ data }) => {
+    axios.get(route('taskType.index')).then(({data})=>{
       taskTypes.value = data;
-    });
-    const pushType = (type) => {
-      let has = taskTypes.value.find((e) => e.title == type.title);
-      if (has) {
+    })
+    const pushType = (type)=>{
+      let has = taskTypes.value.find(e=>e.title==type.title);
+      if(has){
         has.title = type.title;
-      } else {
-        taskTypes.value.push(type);
+      }else{
+        taskTypes.value.push(type)
       }
-    };
-    const removeType = (id) => {
-      const index = taskTypes.value.findIndex((e) => e.id == id);
-      if (index) {
-        taskTypes.value.splice(index, 1);
+      
+    }
+    const removeType = (id)=>{
+    
+      const index = taskTypes.value.findIndex(e=>e.id==id);
+      if(index){
+        taskTypes.value.splice(index,1)
       }
-    };
+    }
     dropdowns("employees", (data) => {
       employees.value = data;
     });
@@ -408,15 +377,14 @@ export default {
             showEdit: false,
           }),
           "user_star"
-        )
-          .reverse()
-          .map((em) => {
-            em.employeeName = em.employee.model.name;
-            em.typeName = em.type ? em.type.title : "";
-            return em;
-          });
+        ).reverse().map(em=>{
+          em.employeeName = em.employee.model.name;
+          em.typeName = em.type?em.type.title:'';
+          return em;
+        })
         items.value = list;
         realItems.value = list;
+
       } catch (error) {
         console.error(error);
       }
@@ -428,7 +396,7 @@ export default {
       items.value.push(projrct);
     };
     const replace = (project, index) => {
-      project.showEdit = false;
+      showCreate.value = false;
       items.value.splice(index, 1, project);
     };
 
@@ -449,7 +417,7 @@ export default {
       item.user_star = !item.user_star;
       axios.post(route("task.changeStar", { task: item.id }), {
         prop: "user_star",
-        star: item.user_star ? 1 : 0,
+        star: item.user_star ? 1: 0,
       });
     };
 
@@ -462,19 +430,19 @@ export default {
     };
     const atNow = (date) => moment(date).fromNow();
 
-    const endDate = (item) => {
-      if (item.end_time) {
+    const endDate=(item)=>{
+      if(item.end_time){
         let d = `${item.end} ${item.end_time}`;
-        console.log(d);
-        return moment(d).format("MMM Do YY h:mm a");
-      } else {
+        console.log(d)
+        return moment(d).format('MMM Do YY h:mm a');
+      }else{
         return item.end;
       }
-    };
+    }
     return {
-      Delete,
-      Edit,
-      Download,
+       Delete,
+  Edit,
+  Download,
       busy,
       search,
       showTaskType,
@@ -485,7 +453,7 @@ export default {
       columns,
       endDate,
       removeType,
-      pushType,
+pushType,
       push,
       replace,
       fetchItems,

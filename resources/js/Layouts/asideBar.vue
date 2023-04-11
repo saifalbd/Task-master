@@ -46,6 +46,23 @@
           <template #title><b>Clients</b></template>
       </el-menu-item>
 
+   <el-sub-menu index="3">
+       <template #title>
+          <el-icon><connection /></el-icon>
+            <span style="font-weight:bold">Events</span>
+        </template>
+ 
+   <el-menu-item index="0" @click="go({ name: 'eventCategory' })">
+        <el-icon><user /></el-icon>
+          <template #title><b>Event Categories</b></template>
+      </el-menu-item>
+
+        <el-menu-item index="1" @click="go({ name: 'event' })">
+        <el-icon><user /></el-icon>
+          <template #title><b>Events</b></template>
+      </el-menu-item>
+        </el-sub-menu>
+
         <el-sub-menu index="4">
             <template #title>
           <el-icon><connection /></el-icon>

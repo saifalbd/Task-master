@@ -28,6 +28,16 @@ const routes = [
         component: () => import("../pages/Home/index.vue"),
     },
     {
+        path:'/events',
+        name:'event',
+        component:()=>import('../pages/Events/index.vue')
+    },
+    {
+        path:'/event-categories',
+        name:'eventCategory',
+        component:()=>import('../pages/Events/EventCategory.vue')
+    },
+    {
         path: "/home-job",
         name: "job.home",
         component: () => import("../pages/Home/jobBoard.vue"),
@@ -93,6 +103,12 @@ const routes = [
         path: "/tasks/:id",
         name: "task.show",
         component: () => import("../pages/Task/task.vue"),
+        props: (route) => ({ id: route.params.id }),
+    },
+    {
+        path: "/tasks-edit/:id",
+        name: "task.edit",
+        component: () => import("../pages/Task/EditPage.vue"),
         props: (route) => ({ id: route.params.id }),
     },
     {

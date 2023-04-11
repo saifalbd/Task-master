@@ -9,6 +9,8 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EventCategoryController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\My\ProjectController as MyProjectController;
 use App\Http\Controllers\My\TaskController as MyTaskController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UtilityController;
+use App\Models\EventCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -78,6 +81,10 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::apiResource('/todos',TodoController::class)->names('todo');
 
+
+    Route::apiResource('/event-categories',EventCategoryController::class)->names('eventCategory');
+    Route::apiResource('/events',EventController::class)->names('event');
+
     Route::post('/project/{project}/change-status',[ProjectController::class,'changeStatus'])->name('project.changeStatus');
     Route::apiResource('/projects',ProjectController::class)->names('project');
     
@@ -88,7 +95,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/task-archives/{task}',[TaskController::class,'doArchive'])->name('task.doArchive');
     Route::post('/tasks/{task}/change-status',[TaskController::class,'changeStatus'])->name('task.changeStatus');
     Route::post('/tasks/{task}/change-star',[TaskController::class,'changeStar'])->name('task.changeStar');
-    Route::apiResource('/task-types',TaskTypeController::class)->only(['index','store','destroy','update'])->names('taskType');
+    Route::apiResource('/task-types',TaskTypeController::class)->only(['index','store','destroy','update'])
+    ->names('taskType');
 
 
     Route::post('/comments/{comment}/toggle-likes',[CommentController::class,'toggleLikes'])->name('comment.toggleLike');

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\EventCategory;
 use App\Models\Team;
 use Illuminate\Support\Facades\Http;
 
@@ -40,6 +41,10 @@ class Dropdown
 
     public function categories(){
         return Category::query()->user($this->user_id)->get();
+    }
+
+    public function eventCategories(){
+        return EventCategory::query()->user($this->user_id)->get();
     }
 
 

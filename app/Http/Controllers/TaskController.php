@@ -90,7 +90,7 @@ class TaskController extends Controller
         $user = User::find($employee->employee_id);
         $task->fresh();
        
-        $task->load(['category','employee.model.avatar']);
+        $task->load(['category','type','employee.model.avatar']);
         $user->notify(new TaskAssigned($task));
 
       
@@ -108,7 +108,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load(['category','employee.model.avatar','attachments']);
+        $task->load(['category','type','employee.model.avatar','attachments']);
         return response()->json($task);
     }
 
@@ -202,7 +202,7 @@ class TaskController extends Controller
         }
 
 
-        $task->load(['category','employee']);
+        $task->load(['category','type','employee.model.avatar']);
 
         
         return response()->json($task);

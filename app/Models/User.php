@@ -53,6 +53,10 @@ class User extends Authenticatable
         return $this->hasMany(Category::class,'user_id');
     }
 
+    public function eventCategories(){
+        return $this->hasMany(EventCategory::class,'user_id');
+    }
+
     public function employees(){
         return $this->belongsToMany(Employee::class,'user-employee','user_id','employee_id');
     }

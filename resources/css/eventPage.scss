@@ -1,0 +1,50 @@
+
+
+.calendar-box{
+
+    .el-calendar-table .el-calendar-day{
+        height: 130px!important;
+    }
+  
+    .date-box{
+    display: grid;
+    grid-auto-columns: 1fr;
+    .top-bar{
+        font-weight: bold;
+        >div{
+            padding: 5px;
+            border-radius: 100%;
+            background-color: pink;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    .info-box{
+      
+      ul{
+        margin: 0;
+        li{
+          border:1px solid gold;
+          padding: 3px;
+          margin-top: 3px;
+          border-radius: 5px;
+          font-size: 0.8rem;
+          .time{
+            color: #2138c3;
+          }
+          .cat{
+            color: palevioletred;
+          }
+        }
+      }
+    }
+  }
+  .current.is-selected{
+    background-color: #f8edf8;
+  }
+  
+  }
+  

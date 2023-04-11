@@ -9,6 +9,8 @@ use App\Models\Contact;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\Event;
+use App\Models\EventCategory;
 use App\Models\Project;
 use App\Models\ProjectTask;
 use App\Models\Task;
@@ -50,6 +52,8 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
 
+        Route::model('event',Event::class);
+        Route::model('event_category',EventCategory::class);
         Route::model('category',Category::class);
         Route::model('user',User::class);
         Route::model('employee',Employee::class);

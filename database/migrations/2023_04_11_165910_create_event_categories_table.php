@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('event_categories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('title');
@@ -21,6 +21,18 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        Schema::create('events', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->string('title');
+            $table->foreignId('category_id');
+            $table->date('date');
+            $table->time('time')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+     
+
     }
 
     /**
@@ -30,6 +42,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('events');
+        Schema::dropIfExists('event_categories');
     }
 };

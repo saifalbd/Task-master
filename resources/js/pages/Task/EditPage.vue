@@ -1,13 +1,15 @@
 <template>
-    <form-dialog
-        :show="props.show"
-        @update:show="emit('update:show', $event)"
-        :busy="busy"
-        title="Edit Task"
-        @add="save"
-        :fullscreen="true"
-    >
-        <va-form ref="form">
+  <app-layout :busy="busy">
+    <div>
+      <page-title-box :title="editTitle">
+        <back-button></back-button>
+      </page-title-box>
+    </div>
+     <el-card class="box-card">
+ 
+ 
+    
+          <va-form ref="form">
             <div class="layout gutter--md">
                 <div class="row align-content--center">
                     <div class="flex xs12 in-box">
@@ -28,7 +30,7 @@
                             text-by="title"
                             value-by="id"
                              searchable
-                            :options="props.taskTypes"
+                            :options="taskTypes"
                         />
                     </div>
                 
@@ -41,7 +43,7 @@
                             text-by="title"
                             value-by="id"
                              searchable
-                            :options="props.categories"
+                            :options="categories"
                         />
                     </div>
 
@@ -58,7 +60,7 @@
                             searchable
                             text-by="name"
                             :options="
-                                props.employees
+                                employees
                             "
 
                         >
@@ -106,48 +108,46 @@
                            <QuillEditor theme="snow" toolbar="minimal" contentType="html" 
                            v-model:content="description" placeholder="Description Html Contant"/>
                     </div>
+                     <div class="flex xs12 in-box" style="text-align:right;">
+                        <va-button @click="save">
+                            Save
+                        </va-button>
+                    </div>
                 </div>
             </div>
         </va-form>
-    </form-dialog>
+     </el-card>
+  </app-layout>
 </template>
 
 <script>
-import { ref, watch } from "vue";
-import FormDialog from "../../Components/FormDialog.vue";
+import AppLayout from "../../Layouts/app-layout.vue";
+import PageTitleBox from "../../Components/PageTitleBox.vue";
+import BackButton from '../../Components/BackButton.vue';
+import {  dropdowns } from "../../Plugins/utility";
+import {useRouter} from 'vue-router';
 import { rs } from "../../Plugins/Rule";
+import { ref } from 'vue';
 import moment from "moment";
 export default {
-    components: { FormDialog },
-
-    props: {
-        show: {
-            type: Boolean,
-            default: false,
-        },
-        employees: {
-            type: Array,
-            required: true,
-        },
-        categories: {
-            type: Array,
-            required: true,
-        },
-          taskTypes:{
-        type:Array,
-        required:true,
+    components:{
+AppLayout,
+PageTitleBox,
+BackButton
     },
-
-        item:{
-            type:Object,
+    props:{
+        id:{
+            type:[String,Number],
             required:true
         }
-      
     },
-
-    setup(props, { emit }) {
-        let item = ref(null);
-        let busy = ref(false);
+    setup (props,{emit}) {
+        const router = useRouter();
+        const employees = ref([]);
+        const categories = ref([]);
+        const taskTypes = ref([]);
+        let editTitle = ref('Edit');
+        let busy = ref(true);
         const form = ref(null);
         let title = ref("");
          const taskType = ref(null);
@@ -159,19 +159,42 @@ export default {
         const description = ref("");
         const attachments = ref([]);
 
+          axios.get(route('taskType.index')).then(({data})=>{
+      taskTypes.value = data;
+    })
 
-        watch(props.item,(o)=>{
-            title.value = o.title;
+     dropdowns("employees", (data) => {
+      employees.value = data;
+    });
+
+    dropdowns("categories", (data) => {
+      categories.value = data;
+    });
+
+
+    const show = async()=>{
+        try {
+
+            const url = route('task.show',{task:props.id});
+
+            const {data} = await axios.get(url);
+            let o = data;
+            editTitle.value = `Edit Taks (${o.title})`
+               title.value = o.title;
             employee.value ={id: o.employee.id,name:o.employee.model.name};
             category.value = o.category_id;
             start.value = o.start;
             end.value = o.end;
             description.value = o.description;
             taskType.value = o.type_id;
-    
-            item.value=o;
 
-        },{ immediate: true })
+            busy.value = false;
+        } catch (error) {
+           console.error(error) 
+        }
+    }
+
+    show()
 
 
   const time = ()=>{
@@ -182,9 +205,9 @@ export default {
                 return ''
             }
         }
-    
+        
         const save = async () => {
-            let url = route("task.update",{task:item.value.id});
+            let url = route("task.update",{task:props.id});
             let valid = await form.value.validate();
            if (!valid) return null;
 
@@ -204,26 +227,24 @@ export default {
 
             try {
                 const { data } = await axios.post(url, formData);
-                emit(
-                    "replace",
-                    addProtos(data, {
-                        action: true,
-                        showEdit: false,
-                    })
-                );
+                router.push({name:'task'})
             } catch (error) {
                 console.error(error);
                 validErorrs(error);
             }
         };
+        
 
         return {
-            props,
-            form,
+               form,
+               editTitle,
             emit,
             save,
             rs,
             busy,
+            taskTypes,
+            categories,
+            employees,
           taskType,
             title,
             start,
@@ -233,9 +254,11 @@ export default {
             category,
             description,
             attachments,
-        };
-    },
-};
+        }
+    }
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>
