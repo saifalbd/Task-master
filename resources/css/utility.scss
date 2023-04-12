@@ -58,3 +58,26 @@ table {
     min-height: 55px;
  
 }
+
+
+.el-menu{
+    .el-menu-item{
+        &.is-active{
+            color: black;
+            background-color: pink;
+        } 
+    }
+    .el-sub-menu{
+        &.is-active{
+            color: goldenrod;
+            background-color: pink;
+
+            .el-menu-item{
+                &.is-active{
+                    color: #409eff!important;
+                    background-color: transparent;
+                } 
+            }
+        }
+    }
+}

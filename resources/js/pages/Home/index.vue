@@ -3,7 +3,7 @@
     <div>
       <page-title-box title="Home Board">
       
-      <create-button title="Add Task" @click="showCreate =!showCreate"/>
+      <create-button title="Add Task" @click="showCreate =true"/>
         <el-dropdown>
           <el-button type="primary" style="margin-left: 15px">
             Employees<el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -158,6 +158,7 @@
       v-model:show="showCreate"
       :employees="employees"
       :categories="categories"
+    :taskTypes="taskTypes"
       @push="push"
     ></add-task>
   </app-layout>
@@ -252,6 +253,12 @@ export default {
       ];
     });
 
+
+    const taskTypes = ref([]);
+        axios.get(route("taskType.index")).then(({ data }) => {
+      taskTypes.value = data;
+    });
+
     const employeeProposals = ref([]);
 
     axios.get(route("employeeProposal")).then(({ data }) => {
@@ -323,6 +330,7 @@ export default {
       Deny,
       showCreate,
       tasks,
+      taskTypes,
       employees,
       categories,
     };

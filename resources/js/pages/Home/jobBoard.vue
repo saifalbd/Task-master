@@ -3,20 +3,27 @@
     <div>
       <page-title-box title="Job Board"></page-title-box>
     </div>
-    <div class="home-page job">
-      <el-row :gutter="24">
-        <el-col :sm="24" :md="8"  v-for="(box,index) in tasks" :key="index">
-        <el-card class="box-card mb-3">
-          <template #header>
-            <div class="card-header">
-              <span><b>{{box.title}}</b></span>
-            </div>
-          </template>
+    <div class="home-page admin">
+   <div class="task-box-list">
+        <div :sm="24" :md="8"  v-for="(box,index) in tasks" :key="index">
+        <div class="box-card">
+        <div class="card-header">
+                <span
+                  ><b>{{ box.title }}</b></span
+                >
+               
+              </div>
           <ul class="recent-task-list">
             <li
               v-for="(item, i) in box.items"
               :key="i"
               @click="go({ name: 'job.task.show', params: { id: item.id } })"
+
+              :style="{
+                border: `1px solid ${item.category.color.border}`,
+                color: item.category.color.text,
+                backgroundColor: item.category.color.bg,
+              }"
             >
               <div class="avatar-box">
                 <el-avatar :size="25">
@@ -32,9 +39,9 @@
                 </div>
             </li>
           </ul>
-        </el-card>
-        </el-col>
-      </el-row>
+        </div>
+        </div>
+      </div>
      
   
     </div>

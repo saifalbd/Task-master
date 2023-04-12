@@ -187,9 +187,13 @@
         prop="created_at"
         label="AtNow"
         sortable
-        :formatter="atNow"
+       
         width="100"
-      />
+      >
+          <template #default="{ row }">
+          <span>{{ atNow(row.created_at) }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column
         fixed="right"
@@ -407,7 +411,7 @@ export default {
             action: true,
             showEdit: false,
           }),
-          "user_star"
+          "id"
         )
           .reverse()
           .map((em) => {
@@ -415,7 +419,7 @@ export default {
             em.typeName = em.type ? em.type.title : "";
             return em;
           });
-        items.value = list;
+        items.value = sortBy(list,'user_star');
         realItems.value = list;
       } catch (error) {
         console.error(error);
