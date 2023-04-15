@@ -1,6 +1,6 @@
 
-export const recentTasks = async (status,callBack,employee=null)=>{
-    const {data}= await axios.get(route('home.recentTask',{status,employee}));
+export const recentTasks = async (status,callBack,employee,category)=>{
+    const {data}= await axios.get(route('home.recentTask',{status,employee,category}));
     callBack(data)
 }
 

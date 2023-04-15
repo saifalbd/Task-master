@@ -12,13 +12,16 @@ class HomeController extends Controller
         $user_id = $request->user_id;
         $request->validate([
             'status'=>['required','numeric'],
-            'employee'=>['nullable','numeric']
+            'employee'=>['nullable','numeric'],
+            'category'=>['nullable','numeric'],
         ]);
         $status = $request->status;
         $employee = $request->employee;
+        $category  = $request->category;
         $items = Task::query()->user($user_id)
         ->archiveList('user',false)->where('status',$status)
         ->when($employee,fn($q)=>$q->employee($employee))
+        ->when($category,fn($q)=>$q->where('category_id',$category))
         ->with(['category','employee.model.avatar'])->latest()->limit(10)->get();
         return $items;
     }

@@ -4,6 +4,30 @@
       <page-title-box title="Home Board">
       
       <create-button title="Add Task" @click="showCreate =true"/>
+       <el-dropdown>
+          <el-button type="primary" style="margin-left: 15px">
+            Categories<el-icon class="el-icon--right"><arrow-down /></el-icon>
+          </el-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item
+              
+                @click="
+                  loadTask(null,null)
+                "
+                >All Categories</el-dropdown-item
+              >
+              <el-dropdown-item
+                v-for="em in categories"
+                :key="em.id"
+                @click="
+                  loadTask(null,em.id)
+                "
+                >{{ em.title }}</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <el-dropdown>
           <el-button type="primary" style="margin-left: 15px">
             Employees<el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -72,7 +96,7 @@
                             )
                             .filter((s) => s.status != item.status)"
                           :key="index"
-                          @click="changeStatus(s.status, item.id, box.items, i)"
+                          @click="changeStatus(s.status, item, box.items, i)"
                         >
                           {{ s.title }}
                         </el-dropdown-item>
@@ -207,25 +231,26 @@ export default {
       router.push(to);
     };
 
-    const loadTask = (employee=null)=>{
+    const loadTask = (employee=null,category=null)=>{
+      console.log({employee,category})
       recentTasks(0, (data) => {
       pendingTasks.value = data;
-    },employee);
+    },employee,category);
     recentTasks(1, (data) => {
       acceptedTasks.value = data;
-    },employee);
+    },employee,category);
     recentTasks(2, (data) => {
       workingTasks.value = data;
-    },employee);
+    },employee,category);
     recentTasks(3, (data) => {
       submitedTasks.value = data;
-    },employee);
+    },employee,category);
     recentTasks(4, (data) => {
       completedTasks.value = data;
-    },employee);
+    },employee,category);
     }
 
-    loadTask()
+    loadTask(null,null)
 
     const tasks = computed(() => {
       return [
@@ -284,11 +309,15 @@ export default {
 
     const changeStatus = async (status, task, items, i) => {
       try {
-        const url = route("task.changeStatus", { task });
+        const url = route("task.changeStatus", { task:task.id });
 
         const { data } = await axios.post(url, { status, notify: 0 });
 
         items.splice(i, 1);
+        if(status==4){
+          
+          completedTasks.value.push(task)
+        }
       } catch (error) {
         console.error(error);
       }
